@@ -20,7 +20,6 @@ class VendasController extends Controller
         $request->validate([
             'cpfcnpj' => 'required|string|max:255',
             'cliente' => 'required|string|max:255',
-            'situacao' => 'required|string|max:255',
             'dataNascimento' => 'required|string|max:255',
             'email' => 'required|string|max:255',
             'telefone' => 'required|string|max:20',
