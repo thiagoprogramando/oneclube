@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('vendas', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
+            $table->string('nome')->nullable();;
             $table->string('cpf');
-            $table->string('rg');
-            $table->string('endereco');
-            $table->string('telefone');
-            $table->string('email');
+            $table->string('rg')->nullable();;
+            $table->string('endereco')->nullable();;
+            $table->string('telefone')->nullable();;
+            $table->string('email')->nullable();;
             $table->unsignedBigInteger('id_contrato');
             $table->unsignedBigInteger('id_produto');
             $table->unsignedBigInteger('id_pay');
