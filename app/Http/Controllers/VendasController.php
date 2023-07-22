@@ -63,7 +63,7 @@ class VendasController extends Controller
             'telefone' => preg_replace('/[^0-9]/', '', $request->telefone),
             'id_vendedor' => $id,
             'rg' => $request->rg,
-            'endereo' => $request->cep.' - '.$request->estado.'/'.$request->cidade.' - '.$request->bairro.' N° '.$request->numero,
+            'endereco' => $request->cep.' - '.$request->estado.'/'.$request->cidade.' - '.$request->bairro.' N° '.$request->numero,
             'produto' => $request->produto,
             'valor'   => $valor
         ]);
