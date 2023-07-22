@@ -16,9 +16,6 @@ class Vendas extends Authenticatable
 
     use HasApiTokens, HasFactory, Notifiable;
 
-    const CREATED_AT = 'createdAt';
-    const UPDATED_AT = 'updatedAt';
-
     protected $fillable = [
         'nome',
         'cpf',
@@ -32,6 +29,8 @@ class Vendas extends Authenticatable
         'valor',
         'status_pay',
         'status_produto',
+        'updatedat',
+        'createdat'
     ];
 
     protected $hidden = [
