@@ -192,14 +192,14 @@ class AsaasController extends Controller
             
             $venda = Vendas::where('telefone', $phone)->first();
             if ($venda) {
-                $link = $this->geraPagamentoAssas($venda->cliente, $venda->cpfcnpj, $venda->id_produto);
+                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
                 $venda->save();
                 return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
             } else {
                 $venda = Vendas::where('email', $email)->first();
-                $link = $this->geraPagamentoAssas($venda->cliente, $venda->cpfcnpj, $venda->id_produto);
+                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
                 $venda->save();
