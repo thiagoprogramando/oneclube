@@ -1,0 +1,13 @@
+# Ignorar diretórios e arquivos específicos
+/vendor
+/node_modules
+/public/storage
+
+# Arquivos de configuração específicos
+.env
+.env.*
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
