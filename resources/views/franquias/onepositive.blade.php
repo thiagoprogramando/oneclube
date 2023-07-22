@@ -38,56 +38,19 @@
                                                 </div>
                                                 
                                                 <input type="hidden" name="id_user" value="{{ $id }}">
+                                                <input type="hidden" name="produto" value="2">
+                                                <input type="hidden" name="franquia" value="onepositive">
                                             
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="dataInput" class="form-control form-control-user" name="dataNascimento" value="{{ old('dataNascimento') }}" oninput="mascaraData(this)" maxlength="10" placeholder="Data de Nascimento" required>
                                                 </div>
                                                 
-                                                <div class="form-group col-sm-12 col-lg-12">
+                                                <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="cliente" class="form-control form-control-user" name="cliente" value="{{ old('cliente') }}" placeholder="Nome">
                                                 </div>
             
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="profissao" class="form-control form-control-user" name="profissao" value="{{ old('profissao') }}" placeholder="Profissão" required>
-                                                </div>
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="rg" class="form-control form-control-user" name="rg" value="{{ old('rg') }}" placeholder="RG">
-                                                </div>
-            
-                                                <div class="form-group col-sm-12 col-lg-12">
-                                                    <select class="form-control" name="civil" required>
-                                                        <option value="Solteiro">Solteiro</option>
-                                                        <option value="Casado"> Casado</option>
-                                                        <option value="União Estável">União Estável</option>
-                                                    </select>
-                                                </div>
-            
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="email" id="email" class="form-control form-control-user" value="{{ old('email') }}" name="email" placeholder="Email" required>
-                                                </div>
-                                                <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="telefoneInput" oninput="mascaraTelefone(this)" maxlength="15" value="{{ old('telefone') }}" class="form-control form-control-user" name="telefone" placeholder="WhatsApp" required>
-                                                </div>
-            
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="number" onblur="consultarEndereco()" id="cep" class="form-control form-control-user" value="{{ old('cep') }}" name="cep" placeholder="CEP" required>
-                                                </div>
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="numero" class="form-control form-control-user" value="{{ old('numero') }}" name="numero" placeholder="N°" required>
-                                                </div>
-            
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="estado" class="form-control form-control-user" value="{{ old('estado') }}" name="estado" placeholder="Estado" required>
-                                                </div>
-                                                <div class="form-group col-sm-12 col-lg-6"> 
-                                                    <input type="text" id="cidade" class="form-control form-control-user" value="{{ old('cidade') }}" name="cidade" placeholder="Cidade" required>
-                                                </div>
-            
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="bairro" class="form-control form-control-user" value="{{ old('bairro') }}" name="bairro" placeholder="Bairro" required>
-                                                </div>
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="endereco" class="form-control form-control-user" value="{{ old('endereco') }}" name="endereco" placeholder="Endereço" required>
                                                 </div>
             
                                                 <div class="form-group col-sm-12 col-lg-4 offset-lg-4">

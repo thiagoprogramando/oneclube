@@ -56,7 +56,7 @@
                     <div id="collapseBeauty" class="collapse" aria-labelledby="headingBeauty" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/vendas">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/onebeauty/' . auth()->id()) }}" target="_BLANK">Vender</a>
+                            <a class="collapse-item" href="#">Vender</a>
                         </div>
                     </div>
                 </li>
@@ -70,7 +70,7 @@
                     <div id="collapseServicos" class="collapse" aria-labelledby="headingServicos" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/vendas">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/oneservicos/' . auth()->id()) }}" target="_BLANK">Vender</a>
+                            <a class="collapse-item" href="#" target="_BLANK">Vender</a>
                         </div>
                     </div>
                 </li>
