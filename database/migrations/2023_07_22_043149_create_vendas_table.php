@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('endereco')->nullable();
             $table->string('telefone')->nullable();
             $table->string('email')->nullable();
-            $table->unsignedBigInteger('id_contrato')->nullable();
+            $table->string('id_contrato')->nullable();
             $table->unsignedBigInteger('id_produto');
-            $table->unsignedBigInteger('id_pay')->nullable();
+            $table->string('id_pay')->nullable();
             $table->unsignedBigInteger('id_vendedor');
             $table->decimal('valor', 10, 2);
             $table->string('status_pay')->nullable();
