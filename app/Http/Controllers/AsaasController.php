@@ -188,8 +188,9 @@ class AsaasController extends Controller
         if ($jsonData['event']['name'] === 'sign') {
             $phone = $jsonData['event']['data']['signer']['phone_number'];
             $email = $jsonData['event']['data']['signer']['email'];
+            $key = $jsonData['event']['data']['signer']['key'];
             
-            $venda = Vendas::where('telefone', $phone)->first();
+            $venda = Vendas::where('id_contrato', $key)->first();
             if ($venda) {
                 $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
                 $venda->id_pay = $link['json']['paymentId'];
