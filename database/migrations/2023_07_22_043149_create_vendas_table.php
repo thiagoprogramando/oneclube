@@ -24,8 +24,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_pay')->nullable();
             $table->unsignedBigInteger('id_vendedor');
             $table->decimal('valor', 10, 2);
-            $table->string('status_pay');
-            $table->string('status_produto');
+            $table->string('status_pay')->nullable();
+            $table->string('status_produto')->nullable();
             $table->timestamps();
         });
     }
