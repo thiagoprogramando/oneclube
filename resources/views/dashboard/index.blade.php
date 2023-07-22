@@ -70,7 +70,7 @@
                                                             Status Desconhecido
                                                     @endswitch
                                                 </td>
-                                                <td>{{ $venda->created_at }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>
