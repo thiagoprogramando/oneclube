@@ -127,7 +127,7 @@ class AsaasController extends Controller
 
             $venda = Vendas::where('id_pay', $idRequisicao)->first();
             if ($venda) {
-                $idUsuario = $venda->id_user;
+                $idUsuario = $venda->id_vendedor;
 
                 $venda->status_pay = 'PAYMENT_CONFIRMED';
                 $venda->save();
