@@ -129,7 +129,7 @@ class AsaasController extends Controller
             if ($venda) {
                 $idUsuario = $venda->id_user;
 
-                $venda->status_limpanome = 'PAYMENT_CONFIRMED';
+                $venda->status_pay = 'PAYMENT_CONFIRMED';
                 $venda->save();
 
                 $user = User::where('id', $idUsuario)->first();
@@ -175,7 +175,6 @@ class AsaasController extends Controller
                 } else {
                     return response()->json(['status' => 'success', 'response' => 'Erro ao quitar fatura!']);
                 }
-
             }
         }
 
