@@ -56,7 +56,7 @@
                                                     @endswitch
                                                 </td>
                                                 <td>
-                                                    <a href="{{ asset('contratos/' . $venda->cpf . '.pdf') }}" download>Download Contrato</a>
+                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/' . $venda->cpf . '.pdf') }}" download>Contrato</a>
                                                 </td>
                                                 <td>
                                                     @switch($venda->status_pay)
