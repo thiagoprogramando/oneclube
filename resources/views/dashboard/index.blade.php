@@ -33,13 +33,43 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($vendas as $key =>$venda )
+                                            @foreach ($vendas as $key =>$venda)
                                             <tr>
                                                 <td>{{ $venda->id }}</td>
                                                 <td>{{ $venda->nome }}</td>
-                                                <td>{{ $venda->id_produto }}</td>
-                                                <td>{{ $venda->cpf }}</td>
-                                                <td>{{ $venda->status_pay }}</td>
+                                                <td>
+                                                    @switch($venda->id_produto)
+                                                        @case(1)
+                                                            Consulta CPF/CNPJ
+                                                            @break
+                                                        @case(2)
+                                                            Limpa Nome
+                                                            @break
+                                                        @case(3)
+                                                            One Motos
+                                                            @break
+                                                        @case(4)
+                                                            One Serviços
+                                                            @break
+                                                        @default
+                                                            Produto Desconhecido
+                                                    @endswitch
+                                                </td>
+                                                <td>
+                                                    <a href="{{ asset('contratos/' . $venda->cpf . '.pdf') }}" download>Download Contrato</a>
+                                                </td>
+                                                <td>
+                                                    @switch($venda->status_pay)
+                                                        @case('PAYMENT_CONFIRMED')
+                                                            Aprovado
+                                                            @break
+                                                        @case('PENDING_PAY')
+                                                            Aguardando Pagamento
+                                                            @break
+                                                        @default
+                                                            Status Desconhecido
+                                                    @endswitch
+                                                </td>
                                                 <td>{{ $venda->created_at }}</td>
                                             </tr>
                                             @endforeach
