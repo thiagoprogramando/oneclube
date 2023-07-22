@@ -23,7 +23,7 @@ class RegisterController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'cpf' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:Users',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
         ], [
             'name.required' => 'O campo nome é obrigatório.',
