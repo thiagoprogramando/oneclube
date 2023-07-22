@@ -64,7 +64,7 @@ class VendasController extends Controller
             'id_vendedor' => $id,
             'rg' => $request->rg,
             'endereco' => $request->cep.' - '.$request->estado.'/'.$request->cidade.' - '.$request->bairro.' N° '.$request->numero,
-            'produto' => $request->produto,
+            'id_produto' => $request->produto,
             'valor'   => $valor
         ]);
 
