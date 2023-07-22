@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('vendas', function (Blueprint $table) {
             $table->id();
-            $table->string('nome')->nullable();;
+            $table->string('nome')->nullable();
             $table->string('cpf');
-            $table->string('rg')->nullable();;
-            $table->string('endereco')->nullable();;
-            $table->string('telefone')->nullable();;
-            $table->string('email')->nullable();;
-            $table->unsignedBigInteger('id_contrato');
+            $table->string('rg')->nullable();
+            $table->string('endereco')->nullable();
+            $table->string('telefone')->nullable();
+            $table->string('email')->nullable();
+            $table->unsignedBigInteger('id_contrato')->nullable();
             $table->unsignedBigInteger('id_produto');
-            $table->unsignedBigInteger('id_pay');
+            $table->unsignedBigInteger('id_pay')->nullable();
             $table->unsignedBigInteger('id_vendedor');
             $table->decimal('valor', 10, 2);
             $table->string('status_pay');
