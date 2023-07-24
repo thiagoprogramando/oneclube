@@ -10,14 +10,14 @@
         <!-- Relatórios -->
         <div class="row">
             <div class="col-xl-6 col-md-6 mb-4">
-                <div class="card border-left-orange shadow h-100 py-2">
+                <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1"> Link de vendas One Motos </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-warning">
                                             <button class="btn btn-outline-success" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
                                     </div>
                                     <div class="col">
@@ -26,21 +26,21 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-motorcycle fa-2x text-orange-300"></i>
+                                <i class="fa fa-motorcycle fa-2x text-warning"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-xl-6 col-md-6 mb-4">
-                <div class="card border-left-pink shadow h-100 py-2">
+                <div class="card border-left-danger shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1"> Link de vendas One Beauty </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-danger">
                                             <button class="btn btn-outline-success" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
                                     </div>
                                     <div class="col">
@@ -49,14 +49,14 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-flask fa-2x text-pink-300"></i>
+                                <i class="fa fa-flask fa-2x text-danger"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-xl-6 col-md-6 mb-4">
-                <div class="card border-left-teal shadow h-100 py-2">
+                <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-check fa-2x text-teal-300"></i>
+                                <i class="fa fa-check fa-2x text-success"></i>
                             </div>
                         </div>
                     </div>
