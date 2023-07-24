@@ -26,7 +26,7 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-motorcycle fa-2x text-gray-300"></i>
+                                <i class="fa fa-motorcycle fa-2x text-orange-300"></i>
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-flask fa-2x text-gray-300"></i>
+                                <i class="fa fa-flask fa-2x text-pink-300"></i>
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-check fa-2x text-gray-300"></i>
+                                <i class="fa fa-check fa-2x text-teal-300"></i>
                             </div>
                         </div>
                     </div>
