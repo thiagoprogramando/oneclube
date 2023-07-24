@@ -12,7 +12,7 @@
                                 <div class="col-lg-12">
                                     <div class="p-5">
                                         <div class="text-center">
-                                            <h1 class="h4 text-gray-900 mb-2">Olá, cliente One Motos!</h1>
+                                            <h1 class="h4 text-gray-900 mb-2">Olá, cliente One Motos/ One Beauty!</h1>
                                             <p class="mb-4">Preencha com os seus dados todas às informações.</p>
                                         </div>
                                         @if ($errors->any())

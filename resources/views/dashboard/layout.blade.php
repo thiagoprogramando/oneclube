@@ -56,7 +56,7 @@
                     <div id="collapseBeauty" class="collapse" aria-labelledby="headingBeauty" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/vendas">Minhas Vendas</a>
-                            <a class="collapse-item" href="#">Vender</a>
+                            <a class="collapse-item" href="{{ url('/onemotos/' . auth()->id()) }}">Vender</a>
                         </div>
                     </div>
                 </li>
@@ -73,7 +73,7 @@
                             <a class="collapse-item" href="#" target="_BLANK">Vender</a>
                         </div>
                     </div>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePositive"
@@ -87,7 +87,7 @@
                             <a class="collapse-item" href="{{ url('/onepositive/' . auth()->id()) }}" target="_BLANK">Vender</a>
                         </div>
                     </div>
-                </li> -->
+                </li> 
 
                 <hr class="sidebar-divider d-none d-md-block">
 
