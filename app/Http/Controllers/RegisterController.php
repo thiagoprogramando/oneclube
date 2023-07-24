@@ -50,6 +50,8 @@ class RegisterController extends Controller
     
         if (isset($request->id_assas)) {
             $attributes['id_assas'] = $request->id_assas;
+        } else {
+            $attributes['id_assas'] = 0;
         }
     
         $user = User::create($attributes);
