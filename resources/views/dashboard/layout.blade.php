@@ -61,7 +61,7 @@
                     </div>
                 </li>
 
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseServicos"
                         aria-expanded="true" aria-controls="collapseServicos">
                         <i class="fas fa-fw fa-folder"></i>
@@ -87,7 +87,7 @@
                             <a class="collapse-item" href="{{ url('/onepositive/' . auth()->id()) }}" target="_BLANK">Vender</a>
                         </div>
                     </div>
-                </li>
+                </li> -->
 
                 <hr class="sidebar-divider d-none d-md-block">
 

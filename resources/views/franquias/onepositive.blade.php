@@ -55,7 +55,7 @@
             
                                                 <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                                     <div class="form-group">
-                                                        <button type="submit" class="btn btn-primary btn-user btn-block"> Cadastrar </button>
+                                                        <button type="submit" class="btn btn-primary btn-user btn-block"> Contratar </button>
                                                     </div>
                                                 </div>
 
