@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('vendas', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
+            $table->string('nome')->nullable();
             $table->string('cpf');
-            $table->string('rg');
-            $table->string('endereco');
-            $table->string('telefone');
-            $table->string('email');
-            $table->unsignedBigInteger('id_contrato');
+            $table->string('rg')->nullable();
+            $table->string('endereco')->nullable();
+            $table->string('telefone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('id_contrato')->nullable();
             $table->unsignedBigInteger('id_produto');
-            $table->unsignedBigInteger('id_pay');
+            $table->string('id_pay')->nullable();
             $table->unsignedBigInteger('id_vendedor');
             $table->decimal('valor', 10, 2);
-            $table->string('status_pay');
-            $table->string('status_produto');
+            $table->string('status_pay')->nullable();
+            $table->string('status_produto')->nullable();
             $table->timestamps();
         });
     }

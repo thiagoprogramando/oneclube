@@ -16,41 +16,17 @@ class Vendas extends Authenticatable
 
     use HasApiTokens, HasFactory, Notifiable;
 
-    const CREATED_AT = 'createdAt';
-    const UPDATED_AT = 'updatedAt';
-
     protected $fillable = [
         'nome',
         'cpf',
         'telefone',
         'email',
         'endereco',
-        'id_contrato',
         'id_produto',
-        'id_pay',
         'id_vendedor',
         'valor',
-        'status_pay',
-        'status_produto',
+        'updatedat',
+        'createdat'
     ];
-
-    protected $hidden = [
-        'passwordHash',
-        'remember_token',
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'updatedAt' => 'datetime',
-        'createdAt' => 'datetime',
-    ];
-
-    public function getAuthPassword(){
-        return $this->passwordHash;
-    }
-
-    public function getUpdatedAt(){
-        return $this->updatedAt;
-    }
 
 }

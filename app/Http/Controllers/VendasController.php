@@ -20,18 +20,10 @@ class VendasController extends Controller
         $request->validate([
             'cpfcnpj' => 'required|string|max:255',
             'cliente' => 'required|string|max:255',
-            'situacao' => 'required|string|max:255',
             'dataNascimento' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
+            'email' => 'string|max:255',
             'telefone' => 'required|string|max:20',
             'rg' => 'max:20',
-            'civil' => 'required',
-            'cep' => 'required',
-            'numero' => 'required',
-            'estado' => 'required',
-            'cidade' => 'required',
-            'bairro' => 'required',
-            'endereco' => 'required',
         ]); 
 
         switch ($request->produto) {
@@ -56,20 +48,47 @@ class VendasController extends Controller
                 break;
         }
 
-        $venda = Vendas::create([
-            'cpf' => preg_replace('/[^0-9]/', '', $request->cpfcnpj),
-            'nome' => $request->cliente,
-            'dataNascimento' => Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d'),
-            'email' => $request->email,
-            'telefone' => preg_replace('/[^0-9]/', '', $request->telefone),
+        $vendaData = [
             'id_vendedor' => $id,
-            'rg' => $request->rg,
-            'endereo' => $request->cep.' - '.$request->estado.'/'.$request->cidade.' - '.$request->bairro.' N° '.$request->numero,
-            'produto' => $request->produto,
-            'valor'   => $valor
-        ]);
-
-        $venda->save();
+        ];
+        
+        if (!empty($request->cpfcnpj)) {
+            $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
+        }
+        
+        if (!empty($request->cliente)) {
+            $vendaData['nome'] = $request->cliente;
+        }
+        
+        if (!empty($request->dataNascimento)) {
+            $vendaData['dataNascimento'] = Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d');
+        }
+        
+        if (!empty($request->email)) {
+            $vendaData['email'] = $request->email;
+        }
+        
+        if (!empty($request->telefone)) {
+            $vendaData['telefone'] = preg_replace('/[^0-9]/', '', $request->telefone);
+        }
+        
+        if (!empty($request->rg)) {
+            $vendaData['rg'] = $request->rg;
+        }
+        
+        if (!empty($request->cep) && !empty($request->estado) && !empty($request->cidade) && !empty($request->bairro) && !empty($request->numero)) {
+            $vendaData['endereco'] = $request->cep.' - '.$request->estado.'/'.$request->cidade.' - '.$request->bairro.' N° '.$request->numero;
+        }
+        
+        if (!empty($request->produto)) {
+            $vendaData['id_produto'] = $request->produto;
+        }
+        
+        if (!empty($valor)) {
+            $vendaData['valor'] = $valor;
+        }
+        
+        $venda = Vendas::create($vendaData);        
 
         if (!$venda) {
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
@@ -142,10 +161,10 @@ class VendasController extends Controller
             $updateVenda = Vendas::where('cpf', $data['cpfcnpj'])->orderBy('id', 'desc')->first();
             
             if ($updateVenda) {
-                $updateVenda->id_contrato = $keyDocumento['key'];
+                $updateVenda->id_contrato = $addSignatarios['key'];
                 $updateVenda->save();
             }else {
-                $updateVenda->id_contrato = $keyDocumento['key'];
+                $updateVenda->id_contrato = $addSignatarios['key'];
                 $updateVenda->save();
             }
 

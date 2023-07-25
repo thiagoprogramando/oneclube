@@ -127,9 +127,9 @@ class AsaasController extends Controller
 
             $venda = Vendas::where('id_pay', $idRequisicao)->first();
             if ($venda) {
-                $idUsuario = $venda->id_user;
+                $idUsuario = $venda->id_vendedor;
 
-                $venda->status_limpanome = 'PAYMENT_CONFIRMED';
+                $venda->status_pay = 'PAYMENT_CONFIRMED';
                 $venda->save();
 
                 $user = User::where('id', $idUsuario)->first();
@@ -175,7 +175,6 @@ class AsaasController extends Controller
                 } else {
                     return response()->json(['status' => 'success', 'response' => 'Erro ao quitar fatura!']);
                 }
-
             }
         }
 
@@ -189,17 +188,18 @@ class AsaasController extends Controller
         if ($jsonData['event']['name'] === 'sign') {
             $phone = $jsonData['event']['data']['signer']['phone_number'];
             $email = $jsonData['event']['data']['signer']['email'];
+            $key = $jsonData['event']['data']['signer']['key'];
             
-            $venda = Vendas::where('telefone', $phone)->first();
+            $venda = Vendas::where('id_contrato', $key)->first();
             if ($venda) {
-                $link = $this->geraPagamentoAssas($venda->cliente, $venda->cpfcnpj, $venda->id_produto);
+                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
                 $venda->save();
                 return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
             } else {
                 $venda = Vendas::where('email', $email)->first();
-                $link = $this->geraPagamentoAssas($venda->cliente, $venda->cpfcnpj, $venda->id_produto);
+                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
                 $venda->save();
@@ -217,13 +217,16 @@ class AsaasController extends Controller
 
         switch($produto){
             case 1:
-                $produto = 375;
+                $produto = 29.90;
                 break;
             case 2:
                 $produto = 1500;
                 break;
             case 3:
-                $produto = 29.90;
+                $produto = 375;
+                break;
+            case 4:
+                $produto = 127;
                 break;
         }
         
