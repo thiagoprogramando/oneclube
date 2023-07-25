@@ -2720,6 +2720,11 @@ fieldset:disabled a.btn {
   border-color: #34036E;
 }
 
+.btn-outline-green {
+  color: #00f715;
+  border-color: #00f715;
+}
+
 .btn-outline-success:hover {
   color: #fff;
   background-color: #34036E;
@@ -9611,6 +9616,10 @@ a.text-secondary:hover, a.text-secondary:focus {
   color: #34036E !important;
 }
 
+.text-green {
+  color: #00f715 !important;
+}
+
 a.text-success:hover, a.text-success:focus {
   color: #13855c !important;
 }
@@ -10057,7 +10066,7 @@ a:focus {
 }
 
 .border-left-success {
-  border-left: 0.25rem solid #34036E !important;
+  border-left: 0.25rem solid #00f715 !important;
 }
 
 .border-bottom-success {
@@ -10863,22 +10872,21 @@ a:focus {
 .bg-login-image {
   background: url("../assets/logo.png");
   background-position: center;
-  background-size: contain;
+  background-size: 90%;
   background-repeat: no-repeat;
-
 }
 
 .bg-register-image {
   background: url("../assets/logo.png");
   background-position: center;
-  background-size: contain;
+  background-size: 90%;
   background-repeat: no-repeat;
 }
 
 .bg-password-image {
   background: url("../assets/logo.png");
   background-position: center;
-  background-size: contain;
+  background-size: 90%;
   background-repeat: no-repeat;
 }
 

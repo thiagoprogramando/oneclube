@@ -188,7 +188,7 @@ class AsaasController extends Controller
         if ($jsonData['event']['name'] === 'sign') {
             $phone = $jsonData['event']['data']['signer']['phone_number'];
             $email = $jsonData['event']['data']['signer']['email'];
-            $key = $jsonData['event']['data']['signer']['key'];
+            $key = $jsonData['event']['data']['document']['key'];
             
             $venda = Vendas::where('id_contrato', $key)->first();
             if ($venda) {
