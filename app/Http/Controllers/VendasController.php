@@ -161,10 +161,7 @@ class VendasController extends Controller
             $updateVenda = Vendas::where('cpf', $data['cpfcnpj'])->orderBy('id', 'desc')->first();
             
             if ($updateVenda) {
-                $updateVenda->id_contrato = $addSignatarios['key'];
-                $updateVenda->save();
-            }else {
-                $updateVenda->id_contrato = $addSignatarios['key'];
+                $updateVenda->id_contrato = $keyDocumento['key'];
                 $updateVenda->save();
             }
 
