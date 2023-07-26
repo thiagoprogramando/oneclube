@@ -12,9 +12,73 @@ use GuzzleHttp\Exception\RequestException;
 use Carbon\Carbon;
 
 use App\Models\Vendas;
+use App\Models\Notificacao;
 
 class VendasController extends Controller
 {
+
+    public function getVendas($id) {
+        $users = auth()->user();
+
+        $notfic = Notificacao::where(function ($query) use ($users) {
+            if ($users->profile === 'admin') {
+                $query->where(function ($query) {
+                    $query->where('tipo', '!=', '')
+                        ->orWhere('tipo', 0);
+                });
+            } else {
+                $query->where(function ($query) use ($users) {
+                    $query->where('tipo', 0)
+                        ->orWhere('tipo', $users->id);
+                });
+            }
+        })->get();
+
+        $vendas = Vendas::latest()->limit(30)->get();
+
+        // Retornar os dados para a view vendas
+        return view('dashboard.vendas', [
+            'notfic' => $notfic,
+            'users' => $users,
+            'vendas' => $vendas,
+            'produto' => $id
+        ]);
+    }
+
+    public function vendas(Request $request)
+    {
+        $users = auth()->user();
+
+        $notfic = Notificacao::where(function ($query) use ($users) {
+            // ... (seu código existente para a cláusula 'where' da Notificacao)
+        })->get();
+
+        $dataInicio = $request->input('data_inicio');
+        $dataFim = $request->input('data_fim');
+
+        if ($dataInicio && $dataFim) {
+            $dataInicio = Carbon::parse($dataInicio);
+            $dataFim = Carbon::parse($dataFim);
+
+            $vendas = Vendas::where('id_produto', $request->input('id'))
+                            ->whereBetween('updated_at', [$dataInicio, $dataFim])
+                            ->get();
+        } else {
+            $vendas = Vendas::where('id_produto', $request->input('id'))
+                            ->latest()
+                            ->limit(30)
+                            ->get();
+        }
+
+        // Retornar os dados para a view vendas
+        return view('dashboard.vendas', [
+            'notfic' => $notfic,
+            'users' => $users,
+            'vendas' => $vendas,
+            'produto' => $request->input('id')
+        ]);
+    }
+
     public function vender(Request $request, $id) {
         //Registra venda
         $request->validate([

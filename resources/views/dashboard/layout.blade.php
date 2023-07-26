@@ -40,7 +40,7 @@
                     </a>
                     <div id="collapseMotos" class="collapse" aria-labelledby="headingMotos" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas">Minhas Vendas</a>
+                            <a class="collapse-item" href="/vendas/3">Minhas Vendas</a>
                             <a class="collapse-item" href="{{ url('/onemotos/' . auth()->id()) }}" target="_BLANK">Vender</a>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                     </a>
                     <div id="collapseBeauty" class="collapse" aria-labelledby="headingBeauty" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas">Minhas Vendas</a>
+                            <a class="collapse-item" href="/vendas/1">Minhas Vendas</a>
                             <a class="collapse-item" href="{{ url('/onemotos/' . auth()->id()) }}" target="_BLANK">Vender</a>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                     </a>
                     <div id="collapseServicos" class="collapse" aria-labelledby="headingServicos" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas">Minhas Vendas</a>
+                            <a class="collapse-item" href="/vendas/1">Minhas Vendas</a>
                             <a class="collapse-item" href="#" target="_BLANK">Vender</a>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                     </a>
                     <div id="collapsePositive" class="collapse" aria-labelledby="headingPositive" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas">Minhas Vendas</a>
+                            <a class="collapse-item" href="/vendas/2">Minhas Vendas</a>
                             <a class="collapse-item" href="{{ url('/onepositive/' . auth()->id()) }}" target="_BLANK">Vender</a>
                         </div>
                     </div>

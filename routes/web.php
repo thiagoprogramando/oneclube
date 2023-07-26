@@ -39,6 +39,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/logout', [DashboardController::class, 'logout'])->name('logout');
 
+    Route::get('/vendas/{id}', [VendasController::class, 'getVendas'])->name('vendas');
+    Route::post('vendas', [VendasController::class, 'vendas'])->name('vendas');
+
     Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('notificacao.destroy');
     Route::post('/cadastroNotficacao', [NotificacaoController::class, 'cadastroNotficacao'])->name('cadastroNotficacao');
 
