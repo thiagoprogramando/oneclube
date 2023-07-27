@@ -168,20 +168,8 @@ presente instrumento, adquire da <b><u>VENDEDORA</u></b>, na modalidade “compr
 antecipada”, o veículo automotor ora descrito:  </p>
 
 <p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:.4pt;
-margin-left:-.25pt'><img width=75 height=38
-src="contrato%20WORD_arquivos/image001.gif" align=left hspace=12
-alt="Placa branca com texto preto sobre fundo branco&#10;&#10;Descrição gerada automaticamente com confiança baixa"><img
-width=74 height=42 src="contrato%20WORD_arquivos/image002.gif" align=right
-hspace=12
-alt="Placa branca com letras pretas&#10;&#10;Descrição gerada automaticamente com confiança baixa"></p>
-
-<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:.4pt;
 margin-left:0cm;text-indent:0cm'>&nbsp;</p>
 
-<p class=MsoNormal align=left style='margin-top:0cm;margin-right:0cm;
-margin-bottom:0cm;margin-left:118.45pt;text-align:left;text-indent:0cm;
-line-height:107%'><img width=193 height=77 id="Picture 9084"
-src="contrato%20WORD_arquivos/image003.gif"></p>
 
 <p class=MsoNormal align=left style='margin-top:0cm;margin-right:0cm;
 margin-bottom:0cm;margin-left:118.45pt;text-align:left;text-indent:0cm;
@@ -251,21 +239,9 @@ desistência perante a empresa <b><u>VENDEDORA</u></b>, assumindo o direito de
 receber os valores adimplidos ao término do prazo de duração programado neste contrato,
 corrigidos única e exclusivamente em 0,5%  (meio por cento) ao mês na forma
 simples, com a retenção pela <b><u>VENDEDORA</u> </b>do montante percentual de
-30% (trinta por cento), correlato <img width=74 height=42
-src="contrato%20WORD_arquivos/image004.gif" align=right hspace=12
-alt="Placa branca com letras pretas&#10;&#10;Descrição gerada automaticamente com confiança baixa">a
+30% (trinta por cento), correlato a
 despesas operacionais, custos de manutenção do contrato, publicidade, etc.<span
 style='font-size:9.5pt;line-height:112%'> </span> </p>
-
-<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:11.9pt;
-margin-left:-.25pt'><img width=75 height=38
-src="contrato%20WORD_arquivos/image005.gif" align=left hspace=12
-alt="Placa branca com texto preto sobre fundo branco&#10;&#10;Descrição gerada automaticamente com confiança baixa"></p>
-
-<p class=MsoNormal align=left style='margin-top:0cm;margin-right:0cm;
-margin-bottom:0cm;margin-left:129.9pt;text-align:left;text-indent:0cm;
-line-height:107%'><img width=193 height=77 id="Picture 9085"
-src="contrato%20WORD_arquivos/image006.gif"></p>
 
 <p class=MsoNormal style='margin-left:-.25pt'><b>CLÁUSULA DÉCIMA</b>: O valor
 atinente ao resgate acima será pago ao <b><u>COMPRADOR(A)</u> </b>mediante os
@@ -334,11 +310,6 @@ margin-left:-.25pt'><b>CLÁUSULA DÉCIMA OITAVA</b>: Eventual tolerância por
 parte da <b><u>VENDEDORA</u> </b>quanto a qualquer das obrigações contratuais
 pactuadas não caracterizará renúncia ou remissão, ficando restrita à alteração
 pontual do detalhamento acertado, com sua validade condicionada ao seu termo. </p>
-
-<p class=MsoNormal align=left style='margin-top:0cm;margin-right:0cm;
-margin-bottom:0cm;margin-left:125.2pt;text-align:left;text-indent:0cm;
-line-height:107%'><img width=193 height=77 id="Picture 9086"
-src="contrato%20WORD_arquivos/image007.gif"></p>
 
 <p class=MsoNormal style='margin-left:-.25pt'><b>CLÁUSULA DÉCIMA NONA</b>: As
 partes reconhecem que o presente contrato obedece rigorosamente a legislação
@@ -409,11 +380,6 @@ line-height:107%'><b>_______________________________________________ </b></p>
 
 <h1 style='margin-left:142.1pt'>Comprado </h1>
 
-<p class=MsoNormal align=left style='margin-top:0cm;margin-right:0cm;
-margin-bottom:0cm;margin-left:203.8pt;text-align:left;text-indent:0cm;
-line-height:107%'><img width=193 height=77 id="Picture 9087"
-src="contrato%20WORD_arquivos/image008.gif"></p>
-
 <p class=MsoNormal align=center style='margin-top:0cm;margin-right:7.1pt;
 margin-bottom:10.9pt;margin-left:0cm;text-align:center;text-indent:0cm;
 line-height:107%'><b>     </b>_________________________________________________<span
@@ -421,15 +387,6 @@ style='color:#0070C0'>  </span><b> </b></p>
 
 <h1 style='margin-left:-.25pt'><span style='color:#0070C0;font-weight:normal'>                                                   
 </span>WJ AUTO LTDA </h1>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal><img width=75 height=38
-src="contrato%20WORD_arquivos/image009.gif" align=left hspace=12
-alt="Placa branca com texto preto sobre fundo branco&#10;&#10;Descrição gerada automaticamente com confiança baixa"><img
-width=74 height=42 src="contrato%20WORD_arquivos/image010.gif" align=right
-hspace=12
-alt="Placa branca com letras pretas&#10;&#10;Descrição gerada automaticamente com confiança baixa"></p>
 
 </div>
 
