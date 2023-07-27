@@ -145,7 +145,7 @@ class AsaasController extends Controller
 
                     // Enviar a requisição POST para oneclube.com.br/recebe
                     $client = new Client();
-                    $response = $client->post('https://oneclube.com.br/confirm-sale-product', [
+                    $response = $client->post(env('API_URL_ONECLUBE').'confirm-sale-product', [
                         'form_params' => $dados
                     ]);
 
@@ -164,7 +164,7 @@ class AsaasController extends Controller
                     'id_assas' => $idRequisicao,
                 ];
                 $client = new Client();
-                $response = $client->post('https://oneclube.com.br/finish-payment', [
+                $response = $client->post(env('API_URL_ONECLUBE').'finish-payment', [
                     'form_params' => $dados
                 ]);
                 
