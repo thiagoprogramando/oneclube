@@ -55,7 +55,7 @@
                     <div id="collapseBeauty" class="collapse" aria-labelledby="headingBeauty" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/vendas/1">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/onemotos/' . auth()->id()) }}" target="_BLANK">Vender</a>
+                            <a class="collapse-item" href="{{ url('/onebeauty/' . auth()->id()) }}" target="_BLANK">Vender</a>
                         </div>
                     </div>
                 </li>
