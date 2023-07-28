@@ -458,7 +458,7 @@ class VendasController extends Controller
                 ],
                 'json' => [
                     'phone'     => '55'.$telefone,
-                    'message'   => "Prezado Cliente, segue seu contrato de adesão da One Motos: \r\n \r\n",
+                    'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da One Clube: \r\n \r\n",
                     'image'     => 'https://oneclube.com.br/images/logo.png',
                     'linkUrl'   => $contrato,
                     'title'     => 'Assinatura de Contrato',
