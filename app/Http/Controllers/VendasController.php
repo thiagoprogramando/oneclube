@@ -223,7 +223,7 @@ class VendasController extends Controller
         //Cria Signatario
         $keySignatario = $this->criaSignatario($data);
         if($keySignatario['type'] != true){
-            return view($request->franquia, ['id' => $id, 'error' => $keyDocumento['key']]);
+            return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keySignatario['key']])->withInput();
         }
 
         //Adicionar Signatarios ao Documento
@@ -248,7 +248,7 @@ class VendasController extends Controller
             return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
 
         } else {
-            return view($request->franquia, ['id' => $id, 'error' => 'Erro ao gerar assinatura!']);
+            return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
         }
     }
 
