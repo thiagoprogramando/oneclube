@@ -185,7 +185,8 @@ class VendasController extends Controller
             'cidade' => $request->cidade,
             'bairro' => $request->bairro,
             'endereco' => $request->endereco,
-            'auth'      => 'whatsapp'
+            'auth'      => 'whatsapp',
+            'produto'   => $request->produto
         ];
 
         // Crie uma instância do Dompdf
@@ -256,6 +257,22 @@ class VendasController extends Controller
 
         $url = env('API_URL_CLICKSIN').'api/v1/documents?access_token='.env('API_TOKEN_CLICKSIN');
 
+        switch($data['produto']){
+            case 1:
+                $pasta = "/onebeauty";
+                break;
+            case 2:
+                $pasta = "/onepositive";
+                break;
+            case 3:
+                $pasta = "/onemotos";
+                break;
+            case 4:
+                $pasta = "/oneservicos";
+                break;
+        }
+        
+
         try {
             $response = $client->post($url, [
                 'headers' => [
@@ -264,7 +281,7 @@ class VendasController extends Controller
                 ],
                 'json' => [
                     'document' => [
-                        'path' => '/onemotos/Contrato One Motos '.$data['cliente'].'.pdf',
+                        'path' => $pasta.'/Contrato One Motos '.$data['cliente'].'.pdf',
                         'content_base64' => 'data:application/pdf;base64,'.$data['pdf'],
                     ],
                 ],
