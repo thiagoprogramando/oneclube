@@ -207,7 +207,7 @@ class VendasController extends Controller
         $dompdf->render();
         $pdfContent = $dompdf->output();
         
-        $filePath = public_path('contratos/'.$data['cpfcnpj'].'.pdf');
+        $filePath = public_path('contratos/'.$request->franquia.$data['cpfcnpj'].'.pdf');
         file_put_contents($filePath, $pdfContent);
         
         $pdfPath = public_path('contratos/'.$data['cpfcnpj'].'.pdf');
