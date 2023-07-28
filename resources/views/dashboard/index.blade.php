@@ -78,6 +78,29 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-dark shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-dark text-uppercase mb-1"> Link de vendas One Serviços </div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                            <button class="btn btn-outline-dark" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
+                                    </div>
+                                    <div class="col">
+                                        <a style="font-size: 15px;" class="text-dark" id="copyLink" href="{{ url('/oneservicos/' . auth()->id()) }}" target="_blank">{{ url('/oneservicos/' . auth()->id()) }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa fa-briefcase fa-2x text-dark"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <!-- Minhas Vendas -->
