@@ -44,7 +44,7 @@
                                             <button class="btn btn-outline-danger" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
                                     </div>
                                     <div class="col">
-                                        <a style="font-size: 15px;" class="text-danger" id="copyLink" href="{{ url('/onemotos/' . auth()->id()) }}" target="_blank">{{ url('/onemotos/' . auth()->id()) }}</a>
+                                        <a style="font-size: 15px;" class="text-danger" id="copyLink" href="{{ url('/onebeauty/' . auth()->id()) }}" target="_blank">{{ url('/onemotos/' . auth()->id()) }}</a>
                                     </div>
                                 </div>
                             </div>

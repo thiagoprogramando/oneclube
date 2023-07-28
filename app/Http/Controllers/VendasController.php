@@ -112,7 +112,7 @@ class VendasController extends Controller
                 break;
             case 1:
                 $views = ['documentos.onebeauty'];
-                $valor = 29.90;
+                $valor = 375;
                 break;
             case 4:
                 $views = ['documentos.oneservicos'];

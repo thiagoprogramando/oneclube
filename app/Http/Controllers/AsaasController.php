@@ -216,7 +216,7 @@ class AsaasController extends Controller
 
         switch($produto){
             case 1:
-                $produto = 29.90;
+                $produto = 375;
                 break;
             case 2:
                 $produto = 1500;
