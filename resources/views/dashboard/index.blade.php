@@ -150,7 +150,22 @@
                                                     @endswitch
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                @switch($venda->id_produto)
+                                                        @case(1)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/1' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @case(2)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @case(3)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/3' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @case(4)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/4' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @default
+                                                            Produto Desconhecido
+                                                    @endswitch
                                                 </td>
                                                 <td>
                                                     @switch($venda->status_pay)
