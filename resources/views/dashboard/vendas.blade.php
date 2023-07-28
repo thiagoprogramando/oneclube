@@ -36,7 +36,7 @@
                                                             </dil>
                                                             <dil class="col-6">
                                                                 <div class="form-group">
-                                                                    <input type="date" class="form-control" name="email" placeholder="Data Final">
+                                                                    <input type="date" class="form-control" name="data_fim" placeholder="Data Final">
                                                                 </div>
                                                             </dil>
                                                         </div>

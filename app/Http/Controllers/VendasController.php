@@ -50,8 +50,19 @@ class VendasController extends Controller
         $users = auth()->user();
 
         $notfic = Notificacao::where(function ($query) use ($users) {
-            // ... (seu código existente para a cláusula 'where' da Notificacao)
+            if ($users->profile === 'admin') {
+                $query->where(function ($query) {
+                    $query->where('tipo', '!=', '')
+                        ->orWhere('tipo', 0);
+                });
+            } else {
+                $query->where(function ($query) use ($users) {
+                    $query->where('tipo', 0)
+                        ->orWhere('tipo', $users->id);
+                });
+            }
         })->get();
+
 
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');

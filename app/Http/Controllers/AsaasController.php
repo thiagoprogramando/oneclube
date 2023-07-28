@@ -139,7 +139,7 @@ class AsaasController extends Controller
                     $dados = [
                         'cpf' => $cpf,
                         'value' => $venda->valor,
-                        'description' => 'Venda Franquia',
+                        'description' => 'One Clube - Vendas',
                         'product' => $venda->id_produto,
                     ];
 
