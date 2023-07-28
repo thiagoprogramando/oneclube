@@ -33,6 +33,14 @@
                                             <input type="hidden" value={{  csrf_token() }} name="_token">
                                             <div class="col-sm-12 col-lg-8 offset-lg-2 row">
 
+                                                <div class="form-group col-sm-12 col-lg-12">
+                                                    <input type="text" id="cliente" class="form-control form-control-user" name="cliente" value="{{ old('cliente') }}" placeholder="Nome">
+                                                </div>
+
+                                                <div class="form-group col-sm-12 col-lg-6">
+                                                    <input type="email" id="email" class="form-control form-control-user" name="email" value="{{ old('email') }}" placeholder="Email">
+                                                </div>
+
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="cpfInput" oninput="mascaraCpf(this)" maxlength="14" value="{{ old('cpfcnpj') }}" class="form-control form-control-user" name="cpfcnpj" placeholder="CPF/CNPJ">
                                                 </div>
@@ -43,10 +51,6 @@
                                             
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="dataInput" class="form-control form-control-user" name="dataNascimento" value="{{ old('dataNascimento') }}" oninput="mascaraData(this)" maxlength="10" placeholder="Data de Nascimento" required>
-                                                </div>
-                                                
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="cliente" class="form-control form-control-user" name="cliente" value="{{ old('cliente') }}" placeholder="Nome">
                                                 </div>
             
                                                 <div class="form-group col-sm-12 col-lg-6">
