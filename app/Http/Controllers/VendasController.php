@@ -34,7 +34,7 @@ class VendasController extends Controller
             }
         })->get();
 
-        $vendas = Vendas::latest()->limit(30)->get();
+        $vendas = Vendas::where('id_produto', $id)->latest()->limit(30)->get();
 
         // Retornar os dados para a view vendas
         return view('dashboard.vendas', [
