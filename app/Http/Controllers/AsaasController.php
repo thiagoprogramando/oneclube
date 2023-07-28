@@ -186,11 +186,10 @@ class AsaasController extends Controller
     {
         $jsonData = $request->json()->all();
         if ($jsonData['event']['name'] === 'sign') {
-            $phone = $jsonData['event']['data']['signer']['phone_number'];
             $email = $jsonData['event']['data']['signer']['email'];
             $key = $jsonData['document']['key'];
             
-            $venda = Vendas::where('id_contrato', $key)->first();
+            $venda = Vendas::where('id_contrato', $key)->where('status_pay', 'PENDING_PAY')->first();
             if ($venda) {
                 $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
                 $venda->id_pay = $link['json']['paymentId'];
@@ -198,7 +197,7 @@ class AsaasController extends Controller
                 $venda->save();
                 return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
             } else {
-                $venda = Vendas::where('email', $email)->first();
+                $venda = Vendas::where('email', $email)->where('status_pay', 'PENDING_PAY')->first();
                 $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
