@@ -74,7 +74,7 @@
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(1)
-                                                            Consulta CPF/CNPJ
+                                                            One Beauty
                                                             @break
                                                         @case(2)
                                                             Limpa Nome
