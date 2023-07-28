@@ -184,25 +184,11 @@ class AsaasController extends Controller
     
     public function enviaLinkPagamento(Request $request)
     {
-        // // Obtém o JSON enviado na requisição
-        // $json_data = $request->getContent();
-
-        // // Define o nome do arquivo com base na data e hora atual (ou algum identificador único)
-        // $filename = 'dados_' . time() . '.txt';
-
-        // // Caminho completo para a pasta "public" e o nome do arquivo
-        // $file_path = public_path($filename);
-
-        // // Cria o arquivo e escreve os dados JSON dentro dele
-        // file_put_contents($file_path, $json_data);
-
-        // // Retorna uma resposta adequada para o cliente, como uma mensagem de sucesso
-        // return response()->json(['message' => 'Dados enviados com sucesso e arquivo criado.']);
         $jsonData = $request->json()->all();
         if ($jsonData['event']['name'] === 'sign') {
             $phone = $jsonData['event']['data']['signer']['phone_number'];
             $email = $jsonData['event']['data']['signer']['email'];
-            $key = $jsonData['event']['data']['document']['key'];
+            $key = $jsonData['document']['key'];
             
             $venda = Vendas::where('id_contrato', $key)->first();
             if ($venda) {
