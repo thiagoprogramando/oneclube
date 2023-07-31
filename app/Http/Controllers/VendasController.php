@@ -210,7 +210,7 @@ class VendasController extends Controller
         $filePath = public_path('contratos/'.$request->produto.$data['cpfcnpj'].'.pdf');
         file_put_contents($filePath, $pdfContent);
         
-        $pdfPath = public_path('contratos/'.$data['cpfcnpj'].'.pdf');
+        $pdfPath = public_path('contratos/'.$request->produto.$data['cpfcnpj'].'.pdf');
         $pdfContent = file_get_contents($pdfPath);
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
