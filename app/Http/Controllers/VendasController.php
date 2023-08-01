@@ -34,7 +34,7 @@ class VendasController extends Controller
             }
         })->get();
 
-        $vendas = Vendas::where('id_produto', $id)->latest()->limit(30)->get();
+        $vendas = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id)->latest()->limit(30)->get();
 
         // Retornar os dados para a view vendas
         return view('dashboard.vendas', [
@@ -72,10 +72,12 @@ class VendasController extends Controller
             $dataFim = Carbon::parse($dataFim);
 
             $vendas = Vendas::where('id_produto', $request->input('id'))
+                            ->where('id_vendedor', $users->id)
                             ->whereBetween('updated_at', [$dataInicio, $dataFim])
                             ->get();
         } else {
             $vendas = Vendas::where('id_produto', $request->input('id'))
+                            ->where('id_vendedor', $users->id)
                             ->latest()
                             ->limit(30)
                             ->get();
