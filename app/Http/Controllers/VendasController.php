@@ -12,9 +12,86 @@ use GuzzleHttp\Exception\RequestException;
 use Carbon\Carbon;
 
 use App\Models\Vendas;
+use App\Models\Notificacao;
 
 class VendasController extends Controller
 {
+
+    public function getVendas($id) {
+        $users = auth()->user();
+
+        $notfic = Notificacao::where(function ($query) use ($users) {
+            if ($users->profile === 'admin') {
+                $query->where(function ($query) {
+                    $query->where('tipo', '!=', '')
+                        ->orWhere('tipo', 0);
+                });
+            } else {
+                $query->where(function ($query) use ($users) {
+                    $query->where('tipo', 0)
+                        ->orWhere('tipo', $users->id);
+                });
+            }
+        })->get();
+
+        $vendas = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id)->latest()->limit(30)->get();
+
+        // Retornar os dados para a view vendas
+        return view('dashboard.vendas', [
+            'notfic' => $notfic,
+            'users' => $users,
+            'vendas' => $vendas,
+            'produto' => $id
+        ]);
+    }
+
+    public function vendas(Request $request)
+    {
+        $users = auth()->user();
+
+        $notfic = Notificacao::where(function ($query) use ($users) {
+            if ($users->profile === 'admin') {
+                $query->where(function ($query) {
+                    $query->where('tipo', '!=', '')
+                        ->orWhere('tipo', 0);
+                });
+            } else {
+                $query->where(function ($query) use ($users) {
+                    $query->where('tipo', 0)
+                        ->orWhere('tipo', $users->id);
+                });
+            }
+        })->get();
+
+
+        $dataInicio = $request->input('data_inicio');
+        $dataFim = $request->input('data_fim');
+
+        if ($dataInicio && $dataFim) {
+            $dataInicio = Carbon::parse($dataInicio);
+            $dataFim = Carbon::parse($dataFim);
+
+            $vendas = Vendas::where('id_produto', $request->input('id'))
+                            ->where('id_vendedor', $users->id)
+                            ->whereBetween('updated_at', [$dataInicio, $dataFim])
+                            ->get();
+        } else {
+            $vendas = Vendas::where('id_produto', $request->input('id'))
+                            ->where('id_vendedor', $users->id)
+                            ->latest()
+                            ->limit(30)
+                            ->get();
+        }
+
+        // Retornar os dados para a view vendas
+        return view('dashboard.vendas', [
+            'notfic' => $notfic,
+            'users' => $users,
+            'vendas' => $vendas,
+            'produto' => $request->input('id')
+        ]);
+    }
+
     public function vender(Request $request, $id) {
         //Registra venda
         $request->validate([
@@ -37,7 +114,7 @@ class VendasController extends Controller
                 break;
             case 1:
                 $views = ['documentos.onebeauty'];
-                $valor = 29.90;
+                $valor = 375;
                 break;
             case 4:
                 $views = ['documentos.oneservicos'];
@@ -110,7 +187,8 @@ class VendasController extends Controller
             'cidade' => $request->cidade,
             'bairro' => $request->bairro,
             'endereco' => $request->endereco,
-            'auth'      => 'whatsapp'
+            'auth'      => 'whatsapp',
+            'produto'   => $request->produto
         ];
 
         // Crie uma instância do Dompdf
@@ -131,10 +209,10 @@ class VendasController extends Controller
         $dompdf->render();
         $pdfContent = $dompdf->output();
         
-        $filePath = public_path('contratos/'.$data['cpfcnpj'].'.pdf');
+        $filePath = public_path('contratos/'.$request->produto.$data['cpfcnpj'].'.pdf');
         file_put_contents($filePath, $pdfContent);
         
-        $pdfPath = public_path('contratos/'.$data['cpfcnpj'].'.pdf');
+        $pdfPath = public_path('contratos/'.$request->produto.$data['cpfcnpj'].'.pdf');
         $pdfContent = file_get_contents($pdfPath);
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
@@ -147,7 +225,7 @@ class VendasController extends Controller
         //Cria Signatario
         $keySignatario = $this->criaSignatario($data);
         if($keySignatario['type'] != true){
-            return view($request->franquia, ['id' => $id, 'error' => $keyDocumento['key']]);
+            return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keySignatario['key']])->withInput();
         }
 
         //Adicionar Signatarios ao Documento
@@ -172,7 +250,7 @@ class VendasController extends Controller
             return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
 
         } else {
-            return view($request->franquia, ['id' => $id, 'error' => 'Erro ao gerar assinatura!']);
+            return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
         }
     }
 
@@ -180,6 +258,22 @@ class VendasController extends Controller
         $client = new Client();
 
         $url = env('API_URL_CLICKSIN').'api/v1/documents?access_token='.env('API_TOKEN_CLICKSIN');
+
+        switch($data['produto']){
+            case 1:
+                $pasta = "/onebeauty";
+                break;
+            case 2:
+                $pasta = "/onepositive";
+                break;
+            case 3:
+                $pasta = "/onemotos";
+                break;
+            case 4:
+                $pasta = "/oneservicos";
+                break;
+        }
+        
 
         try {
             $response = $client->post($url, [
@@ -189,7 +283,7 @@ class VendasController extends Controller
                 ],
                 'json' => [
                     'document' => [
-                        'path' => '/onemotos/Contrato One Motos '.$data['cliente'].'.pdf',
+                        'path' => $pasta.'/Contrato One Motos '.$data['cliente'].'.pdf',
                         'content_base64' => 'data:application/pdf;base64,'.$data['pdf'],
                     ],
                 ],
@@ -366,7 +460,7 @@ class VendasController extends Controller
                 ],
                 'json' => [
                     'phone'     => '55'.$telefone,
-                    'message'   => "Prezado Cliente, segue seu contrato de adesão da One Motos: \r\n \r\n",
+                    'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da One Clube: \r\n \r\n",
                     'image'     => 'https://oneclube.com.br/images/logo.png',
                     'linkUrl'   => $contrato,
                     'title'     => 'Assinatura de Contrato',

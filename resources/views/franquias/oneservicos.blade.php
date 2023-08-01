@@ -12,7 +12,7 @@
                                 <div class="col-lg-12">
                                     <div class="p-5">
                                         <div class="text-center">
-                                            <h1 class="h4 text-gray-900 mb-2">Olá, cliente One Motos!</h1>
+                                            <h1 class="h4 text-gray-900 mb-2">Olá, cliente One Serviços!</h1>
                                             <p class="mb-4">Preencha com os seus dados todas às informações.</p>
                                         </div>
                                         @if ($errors->any())
@@ -38,8 +38,8 @@
                                                 </div>
                                                 
                                                 <input type="hidden" name="id_user" value="{{ $id }}">
-                                                <input type="hidden" name="produto" value="3">
-                                                <input type="hidden" name="franquia" value="onemotos">
+                                                <input type="hidden" name="produto" value="4">
+                                                <input type="hidden" name="franquia" value="oneservicos">
                                             
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="dataInput" class="form-control form-control-user" name="dataNascimento" value="{{ old('dataNascimento') }}" oninput="mascaraData(this)" maxlength="10" placeholder="Data de Nascimento" required>
