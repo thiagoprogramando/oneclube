@@ -189,7 +189,7 @@ class AsaasController extends Controller
             $email = $jsonData['event']['data']['signer']['email'];
             $key = $jsonData['document']['key'];
             
-            $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'PENDING_PAY')->orWhereNull('status_pay'); })->first();
+            $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'null')->orWhereNull('status_pay'); })->first();
             if ($venda) {
                 $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
                 $venda->id_pay = $link['json']['paymentId'];
@@ -197,7 +197,7 @@ class AsaasController extends Controller
                 $venda->save();
                 return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
             } else {
-                $venda = Vendas::where('email', $email)->where(function ($query) {$query->where('status_pay', 'PENDING_PAY')->orWhereNull('status_pay');})->first();
+                $venda = Vendas::where('email', $email)->where(function ($query) {$query->where('status_pay', 'null')->orWhereNull('status_pay');})->first();
                 $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
