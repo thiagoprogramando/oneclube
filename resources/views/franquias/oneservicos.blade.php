@@ -38,7 +38,7 @@
                                                 </div>
                                                 
                                                 <input type="hidden" name="id_user" value="{{ $id }}">
-                                                <input type="hidden" name="produto" value="4">
+                                                <input type="hidden" name="produto" value="8">
                                                 <input type="hidden" name="franquia" value="oneservicos">
                                             
                                                 <div class="form-group col-sm-12 col-lg-6">
