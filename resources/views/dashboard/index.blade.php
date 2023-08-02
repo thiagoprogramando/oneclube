@@ -133,16 +133,13 @@
                                                 <td>{{ $venda->nome }}</td>
                                                 <td>
                                                     @switch($venda->id_produto)
-                                                        @case(1)
-                                                            One Beauty
-                                                            @break
                                                         @case(2)
                                                             Limpa Nome
                                                             @break
                                                         @case(3)
-                                                            One Motos
+                                                            One Motos/Beauty
                                                             @break
-                                                        @case(4)
+                                                        @case(8)
                                                             One Serviços
                                                             @break
                                                         @default
