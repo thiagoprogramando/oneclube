@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('cpf')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('id_assas');
+            $table->string('id_assas')->nullable();
             $table->integer('tipo');
             $table->timestamps();
         });
