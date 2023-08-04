@@ -133,7 +133,7 @@ class AsaasController extends Controller
             //     $produto = 375;
             //     break;
             case 2:
-                $produto = 1500;
+                $produto = 997;
                 break;
             case 3:
                 $produto = 375;
