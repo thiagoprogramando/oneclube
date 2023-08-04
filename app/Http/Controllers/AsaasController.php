@@ -82,54 +82,13 @@ class AsaasController extends Controller
 
             $venda = Vendas::where('id_pay', $idRequisicao)->first();
             if ($venda) {
-                $idUsuario = $venda->id_vendedor;
 
                 $venda->status_pay = 'PAYMENT_CONFIRMED';
                 $venda->save();
 
-                $user = User::where('id', $idUsuario)->first();
-                if ($user) {
-                    $cpf = $user->cpf;
-
-                    $dados = [
-                        'cpf' => $cpf,
-                        'value' => $venda->valor,
-                        'description' => 'One Clube - Vendas',
-                        'product' => $venda->id_produto,
-                    ];
-
-                    // Enviar a requisição POST para oneclube.com.br/recebe
-                    $client = new Client();
-                    $response = $client->post(env('API_URL_ONECLUBE').'confirm-sale-product', [
-                        'form_params' => $dados
-                    ]);
-
-                    // Verificar se a requisição teve sucesso
-                    if ($response->getStatusCode() === 200) {
-                        // Retornar true em caso de sucesso
-                        return response()->json(['status' => 'success', 'response' => true]);
-                    } else {
-                        return response()->json(['status' => 'error', 'response' => 'Comunicação com One Clube falhou']);
-                    }
-                } else {
-                    return response()->json(['status' => 'error', 'response' => 'Usuário não existe!']);
-                }
+                return response()->json(['status' => 'success', 'response' => 'Venda Atualizada!']);
             } else {
-                $dados = [
-                    'id_assas' => $idRequisicao,
-                ];
-                $client = new Client();
-                $response = $client->post(env('API_URL_ONECLUBE').'finish-payment', [
-                    'form_params' => $dados
-                ]);
-                
-                if ($response->getStatusCode() === 200) {
-                    $responseData = json_decode($response->getBody(), true);
-                    // Exibir o retorno da requisição
-                    return response()->json(['status' => 'success', 'response' => $responseData]);
-                } else {
-                    return response()->json(['status' => 'success', 'response' => 'Erro ao quitar fatura!']);
-                }
+                return response()->json(['status' => 'success', 'response' => 'Venda não existe!']);
             }
         }
 
