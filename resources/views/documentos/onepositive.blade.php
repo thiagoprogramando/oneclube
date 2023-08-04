@@ -15,8 +15,6 @@
       p {
         margin: 0pt 0pt 8pt;
       }
-      .TableGrid {
-      }
     </style>
   </head>
   <body>
@@ -46,10 +44,10 @@
       </p>
       <p><span style="-aw-import: ignore">&#xa0;</span></p>
       <p>
-        <span>Brasil, </span><span style="-aw-import: spaces">&#xa0; </span
-        ><span style="-aw-import: spaces">&#xa0; </span><span><?php echo date('D'); ?>/<?php echo date('M'); ?></span
-        ><span style="-aw-import: spaces">&#xa0;&#xa0; </span
-        ><span>/<?php echo date('Y'); ?>.</span>
+        <span>Brasil, </span>
+        <span style="-aw-import: spaces">&#xa0; </span>
+        <span style="-aw-import: spaces">&#xa0; </span>
+        <span><?= strftime('%A', strtotime($dataAtual)); ?>, <?= strftime('%d de %B de %Y', strtotime($dataAtual)); ?></span>
       </p>
       <p><span style="-aw-import: ignore">&#xa0;</span></p>
       <p><span style="-aw-import: ignore">&#xa0;</span></p>

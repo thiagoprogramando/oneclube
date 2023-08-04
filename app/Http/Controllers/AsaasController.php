@@ -12,64 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 
 class AsaasController extends Controller
-{   
-    public function geraAssasOneClube(Request $request)
-    {
-     
-         $client = new Client();
-         
-        if($request->id_assas == 'false'){
-            $options = [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'access_token' => env('API_TOKEN'),
-                ],
-                'json' => [
-                    'name'      => $request->nome,
-                    'cpfCnpj'   => $request->cpf,
-                ],
-            ];
-            $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
-            $body = (string) $response->getBody();
-            $data = json_decode($body, true);
-            
-            if ($response->getStatusCode() === 200) {
-                $customerId = $data['id'];
-            } else {
-                return false;
-            }
-        } else {
-            $customerId = $request->input('id');
-        }
-        
-        // Calculate tomorrow's date
-        $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
-       
-        $options['json'] = [
-            'customer'          => $customerId,
-            'billingType'       => $request->forma_pagamento,
-            'value'             => $request->valor,
-            'dueDate'           => $tomorrow,
-            'description'       => 'Franquias One Clube',
-            'installmentCount'  => $request->parcelas,
-            'installmentValue'  => ($request->valor / $request->parcelas),
-        ];
-        $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
-        $body = (string) $response->getBody();
-        $data = json_decode($body, true);
-        if ($response->getStatusCode() === 200) {
-
-            $dados['json'] = [
-                'paymentId'     => $data['id'],
-                'customer'      => $data['customer'],
-                'paymentLink'   => $data['invoiceUrl'],
-            ];
-
-            return $dados;
-        } else {
-            return "Erro!";
-        } 
-    }
+{
 
     public function receberPagamento(Request $request)
     {
@@ -171,7 +114,7 @@ class AsaasController extends Controller
     
             $options['json'] = [
                 'customer' => $customerId,
-                'billingType' => 'UNDEFINED',
+                'billingType' => 'BOLETO',
                 'value' => $produto,
                 'dueDate' => $tomorrow,
                 'description' => 'One Motos',
