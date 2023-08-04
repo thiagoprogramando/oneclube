@@ -451,7 +451,7 @@ class VendasController extends Controller
     public function notificarSignatario($contrato, $auth, $telefone) {
         $client = new Client();
         if($auth == 'whatsapp') {
-            $url = 'https://api.z-api.io/instances/3BF660F605143051CA98E2F1A4FCFFCB/token/3048386F0FE68A1828B852B1/send-link';
+            $url = 'https://api.z-api.io/instances/3BFF0A2480DEF0812D5F8E0A24FAED45/token/97AD9B2C34BC5BBE2FD52D6B/send-link';
 
             $response = $client->post($url, [
                 'headers' => [
@@ -460,8 +460,8 @@ class VendasController extends Controller
                 ],
                 'json' => [
                     'phone'     => '55'.$telefone,
-                    'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da One Clube: \r\n \r\n",
-                    'image'     => 'https://oneclube.com.br/images/logo.png',
+                    'message'   => "Prezado Cliente, segue sua ficha de adesão ao Grupo Sollution. Basta assinar para prosseguir com o atendimento: \r\n \r\n",
+                    'image'     => 'https://gruposollution.com.br/assets/img/logo.png',
                     'linkUrl'   => $contrato,
                     'title'     => 'Assinatura de Contrato',
                     'linkDescription' => 'Link para Assinatura Digital'

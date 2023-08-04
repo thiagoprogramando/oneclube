@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" type="image/png" href="{{ asset('admin/assets/icon.png') }}"/>
 
-        <title>One Clube</title>
+        <title>Grupo Sollution</title>
 
         <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -17,7 +17,7 @@
             <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
-                    <div class="sidebar-brand-text mx-3">One Clube</div>
+                    <div class="sidebar-brand-text mx-3">Grupo Sollution</div>
                 </a>
 
                 <hr class="sidebar-divider my-0">
@@ -33,60 +33,18 @@
                 </div>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMotos"
-                        aria-expanded="true" aria-controls="collapseMotos">
-                        <i class="fa fa-motorcycle"></i>
-                        <span>One Motos</span>
-                    </a>
-                    <div id="collapseMotos" class="collapse" aria-labelledby="headingMotos" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas/3">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/onemotos/' . auth()->id()) }}" target="_BLANK">Vender</a>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBeauty"
-                        aria-expanded="true" aria-controls="collapseBeauty">
-                        <i class="fa fa-flask"></i>
-                        <span>One Beauty</span>
-                    </a>
-                    <div id="collapseBeauty" class="collapse" aria-labelledby="headingBeauty" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas/1">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/onebeauty/' . auth()->id()) }}" target="_BLANK">Vender</a>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePositive"
                         aria-expanded="true" aria-controls="collapsePositive">
                         <i class="fa fa-check"></i>
-                        <span>One Positive</span>
+                        <span>Limpa Nome</span>
                     </a>
                     <div id="collapsePositive" class="collapse" aria-labelledby="headingPositive" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/vendas/2">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/onepositive/' . auth()->id()) }}" target="_BLANK">Vender</a>
+                            <a class="collapse-item" href="{{ url('/limpanome/' . auth()->id()) }}" target="_BLANK">Vender</a>
                         </div>
                     </div>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseServicos"
-                        aria-expanded="true" aria-controls="collapseServicos">
-                        <i class="fas fa-fw fa-briefcase"></i>
-                        <span>One Serviços</span>
-                    </a>
-                    <div id="collapseServicos" class="collapse" aria-labelledby="headingServicos" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas/4">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/oneservicos/' . auth()->id()) }}" target="_BLANK">Vender</a>
-                        </div>
-                    </div>
-                </li> 
 
                 <hr class="sidebar-divider d-none d-md-block">
 

@@ -35,10 +35,6 @@
                                             Login
                                         </button>
                                     </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="/register">Primeiro Acesso?</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>

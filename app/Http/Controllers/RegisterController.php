@@ -46,6 +46,8 @@ class RegisterController extends Controller
     
         if (isset($request->login)) {
             $attributes['login'] = $request->login;
+        } else {
+            $attributes['login'] = $request->name;
         }
     
         if (isset($request->id_assas)) {

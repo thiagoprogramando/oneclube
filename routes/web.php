@@ -4,12 +4,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\OneBeautyController;
-use App\Http\Controllers\OneMotosController;
-use App\Http\Controllers\OnePositiveController;
-use App\Http\Controllers\OneServicosController;
+use App\Http\Controllers\LimpaNomeController;
 use App\Http\Controllers\VendasController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,10 +18,7 @@ Route::get('/register', [RegisterController::class, 'register'])->name('register
 Route::post('/register', [RegisterController::class, 'register_action'])->name('register_action');
 
 //Vendas
-Route::get('/onemotos/{id}', [OneMotosController::class, 'index'])->name('onemotos');
-Route::get('/onepositive/{id}', [OnePositiveController::class, 'index'])->name('onepositive');
-Route::get('/onebeauty/{id}', [OneBeautyController::class, 'index'])->name('onebeauty');
-Route::get('/oneservicos/{id}', [OneServicosController::class, 'index'])->name('oneservicos');
+Route::get('/limpanome/{id}', [LimpaNomeController::class, 'index'])->name('limpanome');
 
 Route::post('/venda/{id}', [VendasController::class, 'vender'])->name('vender');
 Route::view('/contrato', 'relatorio.contrato')->name('relatorio.contrato');

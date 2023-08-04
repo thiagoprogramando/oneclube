@@ -12,52 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 
 class AsaasController extends Controller
-{
-    // public function geraPagamento(Request $request)
-    // {
-    //     $client = new Client();
-    //     $options = [
-    //         'headers' => [
-    //             'Content-Type' => 'application/json',
-    //             'access_token' => env('API_TOKEN'),
-    //         ],
-    //         'json' => [
-    //             'name'      => $request->input('name'),
-    //             'cpfCnpj'   => $request->input('cpfcnpj'),
-    //         ],
-    //     ];
-    //     $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
-    //     $body = (string) $response->getBody();
-    //     $data = json_decode($body, true);
-    //     if ($response->getStatusCode() === 200) {
-    //         $customerId = $data['id'];
-    //         $options['json'] = [
-    //             'customer' => $customerId,
-    //             'billingType' => 'UNDEFINED',
-    //             'value' => 375,
-    //             'dueDate' => $request->input('dataFormatada'),
-    //             'description' => 'One Motos',
-    //         ];
-    //         $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
-    //         $body = (string) $response->getBody();
-    //         $data = json_decode($body, true);
-    //         if ($response->getStatusCode() === 200) {
-
-    //             $dados['json'] = [
-    //                 'paymentId'     => $data['id'],
-    //                 'customer'      => $data['customer'],
-    //                 'paymentLink'   => $data['invoiceUrl'],
-    //             ];
-
-    //             return $dados;
-    //         } else {
-    //             return "Erro!";
-    //         }
-    //     } else {
-    //         return "Erro!";
-    //     }
-    // }
-    
+{   
     public function geraAssasOneClube(Request $request)
     {
      
@@ -291,7 +246,7 @@ class AsaasController extends Controller
     public function notificaCliente($telefone, $assas) {
         $client = new Client();
         
-        $url = 'https://api.z-api.io/instances/3BF660F605143051CA98E2F1A4FCFFCB/token/3048386F0FE68A1828B852B1/send-link';
+        $url = 'https://api.z-api.io/instances/3BFF0A2480DEF0812D5F8E0A24FAED45/token/97AD9B2C34BC5BBE2FD52D6B/send-link';
 
         $response = $client->post($url, [
             'headers' => [
@@ -300,10 +255,10 @@ class AsaasController extends Controller
             ],
             'json' => [
                 'phone'     => '55'.$telefone,
-                'message'   => "Prezado Cliente, segue seu link de pagamento da One Clube: \r\n \r\n",
-                'image'     => 'https://oneclube.com.br/images/logo.png',
+                'message'   => "Prezado Cliente, segue seu link de pagamento: \r\n \r\n",
+                'image'     => 'https://gruposollution.com.br/assets/img/logo.png',
                 'linkUrl'   => $assas,
-                'title'     => 'Pagamento One Clube',
+                'title'     => 'Pagamento Grupo Sollution',
                 'linkDescription' => 'Link para Pagamento Digital'
             ],
         ]);
