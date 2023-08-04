@@ -283,7 +283,7 @@ class VendasController extends Controller
                 ],
                 'json' => [
                     'document' => [
-                        'path' => $pasta.'/Contrato One Motos '.$data['cliente'].'.pdf',
+                        'path' => $pasta.'/Contrato ou ficha associativa '.$data['cliente'].'.pdf',
                         'content_base64' => 'data:application/pdf;base64,'.$data['pdf'],
                     ],
                 ],

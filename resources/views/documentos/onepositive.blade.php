@@ -1,3 +1,5 @@
+<?php setlocale(LC_TIME, 'pt_BR.utf8', 'pt_BR', 'portuguese'); ?>
+
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -44,7 +46,7 @@
       </p>
       <p><span style="-aw-import: ignore">&#xa0;</span></p>
       <p>
-        <span>São Paulo, </span><span style="-aw-import: spaces">&#xa0; </span
+        <span>Brasil, </span><span style="-aw-import: spaces">&#xa0; </span
         ><span style="-aw-import: spaces">&#xa0; </span><span><?php echo date('D'); ?>/<?php echo date('M'); ?></span
         ><span style="-aw-import: spaces">&#xa0;&#xa0; </span
         ><span>/<?php echo date('Y'); ?>.</span>
