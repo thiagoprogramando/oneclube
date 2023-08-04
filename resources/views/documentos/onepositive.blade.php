@@ -1,4 +1,4 @@
-<?php setlocale(LC_TIME, 'pt_BR.utf8', 'pt_BR', 'portuguese'); ?>
+<?php setlocale(LC_TIME, 'pt_BR.utf8', 'pt_BR', 'portuguese'); $dataAtual = date('Y-m-d'); ?>
 
 <html>
   <head>
