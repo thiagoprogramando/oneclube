@@ -10,6 +10,7 @@ use App\Http\Controllers\OneBeautyController;
 use App\Http\Controllers\OneMotosController;
 use App\Http\Controllers\OnePositiveController;
 use App\Http\Controllers\OneServicosController;
+use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\VendasController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/vendas/{id}', [VendasController::class, 'getVendas'])->name('vendas');
     Route::post('vendas', [VendasController::class, 'vendas'])->name('vendas');
+
+    Route::get('/relatorioVendas', [RelatorioController::class, 'index'])->name('relatorioVendas');
+    Route::post('relatorioVendas', [RelatorioController::class, 'filtro'])->name('relatorioVendas');
+
+    Route::get('/relatorioUsuarios', [RelatorioController::class, 'usuarios'])->name('relatorioUsuarios');
 
     Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('notificacao.destroy');
     Route::post('/cadastroNotficacao', [NotificacaoController::class, 'cadastroNotficacao'])->name('cadastroNotficacao');

@@ -33,8 +33,7 @@
                 </div>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMotos"
-                        aria-expanded="true" aria-controls="collapseMotos">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMotos" aria-expanded="true" aria-controls="collapseMotos">
                         <i class="fa fa-motorcycle"></i>
                         <span>One Motos</span>
                     </a>
@@ -47,8 +46,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBeauty"
-                        aria-expanded="true" aria-controls="collapseBeauty">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBeauty" aria-expanded="true" aria-controls="collapseBeauty">
                         <i class="fa fa-flask"></i>
                         <span>One Beauty</span>
                     </a>
@@ -61,8 +59,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePositive"
-                        aria-expanded="true" aria-controls="collapsePositive">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePositive" aria-expanded="true" aria-controls="collapsePositive">
                         <i class="fa fa-check"></i>
                         <span>One Positive</span>
                     </a>
@@ -75,8 +72,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseServicos"
-                        aria-expanded="true" aria-controls="collapseServicos">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseServicos" aria-expanded="true" aria-controls="collapseServicos">
                         <i class="fas fa-fw fa-briefcase"></i>
                         <span>One Serviços</span>
                     </a>
@@ -87,6 +83,28 @@
                         </div>
                     </div>
                 </li> 
+
+                @if(Auth::user()->tipo == 2)
+                <hr class="sidebar-divider">
+
+                <div class="sidebar-heading">
+                    Gestão
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGestao" aria-expanded="true" aria-controls="collapseGestao">
+                        <i class="fa fa-clipboard-list"></i>
+                        <span>Relatórios</span>
+                    </a>
+                    <div id="collapseGestao" class="collapse" aria-labelledby="headingGestao" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="/relatorioVendas">Vendas</a>
+                            <a class="collapse-item" href="/relatorioUsuarios">Usuários</a>
+                        </div>
+                    </div>
+                </li>
+
+                @endif
 
                 <hr class="sidebar-divider d-none d-md-block">
 
