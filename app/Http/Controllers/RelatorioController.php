@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\VendasExport;
 
 use App\Models\Vendas;
 use App\Models\User;
@@ -59,14 +57,14 @@ class RelatorioController extends Controller
         $produto = $request->input('produto');
         $usuario = $request->input('usuario');
 
-        $vendas = Vendas::query();
+        $vendas = Vendas::where('status_pay', 'PAYMENT_CONFIRMED');
 
-        if ($produto !== 'ALL') {
-            $vendas->where('id_produto', $produto);
+        if ($produto != 'ALL') {
+            $vendas = $vendas->where('id_produto', $produto);
         }
 
-        if ($usuario !== 'ALL') {
-            $vendas->where('id_vendedor', $produto);
+        if ($usuario != 'ALL') {
+            $vendas = $vendas->where('id_vendedor', $usuario);
         }
 
         $dataInicio = $request->input('data_inicio');
@@ -79,13 +77,7 @@ class RelatorioController extends Controller
             $vendas->whereBetween('updated_at', [$dataInicio, $dataFim]);
         }
 
-        $excel = $request->input('excel');
-        if ($excel === 'S') {
-            $filename = 'relatorio_vendas.xlsx';
-            $export = new VendasExport($vendas);
-            
-            return Excel::download($export, $filename);
-        }
+        $vendas = $vendas->get();
         
         return view('dashboard.relatorio.vendas', [
             'notfic' => $notfic,
