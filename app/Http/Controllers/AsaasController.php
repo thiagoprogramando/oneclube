@@ -143,12 +143,12 @@ class AsaasController extends Controller
                     'signer' => [
                         'email'         => $data['email'],
                         'phone_number'  => $data['telefone'],
-                        'name'  => $data['cliente'],
+                        'name'  => $data['nome'],
                         'auths' => [
-                            $data
+                            $auth
                         ],
-                        'documentation'  => $data['cpfcnpj'],
-                        'birthday'  => $data['dataNascimento'],
+                        'documentation'  => $data['cpf'],
+                        'birthday'  => '2000-03-20',
                         'has_documentation'  => 'true',
                         'selfie_enabled'  => 'false',
                         'handwritten_enabled'  => 'false',
