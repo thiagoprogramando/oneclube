@@ -105,7 +105,7 @@ class VendasController extends Controller
 
         switch ($request->produto) {
             case 2:
-                $views = ['documentos.limpanome'];
+                $views = ['documentos.onepositive'];
                 $valor = 997;
                 break;
             default:
