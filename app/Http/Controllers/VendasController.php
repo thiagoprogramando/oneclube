@@ -211,7 +211,7 @@ class VendasController extends Controller
         $notificar = $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
 
         if($notificar){
-            return view('obrigado', ['success' => 'Contrato enviado com sucesso!']);
+            return view('obrigado', ['success' => 'Pedido enviado com sucesso!']);
         } else {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro! Tivemos um pequeno imprevisto, tente novamente mais tarde!'])->withInput();
         }
