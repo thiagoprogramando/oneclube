@@ -20,15 +20,45 @@
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form method="POST" action="{{ route('vendas') }}">
+                                                <form method="POST" action="{{ route('relatorioVendas') }}">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel">Filtros:</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
-                                                        <input type="hidden" value="{{ $produto }}" name="id">
                                                         <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <select class="form-control"  name="produto">
+                                                                        <option value="ALL">Produto</option>
+                                                                        <option value="3">One Motos</option>
+                                                                        <option value="3">One Beauty</option>
+                                                                        <option value="2">One Positive</option>
+                                                                        <option value="4">One Serviços</option>
+                                                                    </select> 
+                                                                </div>   
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <select class="form-control"  name="excel">
+                                                                        <option value="0">Gerar Excel?</option>
+                                                                        <option value="1">Sim</option>
+                                                                        <option value="2">Não</option>
+                                                                    </select> 
+                                                                </div>   
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <select class="form-control"  name="usuario">
+                                                                        <option value="ALL">Usuário</option>
+                                                                        <option value="ALL">Todos</option>
+                                                                        @foreach ($users as $key =>$user)
+                                                                        <option value="{{ $user->id }}">{{ $user->nome }}</option>
+                                                                        @endforeach
+                                                                    </select> 
+                                                                </div>   
+                                                            </div>
                                                             <dil class="col-6">
                                                                 <div class="form-group">
                                                                     <input type="date" class="form-control" name="data_inicio" placeholder="Data inicial">

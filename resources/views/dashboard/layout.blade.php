@@ -10,6 +10,8 @@
         <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
         <link href="{{ asset('admin/css/sb-admin-2.css') }}" rel="stylesheet">
+        <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
     </head>
     <body id="page-top">
         <div id="wrapper">
@@ -33,8 +35,7 @@
                 </div>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMotos"
-                        aria-expanded="true" aria-controls="collapseMotos">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMotos" aria-expanded="true" aria-controls="collapseMotos">
                         <i class="fa fa-motorcycle"></i>
                         <span>One Motos</span>
                     </a>
@@ -47,8 +48,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBeauty"
-                        aria-expanded="true" aria-controls="collapseBeauty">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBeauty" aria-expanded="true" aria-controls="collapseBeauty">
                         <i class="fa fa-flask"></i>
                         <span>One Beauty</span>
                     </a>
@@ -61,8 +61,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePositive"
-                        aria-expanded="true" aria-controls="collapsePositive">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePositive" aria-expanded="true" aria-controls="collapsePositive">
                         <i class="fa fa-check"></i>
                         <span>One Positive</span>
                     </a>
@@ -75,8 +74,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseServicos"
-                        aria-expanded="true" aria-controls="collapseServicos">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseServicos" aria-expanded="true" aria-controls="collapseServicos">
                         <i class="fas fa-fw fa-briefcase"></i>
                         <span>One Serviços</span>
                     </a>
@@ -87,6 +85,28 @@
                         </div>
                     </div>
                 </li> 
+
+                @if(Auth::user()->tipo == 2)
+                <hr class="sidebar-divider">
+
+                <div class="sidebar-heading">
+                    Gestão
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGestao" aria-expanded="true" aria-controls="collapseGestao">
+                        <i class="fa fa-clipboard-list"></i>
+                        <span>Relatórios</span>
+                    </a>
+                    <div id="collapseGestao" class="collapse" aria-labelledby="headingGestao" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="/relatorioVendas">Vendas</a>
+                            <a class="collapse-item" href="/relatorioUsuarios">Usuários</a>
+                        </div>
+                    </div>
+                </li>
+
+                @endif
 
                 <hr class="sidebar-divider d-none d-md-block">
 
@@ -185,7 +205,6 @@
             <i class="fas fa-angle-up"></i>
         </a>
 
-        <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
         <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
         <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
