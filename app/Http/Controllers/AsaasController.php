@@ -63,7 +63,7 @@ class AsaasController extends Controller
 
         $url = env('API_URL_CLICKSIN').'api/v1/documents?access_token='.env('API_TOKEN_CLICKSIN');
 
-        switch($data['produto']){
+        switch($data['id_produto']){
             case 2:
                 $pasta = "/limpanome";
                 break;
