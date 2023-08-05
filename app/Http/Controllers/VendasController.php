@@ -296,7 +296,7 @@ class VendasController extends Controller
             ],
             'json' => [
                 'phone'     => '55'.$telefone,
-                'message'   => "Prezado Cliente, segue seu link de pagamento: \r\n \r\n",
+                'message'   => "Prezado Cliente, segue seu link de pagamento. Após confirmação do pagamento enviaremos o seu link para assintura do contrato! \r\n \r\n",
                 'image'     => 'https://gruposollution.com.br/assets/img/logo.png',
                 'linkUrl'   => $assas,
                 'title'     => 'Pagamento Grupo Sollution',
