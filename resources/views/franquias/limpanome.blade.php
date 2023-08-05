@@ -47,7 +47,7 @@
                                                 
                                                 <input type="hidden" name="id_user" value="{{ $id }}">
                                                 <input type="hidden" name="produto" value="2">
-                                                <input type="hidden" name="franquia" value="onepositive">
+                                                <input type="hidden" name="franquia" value="limpanome">
                                             
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="dataInput" class="form-control form-control-user" name="dataNascimento" value="{{ old('dataNascimento') }}" oninput="mascaraData(this)" maxlength="10" placeholder="Data de Nascimento" required>

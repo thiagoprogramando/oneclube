@@ -13,7 +13,7 @@
                             <div class="p-5">
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-2">Obrigado!</h1>
-                                    <p class="mb-4">Enviaremos para o seu whatsapp os dados do contrato. Até breve!</p>
+                                    <p class="mb-4">Enviaremos para o seu whatsapp os dados de Pagamento. Até breve!</p>
                                 </div>
                                 @if (!empty($error))
                                     <div class="alert alert-danger">
