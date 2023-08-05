@@ -104,24 +104,12 @@ class VendasController extends Controller
         ]); 
 
         switch ($request->produto) {
-            case 3:
-                $views = ['documentos.onemotos'];
-                $valor = 375;
-                break;
             case 2:
-                $views = ['documentos.onepositive'];
+                $views = ['documentos.limpanome'];
                 $valor = 997;
                 break;
-            // case 1:
-            //     $views = ['documentos.onebeauty'];
-            //     $valor = 375;
-            //     break;
-            case 8:
-                $views = ['documentos.oneservicos'];
-                $valor = 127;
-                break;
             default:
-            $views = ['documentos.contratoonepage'];
+            $views = ['documentos.limpanome'];
                 break;
         }
 
@@ -216,267 +204,112 @@ class VendasController extends Controller
         $pdfContent = file_get_contents($pdfPath);
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
-        //Cria documento na Clicksing
-        $keyDocumento = $this->criaDocumento($data);
-        if($keyDocumento['type'] != true){
-            return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keyDocumento['key']])->withInput();
-        }
+        $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
+        $venda->id_pay = $link['json']['paymentId'];
+        $venda->status_pay = 'PENDING_PAY';
+        $venda->save();
+        $notificar = $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
 
-        //Cria Signatario
-        $keySignatario = $this->criaSignatario($data);
-        if($keySignatario['type'] != true){
-            return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keySignatario['key']])->withInput();
-        }
-
-        //Adicionar Signatarios ao Documento
-        $addSignatarios = $this->adiconaSignatario($keyDocumento['key'], $keySignatario['key']);
-        if($addSignatarios['type'] != null){
-
-            //Notifica
-            $notificar = $this->notificarSignatario($addSignatarios['url'], $data['auth'], $data['telefone']);
-
-            //Atualiza Contrato
-            $updateVenda = Vendas::where('cpf', $data['cpfcnpj'])->orderBy('id', 'desc')->first();
-            
-            if ($updateVenda) {
-                $updateVenda->id_contrato = $keyDocumento['key'];
-                $updateVenda->save();
-            }
-
-            if($notificar != null) {
-                return view('obrigado', ['success' => 'Contrato enviado com sucesso!']);
-            }
-
-            return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
-
+        if($notificar){
+            return redirect()->route($request->franquia)->withErrors(['Sucesso! Contrato']);
         } else {
-            return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
+            return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
     }
 
-    public function criaDocumento($data) {
-        $client = new Client();
+    public function geraPagamentoAssas($nome, $cpfcnpj, $produto)
+    {
 
-        $url = env('API_URL_CLICKSIN').'api/v1/documents?access_token='.env('API_TOKEN_CLICKSIN');
-
-        switch($data['produto']){
-            // case 1:
-            //     $pasta = "/onebeauty";
-            //     break;
+        switch($produto){
             case 2:
-                $pasta = "/limpanome";
-                break;
-            case 3:
-                $pasta = "/onemotos";
-                break;
-            case 8:
-                $pasta = "/oneservicos";
+                $produto = 997;
                 break;
         }
         
-
-        try {
-            $response = $client->post($url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'document' => [
-                        'path' => $pasta.'/Contrato ou ficha associativa '.$data['cliente'].'.pdf',
-                        'content_base64' => 'data:application/pdf;base64,'.$data['pdf'],
-                    ],
-                ],
-            ]);
-
-            $statusCode = $response->getStatusCode();
-            $responseData = json_decode($response->getBody(), true);
-
-            if (isset($responseData['document']['key'])) {
-                $result = [
-                    'type' => true,
-                    'key' => $responseData['document']['key']
-                ];
-                return $result;
-            } else {
-                $result = [
-                    'type' => false,
-                    'key' => "Falha na geração de Documento!"
-                ];
-                return $result;
-            }
-
-        } catch (RequestException $e) {
-            // Tratamento de erro: capturar e retornar a resposta de erro
-            if ($e->hasResponse()) {
-                $errorResponse = json_decode($e->getResponse()->getBody(), true);
-                if (isset($errorResponse['errors']) && !empty($errorResponse['errors'])) {
-                    $errorMessage = $errorResponse['errors'][0];
-                    $result = [
-                        'type' => false,
-                        'key' => $errorMessage
-                    ];
-                    return $result;
-                } else {
-                    $result = [
-                        'type' => false,
-                        'key' => "Falha na operação!"
-                    ];
-                    return $result;
-                }
-            } else {
-                $result = [
-                    'type' => false,
-                    'key' => "Falha na operação!"
-                ];
-                return $result;
-            }
-        }
-    }
-
-    public function criaSignatario($data) {
         $client = new Client();
-
-        $url = env('API_URL_CLICKSIN').'api/v1/signers?access_token='.env('API_TOKEN_CLICKSIN');
-
-        try {
-            $response = $client->post($url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'signer' => [
-                        'email'         => $data['email'],
-                        'phone_number'  => $data['telefone'],
-                        'name'  => $data['cliente'],
-                        'auths' => [
-                            $data['auth']
-                        ],
-                        'documentation'  => $data['cpfcnpj'],
-                        'birthday'  => $data['dataNascimento'],
-                        'has_documentation'  => 'true',
-                        'selfie_enabled'  => 'false',
-                        'handwritten_enabled'  => 'false',
-                        'official_document_enabled'  => 'false',
-                        'liveness_enabled'  => 'false',
-                        'facial_biometrics_enabled'  => 'false',
-                    ],
-                ],
-            ]);
-
-            $responseData = json_decode($response->getBody(), true);
-
-            if (isset($responseData['signer']['key'])) {
-                $result = [
-                    'type' => true,
-                    'key' => $responseData['signer']['key']
+        
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'access_token' => env('API_TOKEN'),
+            ],
+            'json' => [
+                'name'      => $nome,
+                'cpfCnpj'   => $cpfcnpj,
+            ],
+        ];
+        
+        $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
+        
+        $body = (string) $response->getBody();
+        
+        $data = json_decode($body, true);
+        
+        if ($response->getStatusCode() === 200) {
+            
+            $customerId = $data['id'];
+    
+            // Calculate tomorrow's date
+            $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
+    
+            $options['json'] = [
+                'customer' => $customerId,
+                'billingType' => 'BOLETO',
+                'value' => $produto,
+                'dueDate' => $tomorrow,
+                'description' => 'One Motos',
+            ];
+            
+            $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
+            
+            $body = (string) $response->getBody();
+            
+            $data = json_decode($body, true);
+            
+            if ($response->getStatusCode() === 200) {
+    
+                $dados['json'] = [
+                    'paymentId'     => $data['id'],
+                    'customer'      => $data['customer'],
+                    'paymentLink'   => $data['invoiceUrl'],
                 ];
-                return $result;
-            } else {
-                $result = [
-                    'type' => false,
-                    'key' => "Falha ao gerar Signatario!"
-                ];
-                return $result;
-            }
-
-        } catch (RequestException $e) {
-            // Tratamento de erro: capturar e retornar a resposta de erro
-            if ($e->hasResponse()) {
-                $errorResponse = json_decode($e->getResponse()->getBody(), true);
-                if (isset($errorResponse['errors']) && !empty($errorResponse['errors'])) {
-                    $errorMessage = $errorResponse['errors'][0];
-                    $result = [
-                        'type' => false,
-                        'key' => $errorMessage
-                    ];
-                    return $result;
-                } else {
-                    $result = [
-                        'type' => false,
-                        'key' => "Falha na operação!"
-                    ];
-                    return $result;
-                }
-            } else {
-                $result = [
-                    'type' => false,
-                    'key' => "Falha na operação!"
-                ];
-                return $result;
-            }
-        }
-    }
-
-    public function adiconaSignatario($keyDocumento, $keySignatario) {
-        $client = new Client();
-
-        $url = env('API_URL_CLICKSIN').'api/v1/lists?access_token='.env('API_TOKEN_CLICKSIN');
-
-            $response = $client->post($url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'list' => [
-                        'document_key'  => $keyDocumento,
-                        'signer_key'    => $keySignatario,
-                        'sign_as'       => 'contractor',
-                        'refusable'     => false,
-                        'message'       => 'Querido cliente, por favor, assine o contrato como confirmação de adesão ao nosso produto!'
-                    ],
-                ],
-            ]);
-
-            $responseData = json_decode($response->getBody(), true);
-
-            if (isset($responseData['list']['key'])) {
-                
-                 $result = [
-                    'type' => true,
-                    'key'  => $responseData['list']['key'],
-                    'url' => $responseData['list']['url']
-                ];
-                return $result;
-            } else {
-                $result = [
-                    'type' => false,
-                ];
-                return $result;
-            }
-    }
-
-    public function notificarSignatario($contrato, $auth, $telefone) {
-        $client = new Client();
-        if($auth == 'whatsapp') {
-            $url = 'https://api.z-api.io/instances/3BFF0A2480DEF0812D5F8E0A24FAED45/token/97AD9B2C34BC5BBE2FD52D6B/send-link';
-
-            $response = $client->post($url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'phone'     => '55'.$telefone,
-                    'message'   => "Prezado Cliente, segue sua ficha de adesão ao Grupo Sollution. Basta assinar para prosseguir com o atendimento: \r\n \r\n",
-                    'image'     => 'https://gruposollution.com.br/assets/img/logo.png',
-                    'linkUrl'   => $contrato,
-                    'title'     => 'Assinatura de Contrato',
-                    'linkDescription' => 'Link para Assinatura Digital'
-                ],
-            ]);
-
-            $responseData = json_decode($response->getBody(), true);
-            if( isset($responseData['id'])) {
-                return true;
+    
+                return $dados;
             } else {
                 return false;
             }
-
+            
         } else {
-            return "Não foi whatsapp";
+            return false;
+        }
+    }
+
+    public function notificaCliente($telefone, $assas) {
+        $client = new Client();
+        
+        $url = 'https://api.z-api.io/instances/3BFF0A2480DEF0812D5F8E0A24FAED45/token/97AD9B2C34BC5BBE2FD52D6B/send-link';
+
+        $response = $client->post($url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'phone'     => '55'.$telefone,
+                'message'   => "Prezado Cliente, segue seu link de pagamento: \r\n \r\n",
+                'image'     => 'https://gruposollution.com.br/assets/img/logo.png',
+                'linkUrl'   => $assas,
+                'title'     => 'Pagamento Grupo Sollution',
+                'linkDescription' => 'Link para Pagamento Digital'
+            ],
+        ]);
+
+        $responseData = json_decode($response->getBody(), true);
+        
+        if( isset($responseData['id'])) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

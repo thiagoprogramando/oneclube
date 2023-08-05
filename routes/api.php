@@ -23,8 +23,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('clicksing', [AsaasController::class, 'enviaLinkPagamento'])->name('clicksing');
 //Webhook Assas
 Route::post('assas', [AsaasController::class, 'receberPagamento'])->name('assas');
-//Planos One Clube
-Route::post('oneclube', [AsaasController::class, 'geraAssasOneClube'])->name('oneclube');
-
-
-// Route::post('/geraPagamento', [AsaasController::class, 'geraPagamento'])->name('geraLink');
