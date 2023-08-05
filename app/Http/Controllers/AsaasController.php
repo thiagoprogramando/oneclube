@@ -78,7 +78,7 @@ class AsaasController extends Controller
                 'json' => [
                     'document' => [
                         'path' => $pasta.'/Contrato '.$data['cliente'].'.pdf',
-                        'content_base64' => 'data:application/pdf;base64,'.$data['id_produto'].$data['cliente'],
+                        'content_base64' => 'data:application/pdf;base64,'.$data['id_produto'].$data['nome'],
                     ],
                 ],
             ]);
