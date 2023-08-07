@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('relatorioVendas', [RelatorioController::class, 'filtro'])->name('relatorioVendas');
 
     Route::get('/relatorioUsuarios', [RelatorioController::class, 'usuarios'])->name('relatorioUsuarios');
+    Route::post('relatorioUsuarios', [RelatorioController::class, 'upusuarios'])->name('relatorioUsuarios');
 
     Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('notificacao.destroy');
     Route::post('/cadastroNotficacao', [NotificacaoController::class, 'cadastroNotficacao'])->name('cadastroNotficacao');
