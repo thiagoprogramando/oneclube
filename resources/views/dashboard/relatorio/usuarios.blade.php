@@ -9,6 +9,9 @@
 
         <!-- Minhas Vendas -->
         <div class="row">
+            @if(isset($msg)) 
+                {{ $msg }}
+            @endif
             <div class="col-xl-12 col-md-12 mb-4">
                 <div class="card border-left-dark shadow h-100 py-2">
                     <div class="card-body">
@@ -23,7 +26,7 @@
                                                 <th>Login</th>
                                                 <th>Email</th>
                                                 <th>CPF</th>
-                                                <th>ID Assas</th>
+                                                <th class="text-center">Ação</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -34,7 +37,14 @@
                                                 <td>{{ $user->login }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->cpf }}</td>
-                                                <td>{{ $user->id_assas }}</td>
+                                                <td class="text-center">
+                                                    <form method="POST" action="{{ route('relatorioUsuarios') }}">
+                                                        <input type="hidden" value={{  csrf_token() }} name="_token">
+                                                        <input type="hidden" value="{{  $user->id }}" name="id_usuario">
+                                                        @if($user->tipo == 1) <input type="hidden" value="2" name="tipo"> @else <input type="hidden" value="1" name="tipo">  @endif
+                                                        <button class="btn btn-outline-primary"> @if($user->tipo == 1) ADM @else Comum  @endif</button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>

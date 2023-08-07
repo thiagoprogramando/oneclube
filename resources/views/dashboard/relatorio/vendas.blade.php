@@ -15,8 +15,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1"> 
-                                    <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#exampleModal">Filtros</button>
-                                    <button class="btn btn-outline-info" type="button" id="exportar">Excel</button>
+                                    <button class="btn btn-outline-success w-25" type="button" data-toggle="modal" data-target="#exampleModal">Filtros</button>
+                                    <button class="btn btn-outline-primary w-25" type="button" id="exportar">Excel</button>
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -36,15 +36,6 @@
                                                                         <option value="3">One Beauty</option>
                                                                         <option value="2">One Positive</option>
                                                                         <option value="4">One Serviços</option>
-                                                                    </select> 
-                                                                </div>   
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <div class="form-group">
-                                                                    <select class="form-control"  name="excel">
-                                                                        <option value="0">Gerar Excel?</option>
-                                                                        <option value="1">Sim</option>
-                                                                        <option value="2">Não</option>
                                                                     </select> 
                                                                 </div>   
                                                             </div>

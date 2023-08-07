@@ -32,7 +32,7 @@ class RelatorioController extends Controller
         return view('dashboard.relatorio.vendas', [
             'notfic' => $notfic,
             'users' => User::all(),
-            'vendas' => Vendas::latest()->take(50)->get(),
+            'vendas' => Vendas::where('status_pay', 'PAYMENT_CONFIRMED')->take(50)->get(),
         ]);
     }
 
@@ -107,6 +107,39 @@ class RelatorioController extends Controller
         return view('dashboard.relatorio.usuarios', [
             'notfic' => $notfic,
             'users' => User::all(),
+        ]);
+    }
+
+    public function upusuarios(Request $request) {
+        $users = auth()->user();
+
+        $notfic = Notificacao::where(function ($query) use ($users) {
+            if ($users->profile === 'admin') {
+                $query->where(function ($query) {
+                    $query->where('tipo', '!=', '')
+                        ->orWhere('tipo', 0);
+                });
+            } else {
+                $query->where(function ($query) use ($users) {
+                    $query->where('tipo', 0)
+                        ->orWhere('tipo', $users->id);
+                });
+            }
+        })->get();
+
+        $usuario = User::where('id', $request->id_usuario)->first();
+        if($usuario){
+            $usuario->tipo = $request->tipo;
+            $usuario->save();
+            $msg = "Sucesso, Usuário atualizado!";
+        } else {
+            $msg = "Tivemos um pequeno problema e os dados não foram alterados!";
+        }
+
+        return view('dashboard.relatorio.usuarios', [
+            'notfic' => $notfic,
+            'users' => User::all(),
+            'msg'   => $msg
         ]);
     }
 }
