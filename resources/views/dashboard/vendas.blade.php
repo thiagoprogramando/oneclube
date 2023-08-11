@@ -14,7 +14,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1"> 
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#exampleModal">Filtros</button>
                                     <button class="btn btn-outline-info" type="button" id="exportar">Excel</button>
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -50,7 +50,7 @@
                                         </div>
                                     </div>
 
-                                    <hr> 
+                                    <hr>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -82,7 +82,7 @@
                                                         @case(3)
                                                             One Motos
                                                             @break
-                                                        @case(4)
+                                                        @case(8)
                                                             One Serviços
                                                             @break
                                                         @default

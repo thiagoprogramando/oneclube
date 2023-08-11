@@ -244,12 +244,13 @@ margin-bottom:11.75pt;margin-left:5.4pt;text-align:left;line-height:104%'>Códig
 			Tabela Fipe. Eventuais diferenças serão corrigidas e lançadas nas parcelas
 			vincendas do contrato. </p>
 
-		<p class=MsoNormal style='margin-left:-.25pt'><b>CLÁUSULA OITAVA</b>: Com o
-			pagamento da totalidade das prestações avençadas, a <b><u>VENDEDORA</u> </b>entregará
-			ao <b><u>COMPRADOR(A),</u> </b><u>segundo sua livre escolha<b>, </b>o bem
-				convencionado na sede da empresa, ou o seu valor</u> <u>equivalente via
-				transferência bancária,</u> no prazo máximo de 10 (dez) dias úteis a contar do
-			efetivo pagamento da derradeira prestação. </p>
+		<p class=MsoNormal style='margin-left:-.25pt'><b>CLÁUSULA OITAVA</b>: Com o pagamento da
+            totalidade das prestações avençadas, ou após o sorteio, a VENDEDORA
+            entregará ao COMPRADOR(A), segundo sua livre escolha, o bem convencionado
+            na sede da empresa ou na concessionária mais próxima de seu endereço,
+            no prazo máximo de 10 (dez) dias úteis a contar do efetivo pagamento
+            da derradeira prestação ou do sorteio.
+        </p>
 
 		<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:11.9pt;
 margin-left:-.25pt'><b>CLÁUSULA NONA</b>: Caso o <b><u>COMPRADOR(A)</u> </b>venha
@@ -283,9 +284,8 @@ margin-left:-.25pt'><b>CLÁUSULA NONA</b>: Caso o <b><u>COMPRADOR(A)</u> </b>ven
 			parcelas em atraso e vincendas, com os acréscimos legais; </p>
 
 		<p class=MsoNormal style='margin-left:-.25pt'><b>CLÁUSULA DÉCIMA SEGUNDA</b>:
-			Como incentivo pelo pagamento pontual das parcelas, o <b>COMPRADOR(A) </b>participará
-			através do sorteio mensal da quitação integral e imediata deste contrato, com a
-			entrega do bem ou do valor objeto deste contrato. </p>
+			Como incentivo pelo pagamento pontual das parcelas, o <b>COMPRADOR(A)</b> participará através do sorteio mensal da quitação integral e imediata deste contrato, com a entrega do bem objeto deste contrato.
+        </p>
 
 		<p class=MsoNormal style='margin-left:-.25pt'><b>CLÁUSULA DÉCIMA TERCEIRA</b>:
 			A participação no sorteio mensal será assegurada a todos os <b><u>COMPRADORES(A)</u>
@@ -311,10 +311,10 @@ margin-left:-.25pt'><b>CLÁUSULA NONA</b>: Caso o <b><u>COMPRADOR(A)</u> </b>ven
 					desse contrato</u></b>. Caso não haja extração da Loteria Federal na semana
 			(última quarta do mês), será efetuada a premiação na extração seguinte. </p>
 
-		<p class=MsoNormal style='margin-left:-.25pt'><b>CLÁUSULA DÉCIMA SEXTA</b>: <b><u>O
-					COMPRADOR(A)</u> </b>receberá o prêmio na sede da empresa <b><u>VENDEDORA</u> </b>(no
-			caso de retirada do bem físico), ou por meio digital, em caso de pagamento em
-			moeda, através dos meios eletrônicos de pagamento previamente informados; </p>
+		<p class=MsoNormal style='margin-left:-.25pt'><b>CLÁUSULA DÉCIMA SEXTA</b>:
+            O <b>COMPRADOR(A)<b/> receberá o prêmio na sede da empresa VENDEDORA ou na concessionária
+            mais próxima de seu endereço, conforme sua livre escolha;
+        </p>
 
 		<p class=MsoNormal style='margin-left:-.25pt'><b>CLÁUSULA DÉCIMA SÉTIMA</b>: <b><u>O
 					COMPRADOR(A)</u> </b>assume as obrigações afetas às despesas de transferência

@@ -32,7 +32,7 @@ class RelatorioController extends Controller
         return view('dashboard.relatorio.vendas', [
             'notfic' => $notfic,
             'users' => User::all(),
-            'vendas' => Vendas::where('status_pay', 'PAYMENT_CONFIRMED')->take(50)->get(),
+            'vendas' => Vendas::take(50)->get(),
         ]);
     }
 
@@ -56,8 +56,9 @@ class RelatorioController extends Controller
 
         $produto = $request->input('produto');
         $usuario = $request->input('usuario');
+        $status = $request->input('status');
 
-        $vendas = Vendas::where('status_pay', 'PAYMENT_CONFIRMED');
+        $vendas = Vendas::query();
 
         if ($produto != 'ALL') {
             $vendas = $vendas->where('id_produto', $produto);
@@ -67,18 +68,22 @@ class RelatorioController extends Controller
             $vendas = $vendas->where('id_vendedor', $usuario);
         }
 
+        if ($status != 'ALL') {
+            $vendas = $vendas->where('status_pay', $status);
+        }
+
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
 
         if ($dataInicio && $dataFim) {
             $dataInicio = Carbon::parse($dataInicio);
             $dataFim = Carbon::parse($dataFim);
-    
+
             $vendas->whereBetween('updated_at', [$dataInicio, $dataFim]);
         }
 
         $vendas = $vendas->get();
-        
+
         return view('dashboard.relatorio.vendas', [
             'notfic' => $notfic,
             'users'  => $users,
