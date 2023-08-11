@@ -14,7 +14,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1"> 
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     <button class="btn btn-outline-success w-25" type="button" data-toggle="modal" data-target="#exampleModal">Filtros</button>
                                     <button class="btn btn-outline-primary w-25" type="button" id="exportar">Excel</button>
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -31,35 +31,43 @@
                                                             <div class="col-12">
                                                                 <div class="form-group">
                                                                     <select class="form-control"  name="produto">
-                                                                        <option value="ALL">Produto</option>
+                                                                        <option value="ALL">Todos os Produtos</option>
                                                                         <option value="3">One Motos</option>
                                                                         <option value="3">One Beauty</option>
                                                                         <option value="2">One Positive</option>
                                                                         <option value="4">One Serviços</option>
-                                                                    </select> 
-                                                                </div>   
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <select class="form-control"  name="status">
+                                                                        <option value="ALL">Todos os Status</option>
+                                                                        <option value="PAYMENT_CONFIRMED">Aprovados</option>
+                                                                        <option value="PENDING_PAY">Pendentes de Pagamento</option>
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="form-group">
                                                                     <select class="form-control"  name="usuario">
-                                                                        <option value="ALL">Usuário</option>
-                                                                        <option value="ALL">Todos</option>
+                                                                        <option value="ALL">Todos os Usuários</option>
                                                                         @foreach ($users as $key =>$user)
                                                                         <option value="{{ $user->id }}">{{ $user->nome }}</option>
                                                                         @endforeach
-                                                                    </select> 
-                                                                </div>   
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                            <dil class="col-6">
+                                                            <div class="col-6">
                                                                 <div class="form-group">
                                                                     <input type="date" class="form-control" name="data_inicio" placeholder="Data inicial">
                                                                 </div>
-                                                            </dil>
-                                                            <dil class="col-6">
+                                                            </div>
+                                                            <div class="col-6">
                                                                 <div class="form-group">
                                                                     <input type="date" class="form-control" name="data_fim" placeholder="Data Final">
                                                                 </div>
-                                                            </dil>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -71,7 +79,7 @@
                                         </div>
                                     </div>
 
-                                    <hr> 
+                                    <hr>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -103,7 +111,7 @@
                                                         @case(3)
                                                             One Motos
                                                             @break
-                                                        @case(4)
+                                                        @case(8)
                                                             One Serviços
                                                             @break
                                                         @default

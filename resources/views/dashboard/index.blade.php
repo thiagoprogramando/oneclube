@@ -109,8 +109,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1"> 
-                                    Últimas Vendas <hr> 
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Últimas Vendas <hr>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -173,7 +173,7 @@
                                                             Aguardando Pagamento
                                                             @break
                                                         @default
-                                                            Status Desconhecido
+                                                            Pendente
                                                     @endswitch
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}</td>
@@ -193,7 +193,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <script>
         function copyToClipboard() {
             const link = document.getElementById('copyLink').href;
