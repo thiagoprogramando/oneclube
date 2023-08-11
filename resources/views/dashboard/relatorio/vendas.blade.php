@@ -45,7 +45,6 @@
                                                                         <option value="ALL">Todos os Status</option>
                                                                         <option value="PAYMENT_CONFIRMED">Aprovados</option>
                                                                         <option value="PENDING_PAY">Pendentes de Pagamento</option>
-                                                                        <option value="null">Pendentes de Assinatura</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
