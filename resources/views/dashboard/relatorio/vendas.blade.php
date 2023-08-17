@@ -33,6 +33,7 @@
                                                                     <select class="form-control"  name="produto">
                                                                         <option value="ALL">Todos os Produtos</option>
                                                                         <option value="3">One Motos</option>
+                                                                        <option value="11">One Motos Associados</option>
                                                                         <option value="3">One Beauty</option>
                                                                         <option value="2">One Positive</option>
                                                                         <option value="8">One Serviços</option>
@@ -102,14 +103,14 @@
                                                 <td>{{ $venda->nome }}</td>
                                                 <td>
                                                     @switch($venda->id_produto)
-                                                        @case(1)
-                                                            One Beauty
-                                                            @break
                                                         @case(2)
                                                             Limpa Nome
                                                             @break
                                                         @case(3)
-                                                            One Motos
+                                                            One Motos/Beauty
+                                                            @break
+                                                        @case(11)
+                                                            One Motos/Beauty
                                                             @break
                                                         @case(8)
                                                             One Serviços

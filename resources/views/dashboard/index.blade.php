@@ -165,6 +165,9 @@
                                                         @case(3)
                                                             One Motos/Beauty
                                                             @break
+                                                        @case(11)
+                                                            One Motos/Beauty
+                                                            @break
                                                         @case(8)
                                                             One Serviços
                                                             @break
