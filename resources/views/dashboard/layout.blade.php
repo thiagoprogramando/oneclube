@@ -157,7 +157,7 @@
                                 @if (Auth::user()->login)
                                     {{ Auth::user()->login }}
                                 @else
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->nome }}
                                 @endif
                                 . Bem-vindo(a)!
                             </p>
