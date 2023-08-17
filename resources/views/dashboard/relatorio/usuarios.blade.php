@@ -9,7 +9,7 @@
 
         <!-- Minhas Vendas -->
         <div class="row">
-            @if(isset($msg)) 
+            @if(isset($msg))
                 {{ $msg }}
             @endif
             <div class="col-xl-12 col-md-12 mb-4">
@@ -26,7 +26,7 @@
                                                 <th>Login</th>
                                                 <th>Email</th>
                                                 <th>CPF</th>
-                                                <th class="text-center">Ação</th>
+                                                <th class="text-center">Alterar para:</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -42,7 +42,7 @@
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
                                                         <input type="hidden" value="{{  $user->id }}" name="id_usuario">
                                                         @if($user->tipo == 1) <input type="hidden" value="2" name="tipo"> @else <input type="hidden" value="1" name="tipo">  @endif
-                                                        <button class="btn btn-outline-primary"> @if($user->tipo == 1) ADM @else Comum  @endif</button>
+                                                        <button class="btn btn-outline-primary"> @if($user->tipo == 1) Administrador @else Comum  @endif</button>
                                                     </form>
                                                 </td>
                                             </tr>

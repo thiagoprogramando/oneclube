@@ -101,7 +101,7 @@ class VendasController extends Controller
             'email' => 'string|max:255',
             'telefone' => 'required|string|max:20',
             'rg' => 'max:20',
-        ]); 
+        ]);
 
         switch ($request->produto) {
             case 3:
@@ -112,13 +112,13 @@ class VendasController extends Controller
                 $views = ['documentos.onepositive'];
                 $valor = 1500;
                 break;
-            // case 1:
-            //     $views = ['documentos.onebeauty'];
-            //     $valor = 375;
-            //     break;
             case 8:
                 $views = ['documentos.oneservicos'];
                 $valor = 127;
+                break;
+            case 11:
+                $views = ['documentos.onemotos'];
+                $valor = 500;
                 break;
             default:
             $views = ['documentos.contratoonepage'];
@@ -128,44 +128,44 @@ class VendasController extends Controller
         $vendaData = [
             'id_vendedor' => $id,
         ];
-        
+
         if (!empty($request->cpfcnpj)) {
             $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
         }
-        
+
         if (!empty($request->cliente)) {
             $vendaData['nome'] = $request->cliente;
         }
-        
+
         if (!empty($request->dataNascimento)) {
             $vendaData['dataNascimento'] = Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d');
         }
-        
+
         if (!empty($request->email)) {
             $vendaData['email'] = $request->email;
         }
-        
+
         if (!empty($request->telefone)) {
             $vendaData['telefone'] = preg_replace('/[^0-9]/', '', $request->telefone);
         }
-        
+
         if (!empty($request->rg)) {
             $vendaData['rg'] = $request->rg;
         }
-        
+
         if (!empty($request->cep) && !empty($request->estado) && !empty($request->cidade) && !empty($request->bairro) && !empty($request->numero)) {
             $vendaData['endereco'] = $request->cep.' - '.$request->estado.'/'.$request->cidade.' - '.$request->bairro.' N° '.$request->numero;
         }
-        
+
         if (!empty($request->produto)) {
             $vendaData['id_produto'] = $request->produto;
         }
-        
+
         if (!empty($valor)) {
             $vendaData['valor'] = $valor;
         }
-        
-        $venda = Vendas::create($vendaData);        
+
+        $venda = Vendas::create($vendaData);
 
         if (!$venda) {
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
@@ -193,7 +193,7 @@ class VendasController extends Controller
 
         // Crie uma instância do Dompdf
         $dompdf = new Dompdf();
-        
+
         $html = '';
         $total = 0;
         foreach ($views as $view) {
@@ -208,10 +208,10 @@ class VendasController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $pdfContent = $dompdf->output();
-        
+
         $filePath = public_path('contratos/'.$request->produto.$data['cpfcnpj'].'.pdf');
         file_put_contents($filePath, $pdfContent);
-        
+
         $pdfPath = public_path('contratos/'.$request->produto.$data['cpfcnpj'].'.pdf');
         $pdfContent = file_get_contents($pdfPath);
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
@@ -237,7 +237,7 @@ class VendasController extends Controller
 
             //Atualiza Contrato
             $updateVenda = Vendas::where('cpf', $data['cpfcnpj'])->orderBy('id', 'desc')->first();
-            
+
             if ($updateVenda) {
                 $updateVenda->id_contrato = $keyDocumento['key'];
                 $updateVenda->save();
@@ -272,8 +272,11 @@ class VendasController extends Controller
             case 8:
                 $pasta = "/oneservicos";
                 break;
+            case 11:
+                $pasta = "/associadonemotos";
+                break;
         }
-        
+
 
         try {
             $response = $client->post($url, [
@@ -433,7 +436,7 @@ class VendasController extends Controller
             $responseData = json_decode($response->getBody(), true);
 
             if (isset($responseData['list']['key'])) {
-                
+
                  $result = [
                     'type' => true,
                     'key'  => $responseData['list']['key'],

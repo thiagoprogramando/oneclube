@@ -23,7 +23,6 @@ class User extends Authenticatable
         'created_at',
         'updated_at',
         'cpf',
-        'login',
         'tipo',
         'status',
     ];

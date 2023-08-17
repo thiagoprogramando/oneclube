@@ -34,6 +34,20 @@
                     Negócios
                 </div>
 
+                @if(Auth::user()->tipo == 3)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMotos" aria-expanded="true" aria-controls="collapseMotos">
+                        <i class="fa fa-motorcycle"></i>
+                        <span>One Motos</span>
+                    </a>
+                    <div id="collapseMotos" class="collapse" aria-labelledby="headingMotos" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="/vendas/10">Minhas Vendas</a>
+                            <a class="collapse-item" href="{{ url('/associadonemotos/' . auth()->id()) }}" target="_BLANK">Vender</a>
+                        </div>
+                    </div>
+                </li>
+                @else
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMotos" aria-expanded="true" aria-controls="collapseMotos">
                         <i class="fa fa-motorcycle"></i>
@@ -80,11 +94,12 @@
                     </a>
                     <div id="collapseServicos" class="collapse" aria-labelledby="headingServicos" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas/4">Minhas Vendas</a>
+                            <a class="collapse-item" href="/vendas/8">Minhas Vendas</a>
                             <a class="collapse-item" href="{{ url('/oneservicos/' . auth()->id()) }}" target="_BLANK">Vender</a>
                         </div>
                     </div>
-                </li> 
+                </li>
+                @endif
 
                 @if(Auth::user()->tipo == 2)
                 <hr class="sidebar-divider">
@@ -102,6 +117,18 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/relatorioVendas">Vendas</a>
                             <a class="collapse-item" href="/relatorioUsuarios">Usuários</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLinks" aria-expanded="true" aria-controls="collapseLinks">
+                        <i class="fa fa-link"></i>
+                        <span>Links</span>
+                    </a>
+                    <div id="collapseLinks" class="collapse" aria-labelledby="headingGestao" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" target="_blank" href="/registerAssociado">Associados</a>
                         </div>
                     </div>
                 </li>
