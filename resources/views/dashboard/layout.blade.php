@@ -42,7 +42,7 @@
                     </a>
                     <div id="collapseMotos" class="collapse" aria-labelledby="headingMotos" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas/10">Minhas Vendas</a>
+                            <a class="collapse-item" href="/vendas/11">Minhas Vendas</a>
                             <a class="collapse-item" href="{{ url('/associadonemotos/' . auth()->id()) }}" target="_BLANK">Vender</a>
                         </div>
                     </div>
