@@ -176,7 +176,7 @@
                                                     @endswitch
                                                 </td>
                                                 <td>
-                                                @switch($venda->id_produto)
+                                                    @switch($venda->id_produto)
                                                         @case(1)
                                                             <a class="btn btn-outline-success" href="{{ asset('contratos/1' . $venda->cpf . '.pdf') }}" download>Contrato</a>
                                                             @break
@@ -188,6 +188,9 @@
                                                             @break
                                                         @case(8)
                                                             <a class="btn btn-outline-success" href="{{ asset('contratos/8' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @case(11)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/11' . $venda->cpf . '.pdf') }}" download>Contrato</a>
                                                             @break
                                                         @default
                                                             Produto Desconhecido
