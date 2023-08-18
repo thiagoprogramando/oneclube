@@ -43,7 +43,7 @@
                                                 <button class="btn btn-outline-green" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
                                         </div>
                                         <div class="col">
-                                            <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/associadonepositive/' . auth()->id()) }}" target="_blank">{{ url('/onepositive/' . auth()->id()) }}</a>
+                                            <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/associadonepositive/' . auth()->id()) }}" target="_blank">{{ url('/associadonepositive/' . auth()->id()) }}</a>
                                         </div>
                                     </div>
                                 </div>
