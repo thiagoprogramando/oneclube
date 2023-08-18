@@ -10,4 +10,8 @@ class OnePositiveController extends Controller
     public function index($id) {
         return view('franquias.onepositive', ['id' => $id]);
     }
+
+    public function associado($id) {
+        return view('associado.onepositive', ['id' => $id]);
+    }
 }

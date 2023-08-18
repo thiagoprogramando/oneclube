@@ -120,6 +120,10 @@ class VendasController extends Controller
                 $views = ['documentos.onemotos'];
                 $valor = 500;
                 break;
+            case 12:
+                $views = ['documentos.onepositive'];
+                $valor = 1500;
+                break;
             default:
             $views = ['documentos.contratoonepage'];
                 break;
@@ -260,9 +264,6 @@ class VendasController extends Controller
         $url = env('API_URL_CLICKSIN').'api/v1/documents?access_token='.env('API_TOKEN_CLICKSIN');
 
         switch($data['produto']){
-            // case 1:
-            //     $pasta = "/onebeauty";
-            //     break;
             case 2:
                 $pasta = "/onepositive";
                 break;
@@ -274,6 +275,9 @@ class VendasController extends Controller
                 break;
             case 11:
                 $pasta = "/associadonemotos";
+                break;
+            case 11:
+                $pasta = "/associadonepositive";
                 break;
         }
 

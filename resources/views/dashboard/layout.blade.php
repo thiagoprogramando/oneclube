@@ -47,6 +47,18 @@
                         </div>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePositive" aria-expanded="true" aria-controls="collapsePositive">
+                        <i class="fa fa-check"></i>
+                        <span>One Positive</span>
+                    </a>
+                    <div id="collapsePositive" class="collapse" aria-labelledby="headingPositive" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="/vendas/12">Minhas Vendas</a>
+                            <a class="collapse-item" href="{{ url('/associadonepositive/' . auth()->id()) }}" target="_BLANK">Vender</a>
+                        </div>
+                    </div>
+                </li>
                 @else
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMotos" aria-expanded="true" aria-controls="collapseMotos">

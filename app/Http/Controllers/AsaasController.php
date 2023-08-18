@@ -227,6 +227,9 @@ class AsaasController extends Controller
             case 11:
                 $produto = 500;
                 break;
+            case 12:
+                $produto = 1500;
+                break;
         }
 
         $client = new Client();

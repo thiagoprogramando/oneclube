@@ -26,6 +26,7 @@ Route::get('/registerAssociado', [RegisterController::class, 'registerAssociado'
 //Vendas
 Route::get('/associadonemotos/{id}', [OneMotosController::class, 'associado'])->name('associado');
 Route::get('/onemotos/{id}', [OneMotosController::class, 'index'])->name('onemotos');
+Route::get('/associadonepositive/{id}', [OnePositiveController::class, 'associado'])->name('associadopositive');
 Route::get('/onepositive/{id}', [OnePositiveController::class, 'index'])->name('onepositive');
 Route::get('/onebeauty/{id}', [OneBeautyController::class, 'index'])->name('onebeauty');
 Route::get('/oneservicos/{id}', [OneServicosController::class, 'index'])->name('oneservicos');
