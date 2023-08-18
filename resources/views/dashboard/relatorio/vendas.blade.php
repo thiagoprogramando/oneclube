@@ -36,6 +36,7 @@
                                                                         <option value="11">One Motos Associados</option>
                                                                         <option value="3">One Beauty</option>
                                                                         <option value="2">One Positive</option>
+                                                                        <option value="12">One Positive Associados</option>
                                                                         <option value="8">One Serviços</option>
                                                                     </select>
                                                                 </div>
@@ -104,7 +105,10 @@
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(2)
-                                                            Limpa Nome
+                                                            One Positive
+                                                            @break
+                                                        @case(12)
+                                                            One Positive
                                                             @break
                                                         @case(3)
                                                             One Motos/Beauty
@@ -120,7 +124,28 @@
                                                     @endswitch
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                    @switch($venda->id_produto)
+                                                        @case(1)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/1' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @case(2)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @case(3)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/3' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @case(8)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/8' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @case(11)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/11' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @case(12)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/12' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @default
+                                                            Produto Desconhecido
+                                                    @endswitch
                                                 </td>
                                                 <td>
                                                     @switch($venda->status_pay)

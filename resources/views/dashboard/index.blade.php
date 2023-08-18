@@ -183,7 +183,10 @@
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(2)
-                                                            Limpa Nome
+                                                            One Positive
+                                                            @break
+                                                        @case(12)
+                                                            One Positive
                                                             @break
                                                         @case(3)
                                                             One Motos/Beauty
@@ -214,6 +217,9 @@
                                                             @break
                                                         @case(11)
                                                             <a class="btn btn-outline-success" href="{{ asset('contratos/11' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+                                                            @break
+                                                        @case(12)
+                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/12' . $venda->cpf . '.pdf') }}" download>Contrato</a>
                                                             @break
                                                         @default
                                                             Produto Desconhecido

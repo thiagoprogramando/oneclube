@@ -117,7 +117,7 @@ class VendasController extends Controller
                 $valor = 127;
                 break;
             case 11:
-                $views = ['documentos.onemotos'];
+                $views = ['documentos.associadonemotos'];
                 $valor = 500;
                 break;
             case 12:
@@ -276,7 +276,7 @@ class VendasController extends Controller
             case 11:
                 $pasta = "/associadonemotos";
                 break;
-            case 11:
+            case 12:
                 $pasta = "/associadonepositive";
                 break;
         }
