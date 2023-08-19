@@ -11,7 +11,7 @@ class OneMotosController extends Controller
         return view('franquias.onemotos', ['id' => $id]);
     }
 
-    public function associado($id) {
-        return view('associado.onemotos', ['id' => $id]);
+    public function associado($id, $entrada) {
+        return view('associado.onemotos', ['id' => $id, 'entrada' => $entrada]);
     }
 }

@@ -7,54 +7,6 @@
         </div>
 
         @if(Auth::user()->tipo == 3)
-            <div class="row">
-                <div class="col-xl-6 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1"> Link de vendas One Motos </div>
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-warning">
-                                                <button class="btn btn-outline-warning" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
-                                        </div>
-                                        <div class="col">
-                                            <a style="font-size: 15px;" class="text-warning" id="copyLink" href="{{ url('/associadonemotos/' . auth()->id()) }}" target="_blank">{{ url('/associadonemotos/' . auth()->id()) }}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fa fa-motorcycle fa-2x text-warning"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-green text-uppercase mb-1"> Link de vendas One Positive </div>
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                <button class="btn btn-outline-green" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
-                                        </div>
-                                        <div class="col">
-                                            <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/associadonepositive/' . auth()->id()) }}" target="_blank">{{ url('/associadonepositive/' . auth()->id()) }}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fa fa-check fa-2x text-green"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         @else
             <div class="row">
                 <div class="col-xl-6 col-md-6 mb-4">

@@ -13,51 +13,6 @@ use Carbon\Carbon;
 
 class AsaasController extends Controller
 {
-    // public function geraPagamento(Request $request)
-    // {
-    //     $client = new Client();
-    //     $options = [
-    //         'headers' => [
-    //             'Content-Type' => 'application/json',
-    //             'access_token' => env('API_TOKEN'),
-    //         ],
-    //         'json' => [
-    //             'name'      => $request->input('name'),
-    //             'cpfCnpj'   => $request->input('cpfcnpj'),
-    //         ],
-    //     ];
-    //     $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
-    //     $body = (string) $response->getBody();
-    //     $data = json_decode($body, true);
-    //     if ($response->getStatusCode() === 200) {
-    //         $customerId = $data['id'];
-    //         $options['json'] = [
-    //             'customer' => $customerId,
-    //             'billingType' => 'UNDEFINED',
-    //             'value' => 375,
-    //             'dueDate' => $request->input('dataFormatada'),
-    //             'description' => 'One Motos',
-    //         ];
-    //         $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
-    //         $body = (string) $response->getBody();
-    //         $data = json_decode($body, true);
-    //         if ($response->getStatusCode() === 200) {
-
-    //             $dados['json'] = [
-    //                 'paymentId'     => $data['id'],
-    //                 'customer'      => $data['customer'],
-    //                 'paymentLink'   => $data['invoiceUrl'],
-    //             ];
-
-    //             return $dados;
-    //         } else {
-    //             return "Erro!";
-    //         }
-    //     } else {
-    //         return "Erro!";
-    //     }
-    // }
-
     public function geraAssasOneClube(Request $request)
     {
 
@@ -191,14 +146,14 @@ class AsaasController extends Controller
 
             $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'null')->orWhereNull('status_pay'); })->first();
             if ($venda) {
-                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
+                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
                 $venda->save();
                 return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
             } else {
                 $venda = Vendas::where('email', $email)->where(function ($query) {$query->where('status_pay', 'null')->orWhereNull('status_pay');})->first();
-                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
+                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
                 $venda->save();
@@ -211,26 +166,8 @@ class AsaasController extends Controller
         return response()->json(['message' => 'Evento não é "sign"'], 200);
     }
 
-    public function geraPagamentoAssas($nome, $cpfcnpj, $produto)
+    public function geraPagamentoAssas($nome, $cpfcnpj, $produto, $valor)
     {
-
-        switch($produto){
-            case 2:
-                $produto = 1500;
-                break;
-            case 3:
-                $produto = 375;
-                break;
-            case 8:
-                $produto = 127;
-                break;
-            case 11:
-                $produto = 500;
-                break;
-            case 12:
-                $produto = 1500;
-                break;
-        }
 
         $client = new Client();
 
@@ -259,9 +196,9 @@ class AsaasController extends Controller
             $options['json'] = [
                 'customer' => $customerId,
                 'billingType' => 'UNDEFINED',
-                'value' => $produto,
+                'value' => $valor,
                 'dueDate' => $tomorrow,
-                'description' => 'One Motos',
+                'description' => 'One Clube Franquias',
             ];
 
             $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);

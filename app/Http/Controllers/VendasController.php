@@ -129,9 +129,22 @@ class VendasController extends Controller
                 break;
         }
 
+
+
         $vendaData = [
             'id_vendedor' => $id,
         ];
+
+        if($request->entrada) {
+            $valor = $request->entrada;
+         }
+        if (!empty($valor)) {
+            if($request->entrada) {
+                $vendaData['valor'] = $request->entrada;
+            } else {
+                $vendaData['valor'] = $valor;
+            }
+        }
 
         if (!empty($request->cpfcnpj)) {
             $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
@@ -163,10 +176,6 @@ class VendasController extends Controller
 
         if (!empty($request->produto)) {
             $vendaData['id_produto'] = $request->produto;
-        }
-
-        if (!empty($valor)) {
-            $vendaData['valor'] = $valor;
         }
 
         $venda = Vendas::create($vendaData);
