@@ -66,8 +66,7 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/vendas/12">Minhas Vendas</a>
-                            <a class="collapse-item gerar-link" href="#"
-                                data-url="{{ url('/associadonepositive/' . auth()->id()) }}">Gerar Link de Venda</a>
+                            <a class="collapse-item" href="{{ url('/associadonepositive/' . auth()->id()) }}" target="_BLANK">Vender</a>
                         </div>
                     </div>
                 </li>
