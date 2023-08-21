@@ -12,6 +12,6 @@ class OnePositiveController extends Controller
     }
 
     public function associado($id, $entrada) {
-        return view('associado.onepositive', ['id' => $id, 'entrada' => $entrada]);
+        return view('associado.onepositive', ['id' => $id]);
     }
 }
