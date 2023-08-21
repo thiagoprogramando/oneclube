@@ -308,19 +308,13 @@
                         input: 'number',
                         inputAttributes: {
                             min: 500,
+                            placeholder: 'Valor mínimo: R$ 500'
                         },
                         showCancelButton: true,
-                        confirmButtonText: 'Próximo',
+                        confirmButtonText: 'Gerar Link',
                         cancelButtonText: 'Cancelar',
-                        preConfirm: (entrada) => {
-                            if (entrada < 500) {
-                                Swal.showValidationMessage(
-                                    'Valor mínimo de entrada é 500');
-                            }
-                            return entrada;
-                        }
                     }).then((result) => {
-                        if (!result.isCanceled) {
+                        if (result.isConfirmed) {
                             const entrada = result.value;
                             const linkGerado = `${url}/${entrada}`;
 
@@ -331,7 +325,10 @@
                                 showCancelButton: false,
                                 showConfirmButton: false,
                             });
+                        } else {
+                            Swal.fire('Operação cancelada!', '', 'info');
                         }
+
                     });
                 });
             });
