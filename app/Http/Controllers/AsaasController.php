@@ -13,56 +13,11 @@ use Carbon\Carbon;
 
 class AsaasController extends Controller
 {
-    // public function geraPagamento(Request $request)
-    // {
-    //     $client = new Client();
-    //     $options = [
-    //         'headers' => [
-    //             'Content-Type' => 'application/json',
-    //             'access_token' => env('API_TOKEN'),
-    //         ],
-    //         'json' => [
-    //             'name'      => $request->input('name'),
-    //             'cpfCnpj'   => $request->input('cpfcnpj'),
-    //         ],
-    //     ];
-    //     $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
-    //     $body = (string) $response->getBody();
-    //     $data = json_decode($body, true);
-    //     if ($response->getStatusCode() === 200) {
-    //         $customerId = $data['id'];
-    //         $options['json'] = [
-    //             'customer' => $customerId,
-    //             'billingType' => 'UNDEFINED',
-    //             'value' => 375,
-    //             'dueDate' => $request->input('dataFormatada'),
-    //             'description' => 'One Motos',
-    //         ];
-    //         $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
-    //         $body = (string) $response->getBody();
-    //         $data = json_decode($body, true);
-    //         if ($response->getStatusCode() === 200) {
-
-    //             $dados['json'] = [
-    //                 'paymentId'     => $data['id'],
-    //                 'customer'      => $data['customer'],
-    //                 'paymentLink'   => $data['invoiceUrl'],
-    //             ];
-
-    //             return $dados;
-    //         } else {
-    //             return "Erro!";
-    //         }
-    //     } else {
-    //         return "Erro!";
-    //     }
-    // }
-    
     public function geraAssasOneClube(Request $request)
     {
-     
+
          $client = new Client();
-         
+
         if($request->id_assas == 'false'){
             $options = [
                 'headers' => [
@@ -77,7 +32,7 @@ class AsaasController extends Controller
             $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
             $body = (string) $response->getBody();
             $data = json_decode($body, true);
-            
+
             if ($response->getStatusCode() === 200) {
                 $customerId = $data['id'];
             } else {
@@ -86,10 +41,10 @@ class AsaasController extends Controller
         } else {
             $customerId = $request->input('id');
         }
-        
+
         // Calculate tomorrow's date
         $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
-       
+
         $options['json'] = [
             'customer'          => $customerId,
             'billingType'       => $request->forma_pagamento,
@@ -113,16 +68,16 @@ class AsaasController extends Controller
             return $dados;
         } else {
             return "Erro!";
-        } 
+        }
     }
 
     public function receberPagamento(Request $request)
     {
-        
+
         $jsonData = $request->json()->all();
 
         if ($jsonData['event'] === 'PAYMENT_CONFIRMED' || $jsonData['event'] === 'PAYMENT_RECEIVED') {
-            
+
             $idRequisicao = $jsonData['payment']['id'];
 
             $venda = Vendas::where('id_pay', $idRequisicao)->first();
@@ -167,7 +122,7 @@ class AsaasController extends Controller
                 $response = $client->post(env('API_URL_ONECLUBE').'finish-payment', [
                     'form_params' => $dados
                 ]);
-                
+
                 if ($response->getStatusCode() === 200) {
                     $responseData = json_decode($response->getBody(), true);
                     // Exibir o retorno da requisição
@@ -181,56 +136,41 @@ class AsaasController extends Controller
         // Caso contrário, retorne uma resposta de erro
         return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado']);
     }
-    
+
     public function enviaLinkPagamento(Request $request)
     {
         $jsonData = $request->json()->all();
         if ($jsonData['event']['name'] === 'sign') {
             $email = $jsonData['event']['data']['signer']['email'];
             $key = $jsonData['document']['key'];
-            
+
             $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'null')->orWhereNull('status_pay'); })->first();
             if ($venda) {
-                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
+                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
                 $venda->save();
                 return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
             } else {
                 $venda = Vendas::where('email', $email)->where(function ($query) {$query->where('status_pay', 'null')->orWhereNull('status_pay');})->first();
-                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto);
+                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
                 $venda->save();
                 return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
             }
-            
+
             return response()->json(['message' => 'Assinatura Recebida!'], 200);
         }
-    
+
         return response()->json(['message' => 'Evento não é "sign"'], 200);
     }
-    
-    public function geraPagamentoAssas($nome, $cpfcnpj, $produto)
+
+    public function geraPagamentoAssas($nome, $cpfcnpj, $produto, $valor)
     {
 
-        switch($produto){
-            // case 1:
-            //     $produto = 375;
-            //     break;
-            case 2:
-                $produto = 1500;
-                break;
-            case 3:
-                $produto = 375;
-                break;
-            case 8:
-                $produto = 127;
-                break;
-        }
-        
         $client = new Client();
-        
+
         $options = [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -241,56 +181,54 @@ class AsaasController extends Controller
                 'cpfCnpj'   => $cpfcnpj,
             ],
         ];
-        
+
         $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
-        
+
         $body = (string) $response->getBody();
-        
+
         $data = json_decode($body, true);
-        
+
         if ($response->getStatusCode() === 200) {
-            
+
             $customerId = $data['id'];
-    
-            // Calculate tomorrow's date
             $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
-    
+
             $options['json'] = [
                 'customer' => $customerId,
                 'billingType' => 'UNDEFINED',
-                'value' => $produto,
+                'value' => $valor,
                 'dueDate' => $tomorrow,
-                'description' => 'One Motos',
+                'description' => 'One Clube Franquias',
             ];
-            
+
             $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
-            
+
             $body = (string) $response->getBody();
-            
+
             $data = json_decode($body, true);
-            
+
             if ($response->getStatusCode() === 200) {
-    
+
                 $dados['json'] = [
                     'paymentId'     => $data['id'],
                     'customer'      => $data['customer'],
                     'paymentLink'   => $data['invoiceUrl'],
                 ];
-    
+
                 return $dados;
             } else {
                 return false;
             }
-            
+
         } else {
             return false;
         }
-        
+
     }
-    
+
     public function notificaCliente($telefone, $assas) {
         $client = new Client();
-        
+
         $url = 'https://api.z-api.io/instances/3BF660F605143051CA98E2F1A4FCFFCB/token/3048386F0FE68A1828B852B1/send-link';
 
         $response = $client->post($url, [
@@ -309,7 +247,7 @@ class AsaasController extends Controller
         ]);
 
         $responseData = json_decode($response->getBody(), true);
-        
+
         if( isset($responseData['id'])) {
             return true;
         } else {

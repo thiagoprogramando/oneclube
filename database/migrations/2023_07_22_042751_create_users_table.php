@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('status');
             $table->string('nome');
-            $table->string('login');
+            $table->string('login')->nullable();
             $table->string('cpf')->unique();
             $table->string('email')->unique();
             $table->string('password');

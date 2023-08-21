@@ -17,7 +17,8 @@ use App\Models\Notificacao;
 class VendasController extends Controller
 {
 
-    public function getVendas($id) {
+    public function getVendas($id)
+    {
         $users = auth()->user();
 
         $notfic = Notificacao::where(function ($query) use ($users) {
@@ -72,15 +73,15 @@ class VendasController extends Controller
             $dataFim = Carbon::parse($dataFim);
 
             $vendas = Vendas::where('id_produto', $request->input('id'))
-                            ->where('id_vendedor', $users->id)
-                            ->whereBetween('updated_at', [$dataInicio, $dataFim])
-                            ->get();
+                ->where('id_vendedor', $users->id)
+                ->whereBetween('updated_at', [$dataInicio, $dataFim])
+                ->get();
         } else {
             $vendas = Vendas::where('id_produto', $request->input('id'))
-                            ->where('id_vendedor', $users->id)
-                            ->latest()
-                            ->limit(30)
-                            ->get();
+                ->where('id_vendedor', $users->id)
+                ->latest()
+                ->limit(30)
+                ->get();
         }
 
         // Retornar os dados para a view vendas
@@ -92,7 +93,8 @@ class VendasController extends Controller
         ]);
     }
 
-    public function vender(Request $request, $id) {
+    public function vender(Request $request, $id)
+    {
         //Registra venda
         $request->validate([
             'cpfcnpj' => 'required|string|max:255',
@@ -101,7 +103,7 @@ class VendasController extends Controller
             'email' => 'string|max:255',
             'telefone' => 'required|string|max:20',
             'rg' => 'max:20',
-        ]); 
+        ]);
 
         switch ($request->produto) {
             case 3:
@@ -112,60 +114,73 @@ class VendasController extends Controller
                 $views = ['documentos.onepositive'];
                 $valor = 1500;
                 break;
-            // case 1:
-            //     $views = ['documentos.onebeauty'];
-            //     $valor = 375;
-            //     break;
             case 8:
                 $views = ['documentos.oneservicos'];
                 $valor = 127;
                 break;
+            case 11:
+                $views = ['documentos.associadonemotos'];
+                $valor = 500;
+                break;
+            case 12:
+                $views = ['documentos.onepositive'];
+                $valor = 1500;
+                break;
             default:
-            $views = ['documentos.contratoonepage'];
+                $views = ['documentos.contratoonepage'];
                 break;
         }
+
+
 
         $vendaData = [
             'id_vendedor' => $id,
         ];
-        
+
+        if ($request->entrada) {
+            $valor = $request->entrada;
+        }
+        if (!empty($valor)) {
+            if ($request->entrada) {
+                $vendaData['valor'] = $request->entrada;
+            } else {
+                $vendaData['valor'] = $valor;
+            }
+        }
+
         if (!empty($request->cpfcnpj)) {
             $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
         }
-        
+
         if (!empty($request->cliente)) {
             $vendaData['nome'] = $request->cliente;
         }
-        
+
         if (!empty($request->dataNascimento)) {
             $vendaData['dataNascimento'] = Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d');
         }
-        
+
         if (!empty($request->email)) {
             $vendaData['email'] = $request->email;
         }
-        
+
         if (!empty($request->telefone)) {
             $vendaData['telefone'] = preg_replace('/[^0-9]/', '', $request->telefone);
         }
-        
+
         if (!empty($request->rg)) {
             $vendaData['rg'] = $request->rg;
         }
-        
+
         if (!empty($request->cep) && !empty($request->estado) && !empty($request->cidade) && !empty($request->bairro) && !empty($request->numero)) {
-            $vendaData['endereco'] = $request->cep.' - '.$request->estado.'/'.$request->cidade.' - '.$request->bairro.' N° '.$request->numero;
+            $vendaData['endereco'] = $request->cep . ' - ' . $request->estado . '/' . $request->cidade . ' - ' . $request->bairro . ' N° ' . $request->numero;
         }
-        
+
         if (!empty($request->produto)) {
             $vendaData['id_produto'] = $request->produto;
         }
-        
-        if (!empty($valor)) {
-            $vendaData['valor'] = $valor;
-        }
-        
-        $venda = Vendas::create($vendaData);        
+
+        $venda = Vendas::create($vendaData);
 
         if (!$venda) {
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
@@ -188,18 +203,19 @@ class VendasController extends Controller
             'bairro' => $request->bairro,
             'endereco' => $request->endereco,
             'auth'      => 'whatsapp',
-            'produto'   => $request->produto
+            'produto'   => $request->produto,
+            'entrada'   => $request->entrada
         ];
 
         // Crie uma instância do Dompdf
         $dompdf = new Dompdf();
-        
+
         $html = '';
         $total = 0;
         foreach ($views as $view) {
             $html .= View::make($view, ['data' => $data])->render();
             $total++;
-            if($total != 4){
+            if ($total != 4) {
                 $html .= '<div style="page-break-before:always;"></div>'; // Adicione uma quebra de página entre as views
             }
         }
@@ -208,61 +224,58 @@ class VendasController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $pdfContent = $dompdf->output();
-        
-        $filePath = public_path('contratos/'.$request->produto.$data['cpfcnpj'].'.pdf');
+
+        $filePath = public_path('contratos/' . $request->produto . $data['cpfcnpj'] . '.pdf');
         file_put_contents($filePath, $pdfContent);
-        
-        $pdfPath = public_path('contratos/'.$request->produto.$data['cpfcnpj'].'.pdf');
+
+        $pdfPath = public_path('contratos/' . $request->produto . $data['cpfcnpj'] . '.pdf');
         $pdfContent = file_get_contents($pdfPath);
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
         //Cria documento na Clicksing
         $keyDocumento = $this->criaDocumento($data);
-        if($keyDocumento['type'] != true){
+        if ($keyDocumento['type'] != true) {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keyDocumento['key']])->withInput();
         }
 
         //Cria Signatario
         $keySignatario = $this->criaSignatario($data);
-        if($keySignatario['type'] != true){
+        if ($keySignatario['type'] != true) {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keySignatario['key']])->withInput();
         }
 
         //Adicionar Signatarios ao Documento
         $addSignatarios = $this->adiconaSignatario($keyDocumento['key'], $keySignatario['key']);
-        if($addSignatarios['type'] != null){
+        if ($addSignatarios['type'] != null) {
 
             //Notifica
             $notificar = $this->notificarSignatario($addSignatarios['url'], $data['auth'], $data['telefone']);
 
             //Atualiza Contrato
             $updateVenda = Vendas::where('cpf', $data['cpfcnpj'])->orderBy('id', 'desc')->first();
-            
+
             if ($updateVenda) {
                 $updateVenda->id_contrato = $keyDocumento['key'];
                 $updateVenda->save();
             }
 
-            if($notificar != null) {
+            if ($notificar != null) {
                 return view('obrigado', ['success' => 'Contrato enviado com sucesso!']);
             }
 
             return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
-
         } else {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
         }
     }
 
-    public function criaDocumento($data) {
+    public function criaDocumento($data)
+    {
         $client = new Client();
 
-        $url = env('API_URL_CLICKSIN').'api/v1/documents?access_token='.env('API_TOKEN_CLICKSIN');
+        $url = env('API_URL_CLICKSIN') . 'api/v1/documents?access_token=' . env('API_TOKEN_CLICKSIN');
 
-        switch($data['produto']){
-            // case 1:
-            //     $pasta = "/onebeauty";
-            //     break;
+        switch ($data['produto']) {
             case 2:
                 $pasta = "/onepositive";
                 break;
@@ -272,8 +285,14 @@ class VendasController extends Controller
             case 8:
                 $pasta = "/oneservicos";
                 break;
+            case 11:
+                $pasta = "/associadonemotos";
+                break;
+            case 12:
+                $pasta = "/associadonepositive";
+                break;
         }
-        
+
 
         try {
             $response = $client->post($url, [
@@ -283,8 +302,8 @@ class VendasController extends Controller
                 ],
                 'json' => [
                     'document' => [
-                        'path' => $pasta.'/Contrato One Motos '.$data['cliente'].'.pdf',
-                        'content_base64' => 'data:application/pdf;base64,'.$data['pdf'],
+                        'path' => $pasta . '/Contrato One Motos ' . $data['cliente'] . '.pdf',
+                        'content_base64' => 'data:application/pdf;base64,' . $data['pdf'],
                     ],
                 ],
             ]);
@@ -305,7 +324,6 @@ class VendasController extends Controller
                 ];
                 return $result;
             }
-
         } catch (RequestException $e) {
             // Tratamento de erro: capturar e retornar a resposta de erro
             if ($e->hasResponse()) {
@@ -334,10 +352,11 @@ class VendasController extends Controller
         }
     }
 
-    public function criaSignatario($data) {
+    public function criaSignatario($data)
+    {
         $client = new Client();
 
-        $url = env('API_URL_CLICKSIN').'api/v1/signers?access_token='.env('API_TOKEN_CLICKSIN');
+        $url = env('API_URL_CLICKSIN') . 'api/v1/signers?access_token=' . env('API_TOKEN_CLICKSIN');
 
         try {
             $response = $client->post($url, [
@@ -380,7 +399,6 @@ class VendasController extends Controller
                 ];
                 return $result;
             }
-
         } catch (RequestException $e) {
             // Tratamento de erro: capturar e retornar a resposta de erro
             if ($e->hasResponse()) {
@@ -409,48 +427,50 @@ class VendasController extends Controller
         }
     }
 
-    public function adiconaSignatario($keyDocumento, $keySignatario) {
+    public function adiconaSignatario($keyDocumento, $keySignatario)
+    {
         $client = new Client();
 
-        $url = env('API_URL_CLICKSIN').'api/v1/lists?access_token='.env('API_TOKEN_CLICKSIN');
+        $url = env('API_URL_CLICKSIN') . 'api/v1/lists?access_token=' . env('API_TOKEN_CLICKSIN');
 
-            $response = $client->post($url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
+        $response = $client->post($url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'list' => [
+                    'document_key'  => $keyDocumento,
+                    'signer_key'    => $keySignatario,
+                    'sign_as'       => 'contractor',
+                    'refusable'     => false,
+                    'message'       => 'Querido cliente, por favor, assine o contrato como confirmação de adesão ao nosso produto!'
                 ],
-                'json' => [
-                    'list' => [
-                        'document_key'  => $keyDocumento,
-                        'signer_key'    => $keySignatario,
-                        'sign_as'       => 'contractor',
-                        'refusable'     => false,
-                        'message'       => 'Querido cliente, por favor, assine o contrato como confirmação de adesão ao nosso produto!'
-                    ],
-                ],
-            ]);
+            ],
+        ]);
 
-            $responseData = json_decode($response->getBody(), true);
+        $responseData = json_decode($response->getBody(), true);
 
-            if (isset($responseData['list']['key'])) {
-                
-                 $result = [
-                    'type' => true,
-                    'key'  => $responseData['list']['key'],
-                    'url' => $responseData['list']['url']
-                ];
-                return $result;
-            } else {
-                $result = [
-                    'type' => false,
-                ];
-                return $result;
-            }
+        if (isset($responseData['list']['key'])) {
+
+            $result = [
+                'type' => true,
+                'key'  => $responseData['list']['key'],
+                'url' => $responseData['list']['url']
+            ];
+            return $result;
+        } else {
+            $result = [
+                'type' => false,
+            ];
+            return $result;
+        }
     }
 
-    public function notificarSignatario($contrato, $auth, $telefone) {
+    public function notificarSignatario($contrato, $auth, $telefone)
+    {
         $client = new Client();
-        if($auth == 'whatsapp') {
+        if ($auth == 'whatsapp') {
             $url = 'https://api.z-api.io/instances/3BF660F605143051CA98E2F1A4FCFFCB/token/3048386F0FE68A1828B852B1/send-link';
 
             $response = $client->post($url, [
@@ -459,7 +479,7 @@ class VendasController extends Controller
                     'Accept' => 'application/json',
                 ],
                 'json' => [
-                    'phone'     => '55'.$telefone,
+                    'phone'     => '55' . $telefone,
                     'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da One Clube: \r\n \r\n",
                     'image'     => 'https://oneclube.com.br/images/logo.png',
                     'linkUrl'   => $contrato,
@@ -469,12 +489,11 @@ class VendasController extends Controller
             ]);
 
             $responseData = json_decode($response->getBody(), true);
-            if( isset($responseData['id'])) {
+            if (isset($responseData['id'])) {
                 return true;
             } else {
                 return false;
             }
-
         } else {
             return "Não foi whatsapp";
         }

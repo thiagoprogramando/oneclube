@@ -1,7 +1,7 @@
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta
     http-equiv="Content-Style-Type" content="text/css" /><meta
     name="generator" content="Aspose.Words for .NET 23.8.0" /><title></title><style
-    type="text/css">body { font-family:Calibri; font-size:12pt }p { margin:0pt }.BodyText { margin-left:5.65pt; margin-bottom:10pt; text-align:justify; line-height:115%; font-size:9.5pt }.Default { font-family:'Roboto Condensed'; font-size:12pt; color:#000000 }.Footer { font-size:12pt }.Header { font-size:12pt }span.CorpodetextoChar { font-size:9.5pt }span.Hyperlink { text-decoration:underline; color:#0563c1; -aw-style-name:hyperlink }span.UnresolvedMention { color:#605e5c; background-color:#e1dfdd }</style></head><body><div><div
+    type="text/css">body { font-family:Calibri; font-size:12pt }p { margin:0pt }.BodyText { margin-left:5.65pt; margin-bottom:10pt; text-align:justify; line-height:115%; font-size:9.5pt }.Default { font-family:'Roboto Condensed'; font-size:12pt; color:#000000 }.Footer { font-size:12pt }.Header { font-size:12pt }span.CorpodetextoCarter { font-size:9.5pt }span.Hyperlink { text-decoration:underline; color:#0563c1; -aw-style-name:hyperlink }span.UnresolvedMention { color:#605e5c; background-color:#e1dfdd }</style></head><body><div><div
         style="-aw-headerfooter-type:header-primary; clear:both"><div
             style="-aw-sdt-tag:''"><div style="float:right"><p
                     class="Header"
@@ -39,7 +39,7 @@
             style="font-weight:bold; text-decoration:underline">COMPRADOR(A)</span><span>:</span></p><p
         style="font-size:12.5pt"><span style="-aw-import:ignore">&#xa0;</span></p><p
         style="line-height:150%; font-size:12.5pt"><span>Nome: <?= $data['cliente'] ?></span></p><p
-        style="line-height:150%; font-size:12.5pt"><span>Nacionalidade: Brasileiro (a) </p>
+        style="line-height:150%; font-size:12.5pt"><span>Nacionalidade: Brasileiro (a)
         </span></p><p style="line-height:150%; font-size:12.5pt"><span>Estado</span><span
             style="letter-spacing:1.95pt"> </span><span>Civil: <?= $data['civil'] ?></span></p><p
         style="line-height:150%; font-size:12.5pt"><span>Profissão: <?= $data['profissao'] ?></span></p><p
@@ -48,15 +48,9 @@
             style="letter-spacing:1.6pt"> </span><span>de</span><span
             style="letter-spacing:1.6pt"> </span><span>nascimento: <?= $data['dataNascimento'] ?>
         </span></p><p style="line-height:150%; font-size:12.5pt"><span>CPF(MF)</span><span
-            style="letter-spacing:1.75pt"> </span><span>nº: <?= $data['cpfcnpj'] ?></span></p>
-            <?php if (!empty($data['RG'])) { ?>
-            <p style="line-height:150%; font-size:12.5pt">
-                <span>RG</span>
-                <span style="letter-spacing:-0.3pt"></span>
-                <span>nº: <?= $data['RG'] ?></span>
-            </p>
-            <?php } ?>
-            <p
+            style="letter-spacing:1.75pt"> </span><span>nº:  <?= $data['cpfcnpj'] ?></span></p><p
+        style="line-height:150%; font-size:12.5pt"><span>RG</span><span
+            style="letter-spacing:-0.3pt"> </span><span>nº: <?php if (!empty($data['RG'])) { echo $data['RG']; } ?> </span></p><p
         style="line-height:150%; font-size:12.5pt"><span>Endereço: <?= $data['endereco'] ?>
         </span></p><p style="line-height:150%; font-size:12.5pt"><span>Nº: <?= $data['numero'] ?>
         </span></p><p style="line-height:150%; font-size:12.5pt"><span>Bairro: <?= $data['bairro'] ?>
@@ -65,7 +59,9 @@
         </span></p><p style="line-height:150%; font-size:12.5pt"><span>Estado: <?= $data['estado'] ?>
         </span></p><p style="line-height:150%; font-size:12.5pt"><span>E-mail: <?= $data['email'] ?>
         </span></p><p style="line-height:150%; font-size:12.5pt"><span>Telefones: <?= $data['telefone'] ?></span></p><p
-        style="font-size:12.5pt"><span style="-aw-import:ignore">&#xa0;</span></p><p
+        style="line-height:150%; font-size:12.5pt"><span>VALOR DA
+            ENTRADA: <?= $data['entrada'] ?></span></p><p style="font-size:12.5pt"><span
+            style="-aw-import:ignore">&#xa0;</span></p><p
         style="font-size:12.5pt"><span>Têm</span><span
             style="letter-spacing:-1.05pt"> </span><span>entre</span><span
             style="letter-spacing:-1.05pt"> </span><span>si,</span><span
@@ -153,9 +149,9 @@
         style="margin-left:0pt; line-height:115%; font-size:12.5pt"><span
             style="font-weight:bold">CLÁUSULA TERCEIRA</span><span>: O
             bem objeto do contrato é adquirido através de contrapartida
-            monetária de forma parcelada, sendo 1 (uma) parcela de R$
-            1.000,00 (um mil reais) e mais 59 (cinquenta e nove)
-            parcelas,</span><span style="-aw-import:spaces">&#xa0;
+            monetária de forma parcelada, sendo 1 (uma) parcela de
+            ENTRADA, no valor constante acima, e mais 59 (cinquenta e
+            nove) parcelas,</span><span style="-aw-import:spaces">&#xa0;
         </span><span>mensais</span><span style="-aw-import:spaces">&#xa0;
         </span><span>e</span><span style="-aw-import:spaces">&#xa0;
         </span><span>consecutivas,</span><span style="-aw-import:spaces">&#xa0;
@@ -360,7 +356,7 @@
             style="letter-spacing:-0.25pt"> 70% (setenta por cento) d</span><span>os</span><span
             style="letter-spacing:-0.3pt"> </span><span>valores</span><span
             style="letter-spacing:-0.3pt"> </span><span>adimplidos,
-            descontado o valor da primeira parcela,</span><span
+            descontado o valor da primeira parcela (ENTRADA),</span><span
             style="letter-spacing:-0.3pt"> </span><span>ao</span><span
             style="letter-spacing:-0.25pt"> </span><span>término</span><span
             style="letter-spacing:-0.3pt"> </span><span>do</span><span
@@ -373,8 +369,8 @@
             style="font-weight:bold; text-decoration:underline">COMPRADOR(A)</span><span
             style="-aw-import:spaces">&#xa0; </span><span>reconhece
             expressamente que referido desconto, qual seja, do valor da
-            primeira parcela e 30% (trinta por cento) do saldo adimplido
-            com as demais parcelas, são justos e </span><span
+            primeira parcela (ENTRADA) e 30% (trinta por cento) do saldo
+            adimplido com as demais parcelas, são justos e </span><span
             style="-aw-import:spaces">&#xa0;</span><span>expressamente
             aceitos, vez que se referem a despesas operacionais e
             administrativas, benefícios oferecidos, custos de manutenção
@@ -616,8 +612,9 @@
             (uma) centena, </span><span
             style="font-weight:bold; text-decoration:underline">que lhe
             será enviada via e-mail e/ou SMS e/ou WhatsApp, após o
-            pagamento da primeira parcela e que passa a fazer parte
-            integrante desse, sendo considerado, o número do contrato</span><span>.</span><span
+            pagamento da primeira parcela (ENTRADA) e que passa a fazer
+            parte integrante desse, sendo considerado, o número do
+            contrato</span><span>.</span><span
             style="letter-spacing:-1.05pt"> </span><span>Caso</span><span
             style="letter-spacing:-1.05pt"> </span><span>não</span><span
             style="letter-spacing:-1.05pt"> </span><span>haja</span><span
@@ -1060,4 +1057,16 @@
         class="BodyText"
         style="margin-left:0pt; text-align:left; line-height:115%; font-size:12.5pt"><span
             style="color:#0070c0; -aw-import:spaces">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;
-        </span><span style="font-weight:bold">WJ AUTO LTDA</span></p></div></body></html>
+        </span><span style="font-weight:bold">WJ AUTO LTDA</span></p><div
+        style="-aw-headerfooter-type:footer-primary; clear:both"><p
+            class="Footer"><img
+                src="images/Aspose.Words.5ce47e32-188f-454d-84b2-df844e0cc3fc.001.png"
+                width="74" height="42"
+                alt="Uma imagem com Gráficos, Tipo de letra, logótipo, design gráfico&#xA;&#xA;Descrição gerada automaticamente"
+                style="margin-right:9pt; margin-left:9pt; -aw-left-pos:437.6pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:12.2pt; -aw-wrap-type:through; float:left; position:relative" /><img
+                src="images/Aspose.Words.5ce47e32-188f-454d-84b2-df844e0cc3fc.002.png"
+                width="76" height="38"
+                alt="Uma imagem com Tipo de letra, Gráficos, logótipo, texto&#xA;&#xA;Descrição gerada automaticamente"
+                style="margin-right:9pt; margin-left:9pt; -aw-left-pos:26.87pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:13.5pt; -aw-wrap-type:through; float:left; position:relative" /></p><p
+            class="Footer" style="margin-right:18pt"><span
+                style="-aw-import:ignore">&#xa0;</span></p></div></div></body></html>

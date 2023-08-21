@@ -43,19 +43,28 @@ class RegisterController extends Controller
             'tipo' => 1,
             'status' => 1,
         ];
-    
+
         if (isset($request->login)) {
             $attributes['login'] = $request->login;
         }
-    
+
         if (isset($request->id_assas)) {
             $attributes['id_assas'] = $request->id_assas;
         }
-    
+
+        if (isset($request->tipo)) {
+            $attributes['tipo'] = $request->tipo;
+        }
+
         $user = User::create($attributes);
 
         Auth::login($user);
 
         return redirect()->route('dashboard');
+    }
+
+    public function registerAssociado(Request $request)
+    {
+        return view('registerAssociado');
     }
 }

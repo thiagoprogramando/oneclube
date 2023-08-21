@@ -21,9 +21,12 @@ Route::post('/', [LoginController::class, 'login_action'])->name('login_action')
 //Cadastro
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'register_action'])->name('register_action');
+Route::get('/registerAssociado', [RegisterController::class, 'registerAssociado'])->name('registerAssociado');
 
 //Vendas
+Route::get('/associadonemotos/{id}/{entrada}', [OneMotosController::class, 'associado'])->name('associado');
 Route::get('/onemotos/{id}', [OneMotosController::class, 'index'])->name('onemotos');
+Route::get('/associadonepositive/{id}/{entrada}', [OnePositiveController::class, 'associado'])->name('associadopositive');
 Route::get('/onepositive/{id}', [OnePositiveController::class, 'index'])->name('onepositive');
 Route::get('/onebeauty/{id}', [OneBeautyController::class, 'index'])->name('onebeauty');
 Route::get('/oneservicos/{id}', [OneServicosController::class, 'index'])->name('oneservicos');
