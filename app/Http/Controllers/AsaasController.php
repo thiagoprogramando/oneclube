@@ -47,7 +47,7 @@ class AsaasController extends Controller
 
         $options['json'] = [
             'customer'          => $customerId,
-            'billingType'       => $request->forma_pagamento,
+            'billingType'       => "BOLETO",
             'value'             => $request->valor,
             'dueDate'           => $tomorrow,
             'description'       => 'Franquias One Clube',
@@ -195,7 +195,7 @@ class AsaasController extends Controller
 
             $options['json'] = [
                 'customer' => $customerId,
-                'billingType' => 'UNDEFINED',
+                'billingType' => 'BOLETO',
                 'value' => $valor,
                 'dueDate' => $tomorrow,
                 'description' => 'One Clube Franquias',

@@ -51,7 +51,7 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/vendas/11">Minhas Vendas</a>
-                            <a class="collapse-item gerar-link" href="#"
+                            <a class="collapse-item gerar-link" href="#" data-produto="3"
                                 data-url="{{ url('/associadonemotos/' . auth()->id()) }}">Gerar Link de Venda</a>
                         </div>
                     </div>
@@ -66,7 +66,8 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/vendas/12">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/associadonepositive/' . auth()->id()) }}" target="_BLANK">Vender</a>
+                            <a class="collapse-item gerar-link" href="#" data-produto="2"
+                                data-url="{{ url('/associadonepositive/' . auth()->id()) }}">Gerar Link de Venda</a>
                         </div>
                     </div>
                 </li>
@@ -301,13 +302,14 @@
                     e.preventDefault();
 
                     const url = gerarLink.getAttribute("data-url");
+                    const produto = gerarLink.getAttribute("data-produto");
 
                     Swal.fire({
                         title: 'Valor da entrada',
                         input: 'number',
                         inputAttributes: {
-                            min: 500,
-                            placeholder: 'Valor mínimo: R$ 500'
+                            min: produto === '2' ? 970 : (produto === '3' ? 1000 : 500),
+                            placeholder: `Valor mínimo de entrada é ${produto === '2' ? 970 : (produto === '3' ? 1000 : 500)}`
                         },
                         showCancelButton: true,
                         confirmButtonText: 'Gerar Link',
