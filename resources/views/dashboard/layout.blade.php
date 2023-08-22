@@ -309,7 +309,7 @@
                         input: 'number',
                         inputAttributes: {
                             min: produto === '2' ? 970 : (produto === '3' ? 1000 : 500),
-                            placeholder: `Valor mínimo de entrada é ${produto === '2' ? 970 : (produto === '3' ? 1000 : 500)}`
+                            placeholder: `Valor mínimo de ${produto === '2' ? 'venda' : 'entrada'} é ${produto === '2' ? 970 : 500}`
                         },
                         showCancelButton: true,
                         confirmButtonText: 'Gerar Link',
