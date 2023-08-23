@@ -119,7 +119,7 @@
                 de Identidade (RG) nº 002.945.651, expedida por SSDS/PB, doravante denominada </span><span
                 style="font-family:'Courier New'; font-weight:bold">CONTRATADA</span><span
                 style="font-family:'Courier New'">, e de outro lado;</span><span
-                style="font-family:'Courier New'; font-weight:bold"> <?php echo $data['nome'] ?></span><span
+                style="font-family:'Courier New'; font-weight:bold"> <?php echo $data['cliente'] ?></span><span
                 style="font-family:'Courier New'">, sob inscrição CPF/CNPJ nº <?php echo $data['cpfcnpj'] ?>, doravante
                 denominada </span><span style="font-family:'Courier New'; font-weight:bold">CONTRATANTE.</span></p>
         <p style="margin-bottom:0pt; text-align:justify; line-height:150%; font-size:10pt"><span
