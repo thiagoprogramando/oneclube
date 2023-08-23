@@ -372,7 +372,7 @@ class VendasController extends Controller
     {
         $client = new Client();
         if ($auth == 'whatsapp') {
-            $url = 'https://api.z-api.io/instances/3BF660F605143051CA98E2F1A4FCFFCB/token/3048386F0FE68A1828B852B1/send-link';
+            $url = 'https://api.z-api.io/instances/3C24182AB9E40098B0CE2E1CFDC948D1/token/D5D802A4C4A9E614211D5ED1/send-link';
 
             $response = $client->post($url, [
                 'headers' => [
