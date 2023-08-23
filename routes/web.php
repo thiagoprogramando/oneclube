@@ -4,12 +4,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\OneBeautyController;
-use App\Http\Controllers\OneMotosController;
-use App\Http\Controllers\OnePositiveController;
-use App\Http\Controllers\OneServicosController;
+use App\Http\Controllers\limpanomeController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\VendasController;
 use Illuminate\Support\Facades\Route;
@@ -24,12 +20,7 @@ Route::post('/register', [RegisterController::class, 'register_action'])->name('
 Route::get('/registerAssociado', [RegisterController::class, 'registerAssociado'])->name('registerAssociado');
 
 //Vendas
-Route::get('/associadonemotos/{id}/{entrada}', [OneMotosController::class, 'associado'])->name('associado');
-Route::get('/onemotos/{id}', [OneMotosController::class, 'index'])->name('onemotos');
-Route::get('/associadonepositive/{id}/{entrada}', [OnePositiveController::class, 'associado'])->name('associadopositive');
-Route::get('/onepositive/{id}', [OnePositiveController::class, 'index'])->name('onepositive');
-Route::get('/onebeauty/{id}', [OneBeautyController::class, 'index'])->name('onebeauty');
-Route::get('/oneservicos/{id}', [OneServicosController::class, 'index'])->name('oneservicos');
+Route::get('/limpanome/{id}', [limpanomeController::class, 'index'])->name('limpanome');
 
 Route::post('/venda/{id}', [VendasController::class, 'vender'])->name('vender');
 Route::view('/contrato', 'relatorio.contrato')->name('relatorio.contrato');
@@ -44,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [DashboardController::class, 'logout'])->name('logout');
 
     Route::get('/vendas/{id}', [VendasController::class, 'getVendas'])->name('vendas');
-    Route::post('vendas', [VendasController::class, 'vendas'])->name('vendas');
+    Route::post('vendas', [VendasController::class, 'getVendas'])->name('vendas');
 
     Route::get('/relatorioVendas', [RelatorioController::class, 'index'])->name('relatorioVendas');
     Route::post('relatorioVendas', [RelatorioController::class, 'filtro'])->name('relatorioVendas');

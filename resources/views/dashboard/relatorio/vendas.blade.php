@@ -2,12 +2,10 @@
     @section('conteudo')
     <div class="container-fluid">
 
-        <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Minhas Vendas</h1>
         </div>
 
-        <!-- Minhas Vendas -->
         <div class="row">
             <div class="col-xl-12 col-md-12 mb-4">
                 <div class="card border-left-dark shadow h-100 py-2">
@@ -31,13 +29,7 @@
                                                             <div class="col-12">
                                                                 <div class="form-group">
                                                                     <select class="form-control"  name="produto">
-                                                                        <option value="ALL">Todos os Produtos</option>
-                                                                        <option value="3">One Motos</option>
-                                                                        <option value="11">One Motos Associados</option>
-                                                                        <option value="3">One Beauty</option>
-                                                                        <option value="2">One Positive</option>
-                                                                        <option value="12">One Positive Associados</option>
-                                                                        <option value="8">One Serviços</option>
+                                                                        <option value="2">Limpa Nome</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -105,19 +97,7 @@
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(2)
-                                                            One Positive
-                                                            @break
-                                                        @case(12)
-                                                            One Positive
-                                                            @break
-                                                        @case(3)
-                                                            One Motos/Beauty
-                                                            @break
-                                                        @case(11)
-                                                            One Motos/Beauty
-                                                            @break
-                                                        @case(8)
-                                                            One Serviços
+                                                            Limpa Nome
                                                             @break
                                                         @default
                                                             Produto Desconhecido
@@ -125,23 +105,8 @@
                                                 </td>
                                                 <td>
                                                     @switch($venda->id_produto)
-                                                        @case(1)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/1' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
                                                         @case(2)
                                                             <a class="btn btn-outline-success" href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @case(3)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/3' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @case(8)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/8' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @case(11)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/11' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @case(12)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/12' . $venda->cpf . '.pdf') }}" download>Contrato</a>
                                                             @break
                                                         @default
                                                             Produto Desconhecido

@@ -6,12 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/png" href="{{ asset('admin/assets/icon.png') }}" />
 
-    <title>One Clube</title>
+    <title>Positivo Brasil</title>
 
     <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="{{ asset('admin/css/sb-admin-2.css') }}" rel="stylesheet">
     <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
@@ -24,7 +22,7 @@
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
-                <div class="sidebar-brand-text mx-3">One Clube</div>
+                <div class="sidebar-brand-text mx-3">Positivo Brasil</div>
             </a>
 
             <hr class="sidebar-divider my-0">
@@ -40,102 +38,21 @@
                 Negócios
             </div>
 
-            @if (Auth::user()->tipo == 3)
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMotos"
-                        aria-expanded="true" aria-controls="collapseMotos">
-                        <i class="fa fa-motorcycle"></i>
-                        <span>One Motos</span>
-                    </a>
-                    <div id="collapseMotos" class="collapse" aria-labelledby="headingMotos"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas/11">Minhas Vendas</a>
-                            <a class="collapse-item gerar-link" href="#" data-produto="3"
-                                data-url="{{ url('/associadonemotos/' . auth()->id()) }}">Gerar Link de Venda</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePositive"
-                        aria-expanded="true" aria-controls="collapsePositive">
-                        <i class="fa fa-check"></i>
-                        <span>One Positive</span>
-                    </a>
-                    <div id="collapsePositive" class="collapse" aria-labelledby="headingPositive"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas/12">Minhas Vendas</a>
-                            <a class="collapse-item gerar-link" href="#" data-produto="2"
-                                data-url="{{ url('/associadonepositive/' . auth()->id()) }}">Gerar Link de Venda</a>
-                        </div>
-                    </div>
-                </li>
-            @else
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMotos"
-                        aria-expanded="true" aria-controls="collapseMotos">
-                        <i class="fa fa-motorcycle"></i>
-                        <span>One Motos</span>
-                    </a>
-                    <div id="collapseMotos" class="collapse" aria-labelledby="headingMotos"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas/3">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/onemotos/' . auth()->id()) }}"
-                                target="_BLANK">Vender</a>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBeauty"
-                        aria-expanded="true" aria-controls="collapseBeauty">
-                        <i class="fa fa-flask"></i>
-                        <span>One Beauty</span>
-                    </a>
-                    <div id="collapseBeauty" class="collapse" aria-labelledby="headingBeauty"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas/1">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/onebeauty/' . auth()->id()) }}"
-                                target="_BLANK">Vender</a>
-                        </div>
-                    </div>
-                </li>
-
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse"
                         data-target="#collapsePositive" aria-expanded="true" aria-controls="collapsePositive">
                         <i class="fa fa-check"></i>
-                        <span>One Positive</span>
+                        <span>Limpa Nome</span>
                     </a>
                     <div id="collapsePositive" class="collapse" aria-labelledby="headingPositive"
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/vendas/2">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/onepositive/' . auth()->id()) }}"
+                            <a class="collapse-item" href="{{ url('/limpanome/' . auth()->id()) }}"
                                 target="_BLANK">Vender</a>
                         </div>
                     </div>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse"
-                        data-target="#collapseServicos" aria-expanded="true" aria-controls="collapseServicos">
-                        <i class="fas fa-fw fa-briefcase"></i>
-                        <span>One Serviços</span>
-                    </a>
-                    <div id="collapseServicos" class="collapse" aria-labelledby="headingServicos"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/vendas/8">Minhas Vendas</a>
-                            <a class="collapse-item" href="{{ url('/oneservicos/' . auth()->id()) }}"
-                                target="_BLANK">Vender</a>
-                        </div>
-                    </div>
-                </li>
-            @endif
 
             @if (Auth::user()->tipo == 2)
                 <hr class="sidebar-divider">
@@ -155,20 +72,6 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/relatorioVendas">Vendas</a>
                             <a class="collapse-item" href="/relatorioUsuarios">Usuários</a>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLinks"
-                        aria-expanded="true" aria-controls="collapseLinks">
-                        <i class="fa fa-link"></i>
-                        <span>Links</span>
-                    </a>
-                    <div id="collapseLinks" class="collapse" aria-labelledby="headingGestao"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" target="_blank" href="/registerAssociado">Associados</a>
                         </div>
                     </div>
                 </li>
@@ -275,7 +178,7 @@
 
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
-                    <div class="copyright text-center my-auto"> <span>Copyright &copy; One Clube</span> </div>
+                    <div class="copyright text-center my-auto"> <span>Copyright &copy; Positivo Brasil</span> </div>
                 </div>
             </footer>
 
@@ -290,62 +193,7 @@
     <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('admin/js/pesquisa.js') }}"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const gerarLinks = document.querySelectorAll(".gerar-link");
-
-            gerarLinks.forEach(function(gerarLink) {
-                gerarLink.addEventListener("click", function(e) {
-                    e.preventDefault();
-
-                    const url = gerarLink.getAttribute("data-url");
-                    const produto = gerarLink.getAttribute("data-produto");
-
-                    Swal.fire({
-                        title: 'Valor da entrada',
-                        input: 'number',
-                        inputAttributes: {
-                            min: produto === '2' ? 970 : (produto === '3' ? 1000 : 500),
-                            placeholder: `Valor mínimo de ${produto === '2' ? 'venda' : 'entrada'} é ${produto === '2' ? 970 : 500}`
-                        },
-                        showCancelButton: true,
-                        confirmButtonText: 'Gerar Link',
-                        cancelButtonText: 'Cancelar',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            const entrada = result.value;
-                            const linkGerado = `${url}/${entrada}`;
-
-                            Swal.fire({
-                                title: 'Link gerado',
-                                html: `<input class="form-control form-control-user mb-2" type="text" value="${linkGerado}" id="linkGeradoInput" readonly>
-                                            <button class="btn btn-success" onclick="copiarLink()">Copiar</button>`,
-                                showCancelButton: false,
-                                showConfirmButton: false,
-                            });
-                        } else {
-                            Swal.fire('Operação cancelada!', '', 'info');
-                        }
-
-                    });
-                });
-            });
-        });
-
-        function copiarLink() {
-            const linkInput = document.getElementById("linkGeradoInput");
-            linkInput.select();
-            document.execCommand("copy");
-            Swal.fire({
-                text: 'Link copiado para a área de transferência',
-                icon: 'success',
-            });
-        }
-    </script>
-
 </body>
 
 </html>

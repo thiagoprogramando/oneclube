@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class OneBeautyController extends Controller
+class limpanomeController extends Controller
 {
     public function index($id) {
-        return view('franquias.onebeauty', ['id' => $id]);
+        return view('franquias.limpanome', ['id' => $id]);
     }
 }

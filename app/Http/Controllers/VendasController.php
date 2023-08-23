@@ -17,7 +17,7 @@ use App\Models\Notificacao;
 class VendasController extends Controller
 {
 
-    public function getVendas($id)
+    public function getVendas(Request $request, $id = null)
     {
         $users = auth()->user();
 
@@ -34,36 +34,6 @@ class VendasController extends Controller
                 });
             }
         })->get();
-
-        $vendas = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id)->latest()->limit(30)->get();
-
-        // Retornar os dados para a view vendas
-        return view('dashboard.vendas', [
-            'notfic' => $notfic,
-            'users' => $users,
-            'vendas' => $vendas,
-            'produto' => $id
-        ]);
-    }
-
-    public function vendas(Request $request)
-    {
-        $users = auth()->user();
-
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')
-                        ->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)
-                        ->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
-
 
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
@@ -72,12 +42,12 @@ class VendasController extends Controller
             $dataInicio = Carbon::parse($dataInicio);
             $dataFim = Carbon::parse($dataFim);
 
-            $vendas = Vendas::where('id_produto', $request->input('id'))
+            $vendas = Vendas::where('id_produto', $id)
                 ->where('id_vendedor', $users->id)
                 ->whereBetween('updated_at', [$dataInicio, $dataFim])
                 ->get();
         } else {
-            $vendas = Vendas::where('id_produto', $request->input('id'))
+            $vendas = Vendas::where('id_produto', $id)
                 ->where('id_vendedor', $users->id)
                 ->latest()
                 ->limit(30)
@@ -89,125 +59,75 @@ class VendasController extends Controller
             'notfic' => $notfic,
             'users' => $users,
             'vendas' => $vendas,
-            'produto' => $request->input('id')
+            'produto' => $id
         ]);
     }
 
     public function vender(Request $request, $id)
     {
-        //Registra venda
+
         $request->validate([
             'cpfcnpj' => 'required|string|max:255',
             'cliente' => 'required|string|max:255',
             'dataNascimento' => 'required|string|max:255',
             'email' => 'string|max:255',
             'telefone' => 'required|string|max:20',
-            'rg' => 'max:20',
         ]);
 
         switch ($request->produto) {
-            case 3:
-                $views = ['documentos.onemotos'];
-                $valor = 500;
-                break;
             case 2:
-                $views = ['documentos.onepositive'];
-                $valor = 1500;
-                break;
-            case 8:
-                $views = ['documentos.oneservicos'];
-                $valor = 127;
-                break;
-            case 11:
-                $views = ['documentos.associadonemotos'];
-                $valor = 500;
-                break;
-            case 12:
-                $views = ['documentos.onepositive'];
-                $valor = 1500;
+                $views = ['documentos.limpanome'];
                 break;
             default:
-                $views = ['documentos.contratoonepage'];
+                $views = ['documentos.limpanome'];
                 break;
         }
-
-
 
         $vendaData = [
             'id_vendedor' => $id,
+            'cpf' => !empty($request->cpfcnpj) ? preg_replace('/[^0-9]/', '', $request->cpfcnpj) : null,
+            'nome' => !empty($request->cliente) ? $request->cliente : null,
+            'dataNascimento' => !empty($request->dataNascimento) ? Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d') : null,
+            'email' => !empty($request->email) ? $request->email : null,
+            'telefone' => !empty($request->telefone) ? preg_replace('/[^0-9]/', '', $request->telefone) : null,
+            'id_produto' => !empty($request->produto) ? $request->produto : null,
+            'valor' => null,
+            'parcela' => $request->parcela,
+            'forma_pagamento' => $request->forma_pagamento === 'CARTÃO' ? 'CREDIT_CARD' : $request->forma_pagamento,
         ];
 
-        if ($request->entrada) {
-            $valor = $request->entrada;
-        }
-        if (!empty($valor)) {
-            if ($request->entrada) {
-                $vendaData['valor'] = $request->entrada;
-            } else {
-                $vendaData['valor'] = $valor;
-            }
-        }
-
         if (!empty($request->cpfcnpj)) {
-            $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
-        }
+            $valor = (strlen(preg_replace('/[^0-9]/', '', $request->cpfcnpj)) > 11) ? 1500 : 1000;
 
-        if (!empty($request->cliente)) {
-            $vendaData['nome'] = $request->cliente;
-        }
+            if (!empty($request->parcela) && strlen(preg_replace('/[^0-9]/', '', $request->cpfcnpj)) <= 11) {
+                $valor = ($request->parcela > 1) ? 1440 : $valor;
+            }
 
-        if (!empty($request->dataNascimento)) {
-            $vendaData['dataNascimento'] = Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d');
-        }
+            if (strlen(preg_replace('/[^0-9]/', '', $request->cpfcnpj)) > 2100) {
+                $valor = 2100;
+            }
 
-        if (!empty($request->email)) {
-            $vendaData['email'] = $request->email;
-        }
-
-        if (!empty($request->telefone)) {
-            $vendaData['telefone'] = preg_replace('/[^0-9]/', '', $request->telefone);
-        }
-
-        if (!empty($request->rg)) {
-            $vendaData['rg'] = $request->rg;
-        }
-
-        if (!empty($request->cep) && !empty($request->estado) && !empty($request->cidade) && !empty($request->bairro) && !empty($request->numero)) {
-            $vendaData['endereco'] = $request->cep . ' - ' . $request->estado . '/' . $request->cidade . ' - ' . $request->bairro . ' N° ' . $request->numero;
-        }
-
-        if (!empty($request->produto)) {
-            $vendaData['id_produto'] = $request->produto;
+            $vendaData['valor'] = $valor;
         }
 
         $venda = Vendas::create($vendaData);
-
         if (!$venda) {
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
 
-        //Gera Contrato
         $data = [
             'cpfcnpj' => preg_replace('/[^0-9]/', '', $request->cpfcnpj),
             'cliente' => $request->cliente,
             'dataNascimento' => Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d'),
             'email' => $request->email,
             'telefone' => preg_replace('/[^0-9]/', '', $request->telefone),
-            'profissao' => $request->profissao,
-            'rg' => $request->rg,
-            'civil' => $request->civil,
-            'cep' => $request->cep,
-            'numero' => $request->numero,
-            'estado' => $request->estado,
-            'cidade' => $request->cidade,
-            'bairro' => $request->bairro,
-            'endereco' => $request->endereco,
             'auth'      => 'whatsapp',
             'produto'   => $request->produto,
-            'entrada'   => $request->entrada
+            'valor' => $valor,
+            'parcela' => $request->parcela,
+            'forma_pagamento' => $request->forma_pagamento
         ];
 
-        // Crie uma instância do Dompdf
         $dompdf = new Dompdf();
 
         $html = '';
@@ -216,7 +136,7 @@ class VendasController extends Controller
             $html .= View::make($view, ['data' => $data])->render();
             $total++;
             if ($total != 4) {
-                $html .= '<div style="page-break-before:always;"></div>'; // Adicione uma quebra de página entre as views
+                $html .= '<div style="page-break-before:always;"></div>';
             }
         }
 
@@ -232,28 +152,22 @@ class VendasController extends Controller
         $pdfContent = file_get_contents($pdfPath);
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
-        //Cria documento na Clicksing
         $keyDocumento = $this->criaDocumento($data);
         if ($keyDocumento['type'] != true) {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keyDocumento['key']])->withInput();
         }
 
-        //Cria Signatario
         $keySignatario = $this->criaSignatario($data);
         if ($keySignatario['type'] != true) {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keySignatario['key']])->withInput();
         }
 
-        //Adicionar Signatarios ao Documento
         $addSignatarios = $this->adiconaSignatario($keyDocumento['key'], $keySignatario['key']);
         if ($addSignatarios['type'] != null) {
 
-            //Notifica
             $notificar = $this->notificarSignatario($addSignatarios['url'], $data['auth'], $data['telefone']);
 
-            //Atualiza Contrato
             $updateVenda = Vendas::where('cpf', $data['cpfcnpj'])->orderBy('id', 'desc')->first();
-
             if ($updateVenda) {
                 $updateVenda->id_contrato = $keyDocumento['key'];
                 $updateVenda->save();
@@ -277,22 +191,9 @@ class VendasController extends Controller
 
         switch ($data['produto']) {
             case 2:
-                $pasta = "/onepositive";
-                break;
-            case 3:
-                $pasta = "/onemotos";
-                break;
-            case 8:
-                $pasta = "/oneservicos";
-                break;
-            case 11:
-                $pasta = "/associadonemotos";
-                break;
-            case 12:
-                $pasta = "/associadonepositive";
+                $pasta = "/limpanome";
                 break;
         }
-
 
         try {
             $response = $client->post($url, [
@@ -302,7 +203,7 @@ class VendasController extends Controller
                 ],
                 'json' => [
                     'document' => [
-                        'path' => $pasta . '/Contrato One Motos ' . $data['cliente'] . '.pdf',
+                        'path' => $pasta . '/Contrato Limpa Nome ' . $data['cliente'] . '.pdf',
                         'content_base64' => 'data:application/pdf;base64,' . $data['pdf'],
                     ],
                 ],
@@ -480,8 +381,8 @@ class VendasController extends Controller
                 ],
                 'json' => [
                     'phone'     => '55' . $telefone,
-                    'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da One Clube: \r\n \r\n",
-                    'image'     => 'https://oneclube.com.br/images/logo.png',
+                    'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da Positivo Brasil: \r\n \r\n",
+                    'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
                     'linkUrl'   => $contrato,
                     'title'     => 'Assinatura de Contrato',
                     'linkDescription' => 'Link para Assinatura Digital'

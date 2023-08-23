@@ -146,14 +146,14 @@ class AsaasController extends Controller
 
             $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'null')->orWhereNull('status_pay'); })->first();
             if ($venda) {
-                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
+                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
                 $venda->save();
                 return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
             } else {
                 $venda = Vendas::where('email', $email)->where(function ($query) {$query->where('status_pay', 'null')->orWhereNull('status_pay');})->first();
-                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
+                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
                 $venda->save();
@@ -166,7 +166,7 @@ class AsaasController extends Controller
         return response()->json(['message' => 'Evento não é "sign"'], 200);
     }
 
-    public function geraPagamentoAssas($nome, $cpfcnpj, $produto, $valor)
+    public function geraPagamentoAssas($nome, $cpfcnpj, $produto, $valor, $parcela, $forma_pagamento)
     {
 
         $client = new Client();
@@ -195,10 +195,12 @@ class AsaasController extends Controller
 
             $options['json'] = [
                 'customer' => $customerId,
-                'billingType' => 'BOLETO',
+                'billingType' => $forma_pagamento,
                 'value' => $valor,
                 'dueDate' => $tomorrow,
-                'description' => 'One Clube Franquias',
+                'description' => 'Positivo Brasil',
+                "installmentCount"=> $parcela,
+                "installmentValue"=> ($valor / $parcela)
             ];
 
             $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
