@@ -1,12 +1,12 @@
 @extends('dashboard/layout')
-    @section('conteudo')
+@section('conteudo')
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
         </div>
 
-        @if(Auth::user()->tipo == 3)
+        @if (Auth::user()->tipo == 3)
         @else
             <div class="row">
                 <div class="col-xl-6 col-md-6 mb-4">
@@ -14,14 +14,20 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1"> Link de vendas One Motos </div>
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1"> Link de vendas
+                                        One Motos </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
                                             <div class="h5 mb-0 mr-3 font-weight-bold text-warning">
-                                                <button class="btn btn-outline-warning" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
+                                                <button class="btn btn-outline-warning"
+                                                    data-link="{{ url('/onemotos/' . auth()->id()) }}"
+                                                    onclick="copiaLink(this)"><i class="fas fa-copy"></i></button>
+                                            </div>
                                         </div>
                                         <div class="col">
-                                            <a style="font-size: 15px;" class="text-warning" id="copyLink" href="{{ url('/onemotos/' . auth()->id()) }}" target="_blank">{{ url('/onemotos/' . auth()->id()) }}</a>
+                                            <a style="font-size: 15px;" class="text-warning" id="copyLink"
+                                                href="{{ url('/onemotos/' . auth()->id()) }}"
+                                                target="_blank">{{ url('/onemotos/' . auth()->id()) }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -37,14 +43,20 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1"> Link de vendas One Beauty </div>
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1"> Link de vendas
+                                        One Beauty </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
                                             <div class="h5 mb-0 mr-3 font-weight-bold text-danger">
-                                                <button class="btn btn-outline-danger" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
+                                                <button class="btn btn-outline-danger"
+                                                    data-link="{{ url('/onebeauty/' . auth()->id()) }}"
+                                                    onclick="copiaLink(this)"><i class="fas fa-copy"></i></button>
+                                            </div>
                                         </div>
                                         <div class="col">
-                                            <a style="font-size: 15px;" class="text-danger" id="copyLink" href="{{ url('/onebeauty/' . auth()->id()) }}" target="_blank">{{ url('/onebeauty/' . auth()->id()) }}</a>
+                                            <a style="font-size: 15px;" class="text-danger" id="copyLink"
+                                                href="{{ url('/onebeauty/' . auth()->id()) }}"
+                                                target="_blank">{{ url('/onebeauty/' . auth()->id()) }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -60,14 +72,20 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-green text-uppercase mb-1"> Link de vendas One Positive </div>
+                                    <div class="text-xs font-weight-bold text-green text-uppercase mb-1"> Link de vendas One
+                                        Positive </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
                                             <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                <button class="btn btn-outline-green" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
+                                                <button class="btn btn-outline-green"
+                                                    data-link="{{ url('/onepositive/' . auth()->id()) }}"
+                                                    onclick="copiaLink(this)"><i class="fas fa-copy"></i></button>
+                                            </div>
                                         </div>
                                         <div class="col">
-                                            <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/onepositive/' . auth()->id()) }}" target="_blank">{{ url('/onepositive/' . auth()->id()) }}</a>
+                                            <a style="font-size: 15px;" class="text-green" id="copyLink"
+                                                href="{{ url('/onepositive/' . auth()->id()) }}"
+                                                target="_blank">{{ url('/onepositive/' . auth()->id()) }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -78,19 +96,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-6 col-md-6 mb-4">
+                <!--<div class="col-xl-6 col-md-6 mb-4">
                     <div class="card border-left-dark shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-dark text-uppercase mb-1"> Link de vendas One Serviços </div>
+                                    <div class="text-xs font-weight-bold text-dark text-uppercase mb-1"> Link de vendas One
+                                        Serviços </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
                                             <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                <button class="btn btn-outline-dark" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button></div>
+                                                <button class="btn btn-outline-dark"
+                                                    data-link="{{ url('/oneservicos/' . auth()->id()) }}"
+                                                    onclick="copiaLink(this)"><i class="fas fa-copy"></i></button>
+                                            </div>
                                         </div>
                                         <div class="col">
-                                            <a style="font-size: 15px;" class="text-dark" id="copyLink" href="{{ url('/oneservicos/' . auth()->id()) }}" target="_blank">{{ url('/oneservicos/' . auth()->id()) }}</a>
+                                            <a style="font-size: 15px;" class="text-dark" id="copyLink"
+                                                href="{{ url('/oneservicos/' . auth()->id()) }}"
+                                                target="_blank">{{ url('/oneservicos/' . auth()->id()) }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +124,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         @endif
 
@@ -111,7 +135,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Últimas Vendas <hr>
+                                    Últimas Vendas
+                                    <hr>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -128,69 +153,95 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($vendas as $key =>$venda)
-                                            <tr>
-                                                <td>{{ $venda->id }}</td>
-                                                <td>{{ $venda->nome }}</td>
-                                                <td>
-                                                    @switch($venda->id_produto)
-                                                        @case(2)
-                                                            One Positive
+                                            @foreach ($vendas as $key => $venda)
+                                                <tr>
+                                                    <td>{{ $venda->id }}</td>
+                                                    <td>{{ $venda->nome }}</td>
+                                                    <td>
+                                                        @switch($venda->id_produto)
+                                                            @case(2)
+                                                                One Positive
                                                             @break
-                                                        @case(12)
-                                                            One Positive
+
+                                                            @case(12)
+                                                                One Positive
                                                             @break
-                                                        @case(3)
-                                                            One Motos/Beauty
+
+                                                            @case(3)
+                                                                One Motos/Beauty
                                                             @break
-                                                        @case(11)
-                                                            One Motos/Beauty
+
+                                                            @case(11)
+                                                                One Motos/Beauty
                                                             @break
-                                                        @case(8)
-                                                            One Serviços
+
+                                                            @case(8)
+                                                                One Serviços
                                                             @break
-                                                        @default
-                                                            Produto Desconhecido
-                                                    @endswitch
-                                                </td>
-                                                <td>
-                                                    @switch($venda->id_produto)
-                                                        @case(1)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/1' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+
+                                                            @default
+                                                                Produto Desconhecido
+                                                        @endswitch
+                                                    </td>
+                                                    <td>
+                                                        @switch($venda->id_produto)
+                                                            @case(1)
+                                                                <a class="btn btn-outline-success"
+                                                                    href="{{ asset('contratos/1' . $venda->cpf . '.pdf') }}"
+                                                                    download>Contrato</a>
                                                             @break
-                                                        @case(2)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+
+                                                            @case(2)
+                                                                <a class="btn btn-outline-success"
+                                                                    href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}"
+                                                                    download>Contrato</a>
                                                             @break
-                                                        @case(3)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/3' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+
+                                                            @case(3)
+                                                                <a class="btn btn-outline-success"
+                                                                    href="{{ asset('contratos/3' . $venda->cpf . '.pdf') }}"
+                                                                    download>Contrato</a>
                                                             @break
-                                                        @case(8)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/8' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+
+                                                            @case(8)
+                                                                <a class="btn btn-outline-success"
+                                                                    href="{{ asset('contratos/8' . $venda->cpf . '.pdf') }}"
+                                                                    download>Contrato</a>
                                                             @break
-                                                        @case(11)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/11' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+
+                                                            @case(11)
+                                                                <a class="btn btn-outline-success"
+                                                                    href="{{ asset('contratos/11' . $venda->cpf . '.pdf') }}"
+                                                                    download>Contrato</a>
                                                             @break
-                                                        @case(12)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/12' . $venda->cpf . '.pdf') }}" download>Contrato</a>
+
+                                                            @case(12)
+                                                                <a class="btn btn-outline-success"
+                                                                    href="{{ asset('contratos/12' . $venda->cpf . '.pdf') }}"
+                                                                    download>Contrato</a>
                                                             @break
-                                                        @default
-                                                            Produto Desconhecido
-                                                    @endswitch
-                                                </td>
-                                                <td>
-                                                    @switch($venda->status_pay)
-                                                        @case('PAYMENT_CONFIRMED')
-                                                            Aprovado
+
+                                                            @default
+                                                                Produto Desconhecido
+                                                        @endswitch
+                                                    </td>
+                                                    <td>
+                                                        @switch($venda->status_pay)
+                                                            @case('PAYMENT_CONFIRMED')
+                                                                Aprovado
                                                             @break
-                                                        @case('PENDING_PAY')
-                                                            Aguardando Pagamento
+
+                                                            @case('PENDING_PAY')
+                                                                Aguardando Pagamento
                                                             @break
-                                                        @default
-                                                            Pendente
-                                                    @endswitch
-                                                </td>
-                                                <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}</td>
-                                            </tr>
+
+                                                            @default
+                                                                Pendente
+                                                        @endswitch
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -203,19 +254,4 @@
         </div>
 
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function copyToClipboard() {
-            const link = document.getElementById('copyLink').href;
-            const tempInput = document.createElement('input');
-            tempInput.setAttribute('value', link);
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            Swal.fire('Copiado!', 'Link copiado para a área de transferência!', 'success');
-        }
-    </script>
-
-    @endsection
+@endsection

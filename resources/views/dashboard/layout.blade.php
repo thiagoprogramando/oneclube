@@ -120,7 +120,7 @@
                     </div>
                 </li>
 
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse"
                         data-target="#collapseServicos" aria-expanded="true" aria-controls="collapseServicos">
                         <i class="fas fa-fw fa-briefcase"></i>
@@ -134,7 +134,7 @@
                                 target="_BLANK">Vender</a>
                         </div>
                     </div>
-                </li>
+                </li>-->
             @endif
 
             @if (Auth::user()->tipo == 2)
@@ -293,58 +293,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('admin/js/pesquisa.js') }}"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const gerarLinks = document.querySelectorAll(".gerar-link");
-
-            gerarLinks.forEach(function(gerarLink) {
-                gerarLink.addEventListener("click", function(e) {
-                    e.preventDefault();
-
-                    const url = gerarLink.getAttribute("data-url");
-                    const produto = gerarLink.getAttribute("data-produto");
-
-                    Swal.fire({
-                        title: 'Valor da entrada',
-                        input: 'number',
-                        inputAttributes: {
-                            min: produto === '2' ? 970 : (produto === '3' ? 1000 : 500),
-                            placeholder: `Valor mínimo de ${produto === '2' ? 'venda' : 'entrada'} é ${produto === '2' ? 970 : 500}`
-                        },
-                        showCancelButton: true,
-                        confirmButtonText: 'Gerar Link',
-                        cancelButtonText: 'Cancelar',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            const entrada = result.value;
-                            const linkGerado = `${url}/${entrada}`;
-
-                            Swal.fire({
-                                title: 'Link gerado',
-                                html: `<input class="form-control form-control-user mb-2" type="text" value="${linkGerado}" id="linkGeradoInput" readonly>
-                                            <button class="btn btn-success" onclick="copiarLink()">Copiar</button>`,
-                                showCancelButton: false,
-                                showConfirmButton: false,
-                            });
-                        } else {
-                            Swal.fire('Operação cancelada!', '', 'info');
-                        }
-
-                    });
-                });
-            });
-        });
-
-        function copiarLink() {
-            const linkInput = document.getElementById("linkGeradoInput");
-            linkInput.select();
-            document.execCommand("copy");
-            Swal.fire({
-                text: 'Link copiado para a área de transferência',
-                icon: 'success',
-            });
-        }
-    </script>
 
 </body>
 
