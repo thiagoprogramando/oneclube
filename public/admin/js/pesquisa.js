@@ -60,74 +60,6 @@ function pesquisaCPFCNPJ() {
     }
 }
 
-function geraPagamento(botao) {
-    var id = botao.dataset.id;
-    var name = botao.dataset.name;
-    var cpfcnpj = botao.dataset.cpfcnpj;
-
-    var dataAtual = new Date();
-    dataAtual.setDate(dataAtual.getDate() + 3);
-    var dataFormatada = dataAtual.toISOString().split('T')[0];
-
-    var data = {
-        id: id,
-        name: name,
-        cpfcnpj: cpfcnpj,
-        dataFormatada: dataFormatada
-    };
-
-    $.ajax({
-        url: '/api/geraPagamento',
-        type: 'POST',
-        data: data,
-        dataType: 'json',
-        success: function (response) {
-
-            var data = {
-                LINK_PAY: response.json['paymentLink'],
-                STATUS: 'PENDING_PAY',
-                paymentId: response.json['paymentId']
-            };
-
-            $.ajax({
-                url: '/api/geraLink/' + id,
-                type: 'POST',
-                data: data,
-                dataType: 'json',
-                success: function (response) {
-                    Swal.fire({
-                        title: 'Sucesso!',
-                        text: `${response.message}`,
-                        icon: 'success',
-                        showCancelButton: false,
-                        confirmButtonColor: '#008000',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
-                    })
-                },
-                error: function (xhr) {
-                    Swal.fire(
-                        'Problemas!',
-                        'Não foi possível gerar essa cobrança, contate o suporte!',
-                        'error'
-                    )
-                }
-            });
-
-        },
-        error: function (xhr) {
-            Swal.fire(
-                'Problemas!',
-                'Não foi possível gerar essa cobrança, contate o suporte!',
-                'error'
-            )
-        }
-    });
-}
-
 function copiaLink(botao) {
     var link = botao.getAttribute('data-link');
     var tempInput = document.createElement('input');
@@ -145,133 +77,53 @@ function copiaLink(botao) {
     )
 }
 
-function consultaGratis() {
-    var data = {
-        cpfcnpj: $('input[name=cpfcnpj]').val(),
-        cliente: $('input[name=cliente]').val(),
-        situacao: $('input[name=situacao]').val(),
-        dataNascimento: $('#dataNascimento').val(),
-        email: $('input[name=email]').val(),
-        telefone: $('input[name=telefone]').val(),
-        id_user: $('input[name=id_user]').val(),
-    }
+document.addEventListener("DOMContentLoaded", function() {
+    const gerarLinks = document.querySelectorAll(".gerar-link");
 
-    $.ajax({
-        url: '/api/consultaGratis',
-        type: 'POST',
-        data: data,
-        dataType: 'json',
-        success: function (response) {
+    gerarLinks.forEach(function(gerarLink) {
+        gerarLink.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            const url = gerarLink.getAttribute("data-url");
+            const produto = gerarLink.getAttribute("data-produto");
+
             Swal.fire({
-                title: 'Sucesso!',
-                text: `${response.message}`,
-                icon: 'success',
-                showCancelButton: false,
-                confirmButtonColor: '#008000',
-                confirmButtonText: 'OK'
+                title: 'Valor da entrada',
+                input: 'number',
+                inputAttributes: {
+                    min: produto === '2' ? 970 : (produto === '3' ? 1000 : 1000),
+                    placeholder: `Valor mínimo de ${produto === '2' ? 'venda' : 'entrada'} é ${produto === '2' ? 970 : 1000}`
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Gerar Link',
+                cancelButtonText: 'Cancelar',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = "/dashboard";
-                }
-            })
-        },
-        error: function (xhr) {
-            Swal.fire(
-                'Problemas!',
-                'Não foi possível gerar essa operação, contate o suporte!',
-                'error'
-            )
-        }
-    });
-}
+                    const entrada = result.value;
+                    const linkGerado = `${url}/${entrada}`;
 
-function consultarEndereco() {
-    const cep = document.getElementById('cep').value;
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.erro) {
-                console.log('CEP não encontrado');
-            } else {
-                const cidade    = data.localidade + '/' + data.uf;
-                const endereco  = data.logradouro;
-                const bairro    = data.bairro;
-                const estado    = data.uf;
-
-                // Preencher campos de cidade e endereço
-                document.getElementById('cidade').value = cidade;
-                document.getElementById('endereco').value = endereco;
-                document.getElementById('bairro').value = bairro;
-                document.getElementById('estado').value = estado;
-            }
-        })
-        .catch(error => console.log(error));
-}
-
-function geraPagamentoConsulta(botao) {
-    var id = botao.dataset.id;
-    var name = botao.dataset.name;
-    var cpfcnpj = botao.dataset.cpfcnpj;
-
-    var dataAtual = new Date();
-    dataAtual.setDate(dataAtual.getDate() + 3);
-    var dataFormatada = dataAtual.toISOString().split('T')[0];
-
-    var data = {
-        id: id,
-        name: name,
-        cpfcnpj: cpfcnpj,
-        dataFormatada: dataFormatada
-    };
-
-    $.ajax({
-        url: '/api/geraPagamentoConsulta',
-        type: 'POST',
-        data: data,
-        dataType: 'json',
-        success: function (response) {
-
-            var data = {
-                link_pay_consulta: response.json['paymentLink'],
-                status_consulta: 'PENDING_PAY',
-                id_pay_consulta: response.json['paymentId']
-            };
-
-            $.ajax({
-                url: '/api/crm-sales/' + id,
-                type: 'PUT',
-                data: data,
-                dataType: 'json',
-                success: function (response) {
                     Swal.fire({
-                        title: 'Sucesso!',
-                        text: `Cobrança gerada com sucesso!`,
-                        icon: 'success',
+                        title: 'Link gerado',
+                        html: `<input class="form-control form-control-user mb-2" type="text" value="${linkGerado}" id="linkGeradoInput" readonly>
+                                    <button class="btn btn-success" onclick="copiarLink()">Copiar</button>`,
                         showCancelButton: false,
-                        confirmButtonColor: '#008000',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
-                    })
-                },
-                error: function (xhr) {
-                    Swal.fire(
-                        'Problemas!',
-                        'Não foi possível gerar essa cobrança, contate o suporte!',
-                        'error'
-                    )
+                        showConfirmButton: false,
+                    });
+                } else {
+                    Swal.fire('Operação cancelada!', '', 'info');
                 }
-            });
 
-        },
-        error: function (xhr) {
-            Swal.fire(
-                'Problemas!',
-                'Não foi possível gerar essa cobrança, contate o suporte!',
-                'error'
-            )
-        }
+            });
+        });
+    });
+});
+
+function copiarLink() {
+    const linkInput = document.getElementById("linkGeradoInput");
+    linkInput.select();
+    document.execCommand("copy");
+    Swal.fire({
+        text: 'Link copiado para a área de transferência',
+        icon: 'success',
     });
 }
