@@ -4,17 +4,6 @@ use App\Http\Controllers\AsaasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -25,6 +14,5 @@ Route::post('clicksing', [AsaasController::class, 'enviaLinkPagamento'])->name('
 Route::post('assas', [AsaasController::class, 'receberPagamento'])->name('assas');
 //Planos One Clube
 Route::post('oneclube', [AsaasController::class, 'geraAssasOneClube'])->name('oneclube');
-
-
-// Route::post('/geraPagamento', [AsaasController::class, 'geraPagamento'])->name('geraLink');
+//Consulta Faturas
+Route::get('fatura/{id}', [AsaasController::class, 'consultaFatura'])->name('fatura');
