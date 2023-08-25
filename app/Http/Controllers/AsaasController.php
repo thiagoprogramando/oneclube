@@ -16,9 +16,9 @@ class AsaasController extends Controller
     public function geraAssasOneClube(Request $request)
     {
 
-         $client = new Client();
+        $client = new Client();
 
-        if($request->id_assas == 'false'){
+        if ($request->id_assas == 'false') {
             $options = [
                 'headers' => [
                     'Content-Type' => 'application/json',
@@ -29,7 +29,7 @@ class AsaasController extends Controller
                     'cpfCnpj'   => $request->cpf,
                 ],
             ];
-            $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
+            $response = $client->post(env('API_URL_ASSAS') . 'api/v3/customers', $options);
             $body = (string) $response->getBody();
             $data = json_decode($body, true);
 
@@ -54,7 +54,7 @@ class AsaasController extends Controller
             'installmentCount'  => $request->parcelas,
             'installmentValue'  => ($request->valor / $request->parcelas),
         ];
-        $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
+        $response = $client->post(env('API_URL_ASSAS') . 'api/v3/payments', $options);
         $body = (string) $response->getBody();
         $data = json_decode($body, true);
         if ($response->getStatusCode() === 200) {
@@ -100,7 +100,7 @@ class AsaasController extends Controller
 
                     // Enviar a requisição POST para oneclube.com.br/recebe
                     $client = new Client();
-                    $response = $client->post(env('API_URL_ONECLUBE').'confirm-sale-product', [
+                    $response = $client->post(env('API_URL_ONECLUBE') . 'confirm-sale-product', [
                         'form_params' => $dados
                     ]);
 
@@ -119,7 +119,7 @@ class AsaasController extends Controller
                     'id_assas' => $idRequisicao,
                 ];
                 $client = new Client();
-                $response = $client->post(env('API_URL_ONECLUBE').'finish-payment', [
+                $response = $client->post(env('API_URL_ONECLUBE') . 'finish-payment', [
                     'form_params' => $dados
                 ]);
 
@@ -144,7 +144,9 @@ class AsaasController extends Controller
             $email = $jsonData['event']['data']['signer']['email'];
             $key = $jsonData['document']['key'];
 
-            $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'null')->orWhereNull('status_pay'); })->first();
+            $venda = Vendas::where('id_contrato', $key)->where(function ($query) {
+                $query->where('status_pay', 'null')->orWhereNull('status_pay');
+            })->first();
             if ($venda) {
                 $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
                 $venda->id_pay = $link['json']['paymentId'];
@@ -152,7 +154,9 @@ class AsaasController extends Controller
                 $venda->save();
                 return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
             } else {
-                $venda = Vendas::where('email', $email)->where(function ($query) {$query->where('status_pay', 'null')->orWhereNull('status_pay');})->first();
+                $venda = Vendas::where('email', $email)->where(function ($query) {
+                    $query->where('status_pay', 'null')->orWhereNull('status_pay');
+                })->first();
                 $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor);
                 $venda->id_pay = $link['json']['paymentId'];
                 $venda->status_pay = 'PENDING_PAY';
@@ -182,7 +186,7 @@ class AsaasController extends Controller
             ],
         ];
 
-        $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
+        $response = $client->post(env('API_URL_ASSAS') . 'api/v3/customers', $options);
 
         $body = (string) $response->getBody();
 
@@ -201,7 +205,7 @@ class AsaasController extends Controller
                 'description' => 'One Clube Franquias',
             ];
 
-            $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
+            $response = $client->post(env('API_URL_ASSAS') . 'api/v3/payments', $options);
 
             $body = (string) $response->getBody();
 
@@ -219,14 +223,13 @@ class AsaasController extends Controller
             } else {
                 return false;
             }
-
         } else {
             return false;
         }
-
     }
 
-    public function notificaCliente($telefone, $assas) {
+    public function notificaCliente($telefone, $assas)
+    {
         $client = new Client();
 
         $url = 'https://api.z-api.io/instances/3BF660F605143051CA98E2F1A4FCFFCB/token/3048386F0FE68A1828B852B1/send-link';
@@ -237,7 +240,7 @@ class AsaasController extends Controller
                 'Accept' => 'application/json',
             ],
             'json' => [
-                'phone'     => '55'.$telefone,
+                'phone'     => '55' . $telefone,
                 'message'   => "Prezado Cliente, segue seu link de pagamento da One Clube: \r\n \r\n",
                 'image'     => 'https://oneclube.com.br/images/logo.png',
                 'linkUrl'   => $assas,
@@ -248,27 +251,46 @@ class AsaasController extends Controller
 
         $responseData = json_decode($response->getBody(), true);
 
-        if( isset($responseData['id'])) {
+        if (isset($responseData['id'])) {
             return true;
         } else {
             return false;
         }
     }
 
+    public function consultaFatura($id)
+    {
+        $client = new \GuzzleHttp\Client();
+
+        $response = $client->request('GET', env('API_URL_ASSAS') . 'api/v3/payments/' . $id, [
+            'headers' => [
+                'accept' => 'application/json',
+                'access_token' => env('API_TOKEN'),
+            ],
+        ]);
+
+        $paymentData = json_decode($response->getBody(), true);
+
+
+        if ($paymentData) {
+            $filteredData = [
+                "dateCreated" => $paymentData["dateCreated"],
+                "customer" => $paymentData["customer"],
+                "value" => $paymentData["value"],
+                "billingType" => $paymentData["billingType"],
+                "status" => $paymentData["status"],
+                "paymentDate" => $paymentData["paymentDate"],
+                "invoiceUrl" => $paymentData["invoiceUrl"],
+                "bankSlipUrl" => $paymentData["bankSlipUrl"],
+            ];
+        }
+
+        $vendaData = Vendas::where('id_pay', $id)->first();
+
+        $filteredData['cpf'] = $vendaData->cpf;
+        $filteredData['telefone'] = $vendaData->telefone;
+        $filteredData['vendedor'] = $vendaData->id_vendedor;
+
+        return json_encode($filteredData, JSON_PRETTY_PRINT);
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
