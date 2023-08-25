@@ -270,8 +270,6 @@ class AsaasController extends Controller
         ]);
 
         $paymentData = json_decode($response->getBody(), true);
-
-
         if ($paymentData) {
             $filteredData = [
                 "dateCreated" => $paymentData["dateCreated"],
@@ -286,10 +284,11 @@ class AsaasController extends Controller
         }
 
         $vendaData = Vendas::where('id_pay', $id)->first();
-
-        $filteredData['cpf'] = $vendaData->cpf;
-        $filteredData['telefone'] = $vendaData->telefone;
-        $filteredData['vendedor'] = $vendaData->id_vendedor;
+        if($vendaData) {
+            $filteredData['cpf'] = $vendaData->cpf;
+            $filteredData['telefone'] = $vendaData->telefone;
+            $filteredData['vendedor'] = $vendaData->id_vendedor;
+        }
 
         return json_encode($filteredData, JSON_PRETTY_PRINT);
     }
