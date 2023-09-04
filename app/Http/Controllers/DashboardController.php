@@ -15,24 +15,9 @@ class DashboardController extends Controller
     public function dashboard (){
         $users = auth()->user();
 
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')
-                        ->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)
-                        ->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
-
         $vendas = Vendas::where('id_vendedor', $users->id)->limit(15)->get();
 
         return view('dashboard.index', [
-            'notfic' => $notfic,
             'users' => $users,
             'vendas' => $vendas
         ]);

@@ -6,13 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
-use Illuminate\Contracts\Validation\Rule;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Carbon\Carbon;
 
 use App\Models\Vendas;
-use App\Models\Notificacao;
 
 class VendasController extends Controller
 {
@@ -20,20 +18,6 @@ class VendasController extends Controller
     public function getVendas(Request $request, $id = null)
     {
         $users = auth()->user();
-
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')
-                        ->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)
-                        ->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
 
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
@@ -56,7 +40,6 @@ class VendasController extends Controller
 
         // Retornar os dados para a view vendas
         return view('dashboard.vendas', [
-            'notfic' => $notfic,
             'users' => $users,
             'vendas' => $vendas,
             'produto' => $id

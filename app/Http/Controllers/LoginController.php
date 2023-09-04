@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function index(Request $request)
-    {   
+    {
         if (isset(auth()->user()->id)) {
             return redirect()->route('dashboard');
         }
@@ -25,5 +25,5 @@ class LoginController extends Controller
             return redirect()->back()->withErrors(['email' => 'As credenciais fornecidas são inválidas.']);
         }
     }
-    
+
 }

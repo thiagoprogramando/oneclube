@@ -107,46 +107,6 @@
                     </div>
 
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <span class="badge badge-danger badge-counter"> {{ count($notfic) }}+ </span>
-                            </a>
-
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header bg-success"> Notificações </h6>
-
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
-
-                                @foreach ($notfic as $notfi)
-                                    <form action="{{ route('notificacao.destroy', $notfi->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <a class="dropdown-item d-flex align-items-center" href="#"
-                                            onclick="this.closest('form').submit()">
-                                            <div class="mr-3">
-                                                <div class="icon-circle bg-primary"> <i
-                                                        class="fas fa-file-alt text-white"></i> </div>
-                                            </div>
-                                            <div>
-                                                <div class="small text-gray-500">{{ $notfi->data }}</div>
-                                                <span class="font-weight-bold">{{ $notfi->mensagem }}</span>
-                                            </div>
-                                        </a>
-                                    </form>
-                                @endforeach
-
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Não há mais
-                                    nada.</a>
-                            </div>
-                        </li>
-
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <li class="nav-item dropdown no-arrow">
