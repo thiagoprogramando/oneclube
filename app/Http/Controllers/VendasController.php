@@ -15,30 +15,30 @@ use App\Models\Vendas;
 class VendasController extends Controller
 {
 
-    public function getVendas(Request $request, $id = null)
+    public function getVendas(Request $request, $id = null, $cupom = null)
     {
         $users = auth()->user();
 
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
+        $cupomInput = $request->input('cupom');
+
+        $query = Vendas::where('id_produto', $id)
+            ->where('id_vendedor', $users->id);
+
+        if ($cupom || $cupomInput) {
+            $query->where('cupom', $cupom);
+        }
 
         if ($dataInicio && $dataFim) {
             $dataInicio = Carbon::parse($dataInicio);
             $dataFim = Carbon::parse($dataFim);
 
-            $vendas = Vendas::where('id_produto', $id)
-                ->where('id_vendedor', $users->id)
-                ->whereBetween('updated_at', [$dataInicio, $dataFim])
-                ->get();
+            $vendas = $query->whereBetween('updated_at', [$dataInicio, $dataFim])->get();
         } else {
-            $vendas = Vendas::where('id_produto', $id)
-                ->where('id_vendedor', $users->id)
-                ->latest()
-                ->limit(30)
-                ->get();
+            $vendas = $query->latest()->get();
         }
 
-        // Retornar os dados para a view vendas
         return view('dashboard.vendas', [
             'users' => $users,
             'vendas' => $vendas,
@@ -76,6 +76,7 @@ class VendasController extends Controller
             'id_produto' => !empty($request->produto) ? $request->produto : null,
             'valor' => null,
             'parcela' => $request->parcela,
+            'cupom' => $request->cupom,
             'forma_pagamento' => $request->forma_pagamento === 'CARTÃO' ? 'CREDIT_CARD' : $request->forma_pagamento,
         ];
 

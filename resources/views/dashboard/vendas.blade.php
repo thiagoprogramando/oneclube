@@ -2,12 +2,10 @@
     @section('conteudo')
     <div class="container-fluid">
 
-        <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Minhas Vendas</h1>
         </div>
 
-        <!-- Minhas Vendas -->
         <div class="row">
             <div class="col-xl-12 col-md-12 mb-4">
                 <div class="card border-left-dark shadow h-100 py-2">
@@ -29,16 +27,21 @@
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
                                                         <input type="hidden" value="{{ $produto }}" name="id">
                                                         <div class="row">
-                                                            <dil class="col-6">
+                                                            <div class="col-6">
                                                                 <div class="form-group">
                                                                     <input type="date" class="form-control" name="data_inicio" placeholder="Data inicial">
                                                                 </div>
-                                                            </dil>
-                                                            <dil class="col-6">
+                                                            </div>
+                                                            <div class="col-6">
                                                                 <div class="form-group">
                                                                     <input type="date" class="form-control" name="data_fim" placeholder="Data Final">
                                                                 </div>
-                                                            </dil>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" name="cupom" placeholder="Código ou Cupom (opcional)">
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">

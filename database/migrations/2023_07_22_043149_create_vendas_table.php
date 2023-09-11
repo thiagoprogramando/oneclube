@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('parcela')->nullable();
             $table->string('forma_pagamento')->nullable();
             $table->string('status_pay')->nullable();
+            $table->string('cupom')->nullable();
             $table->timestamps();
         });
     }

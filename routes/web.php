@@ -17,7 +17,6 @@ Route::post('/', [LoginController::class, 'login_action'])->name('login_action')
 //Cadastro
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'register_action'])->name('register_action');
-Route::get('/registerAssociado', [RegisterController::class, 'registerAssociado'])->name('registerAssociado');
 
 //Vendas
 Route::get('/limpanome/{id}', [limpanomeController::class, 'index'])->name('limpanome');

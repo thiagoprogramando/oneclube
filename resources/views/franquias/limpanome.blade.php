@@ -4,7 +4,6 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10 col-lg-10 col-md-8">
-
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
 
@@ -34,9 +33,14 @@
                                         <input type="hidden" value={{ csrf_token() }} name="_token">
                                         <div class="col-sm-12 col-lg-8 offset-lg-2 row">
 
-                                            <div class="form-group col-sm-12 col-lg-12">
+                                            <div class="form-group col-sm-12 col-lg-6">
                                                 <input type="text" id="cliente" class="form-control "
                                                     name="cliente" value="{{ old('cliente') }}" placeholder="Nome">
+                                            </div>
+
+                                            <div class="form-group col-sm-12 col-lg-6">
+                                                <input type="text" id="cliente" class="form-control "
+                                                    name="cupom" value="{{ old('cupom') }}" placeholder="Cupom (opcional)">
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
@@ -108,7 +112,6 @@
 
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

@@ -37,7 +37,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="/register">Primeiro Acesso?</a>
+                                        V 0.0.1
                                     </div>
                                 </div>
                             </div>

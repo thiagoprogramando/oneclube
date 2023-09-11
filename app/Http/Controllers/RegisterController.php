@@ -45,16 +45,8 @@ class RegisterController extends Controller
             'status' => 1,
         ];
 
-        if (isset($request->login)) {
-            $attributes['login'] = $request->login;
-        }
-
-        if (isset($request->id_assas)) {
-            $attributes['id_assas'] = $request->id_assas;
-        }
-
-        if (isset($request->tipo)) {
-            $attributes['tipo'] = $request->tipo;
+        if (isset($request->cupom)) {
+            $attributes['cupom'] = $request->cupom;
         }
 
         $user = User::create($attributes);
