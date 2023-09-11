@@ -23,7 +23,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Nome</th>
-                                                <th>Login</th>
+                                                <th>Código/Cupom</th>
                                                 <th>Email</th>
                                                 <th>CPF</th>
                                                 <th class="text-center">Alterar para:</th>
@@ -34,7 +34,7 @@
                                             <tr>
                                                 <td>{{ $user->id }}</td>
                                                 <td>{{ $user->nome }}</td>
-                                                <td>{{ $user->login }}</td>
+                                                <td>{{ $user->cupom }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->cpf }}</td>
                                                 <td class="text-center">

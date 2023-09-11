@@ -27,6 +27,7 @@ class RelatorioController extends Controller
         $produto = $request->input('produto');
         $usuario = $request->input('usuario');
         $status = $request->input('status');
+        $cupom = $request->input('cupom');
 
         $vendas = Vendas::query();
 
@@ -40,6 +41,10 @@ class RelatorioController extends Controller
 
         if ($status != 'ALL') {
             $vendas = $vendas->where('status_pay', $status);
+        }
+
+        if ($cupom) {
+            $vendas = $vendas->where('cupom', $cupom);
         }
 
         $dataInicio = $request->input('data_inicio');
