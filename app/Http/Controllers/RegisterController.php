@@ -12,9 +12,6 @@ class RegisterController extends Controller
 {
     public function register(Request $request)
     {
-        if (isset(auth()->user()->id)) {
-            return redirect()->route('dashboard');
-        }
         return view('register');
     }
 

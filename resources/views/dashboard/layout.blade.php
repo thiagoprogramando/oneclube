@@ -72,6 +72,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/relatorioVendas">Vendas</a>
                             <a class="collapse-item" href="/relatorioUsuarios">Usuários</a>
+                            <a class="collapse-item" href="{{ url('/register/') }}" target="_blank">Cadastro de Associado</a>
                         </div>
                     </div>
                 </li>
