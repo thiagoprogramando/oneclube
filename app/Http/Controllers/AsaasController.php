@@ -145,22 +145,23 @@ class AsaasController extends Controller
             $key = $jsonData['document']['key'];
 
             $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'null')->orWhereNull('status_pay'); })->first();
-            if ($venda) {
-                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
-                $venda->id_pay = $link['json']['paymentId'];
-                $venda->status_pay = 'PENDING_PAY';
-                $venda->save();
-                return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
-            } else {
-                $venda = Vendas::where('email', $email)->where(function ($query) {$query->where('status_pay', 'null')->orWhereNull('status_pay');})->first();
-                $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
-                $venda->id_pay = $link['json']['paymentId'];
-                $venda->status_pay = 'PENDING_PAY';
-                $venda->save();
-                return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
-            }
+            // if ($venda) {
+            //     $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
+            //     $venda->id_pay = $link['json']['paymentId'];
+            //     $venda->status_pay = 'PENDING_PAY';
+            //     $venda->save();
+                $link = "www.bb.com.br/pay/null";
+                return $this->notificaCliente($venda->telefone, $link);
+            // } else {
+            //     $venda = Vendas::where('email', $email)->where(function ($query) {$query->where('status_pay', 'null')->orWhereNull('status_pay');})->first();
+            //     $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
+            //     $venda->id_pay = $link['json']['paymentId'];
+            //     $venda->status_pay = 'PENDING_PAY';
+            //     $venda->save();
+            //     return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
+            // }
 
-            return response()->json(['message' => 'Assinatura Recebida!'], 200);
+            // return response()->json(['message' => 'Assinatura Recebida!'], 200);
         }
 
         return response()->json(['message' => 'Evento não é "sign"'], 200);
@@ -231,7 +232,7 @@ class AsaasController extends Controller
     public function notificaCliente($telefone, $assas) {
         $client = new Client();
 
-        $url = 'https://api.z-api.io/instances/3C24182AB9E40098B0CE2E1CFDC948D1/token/D5D802A4C4A9E614211D5ED1/send-link';
+        $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-link';
 
         $response = $client->post($url, [
             'headers' => [
@@ -240,10 +241,10 @@ class AsaasController extends Controller
             ],
             'json' => [
                 'phone'     => '55'.$telefone,
-                'message'   => "Prezado Cliente, segue seu link de pagamento da One Clube: \r\n \r\n",
-                'image'     => 'https://oneclube.com.br/images/logo.png',
+                'message'   => "Prezado Cliente, segue seu link de pagamento da Positivo Brasil: \r\n \r\n",
+                'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
                 'linkUrl'   => $assas,
-                'title'     => 'Pagamento One Clube',
+                'title'     => 'Pagamento Positivo Brasil',
                 'linkDescription' => 'Link para Pagamento Digital'
             ],
         ]);
