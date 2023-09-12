@@ -356,7 +356,7 @@ class VendasController extends Controller
     {
         $client = new Client();
         if ($auth == 'whatsapp') {
-            $url = 'https://api.z-api.io/instances/3C24182AB9E40098B0CE2E1CFDC948D1/token/D5D802A4C4A9E614211D5ED1/send-link';
+            $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-link';
 
             $response = $client->post($url, [
                 'headers' => [
@@ -369,7 +369,6 @@ class VendasController extends Controller
                     'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
                     'linkUrl'   => $contrato,
                     'title'     => 'Assinatura de Contrato',
-                    'linkDescription' => 'Link para Assinatura Digital'
                 ],
             ]);
 
