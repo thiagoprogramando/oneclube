@@ -24,6 +24,7 @@ class User extends Authenticatable
         'updated_at',
         'cpf',
         'tipo',
+        'cupom',
         'status',
     ];
 

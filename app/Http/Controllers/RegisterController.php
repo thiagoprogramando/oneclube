@@ -42,7 +42,7 @@ class RegisterController extends Controller
             'status' => 1,
         ];
 
-        if (isset($request->cupom)) {
+        if (!empty($request->cupom)) {
             $attributes['cupom'] = $request->cupom;
         }
 
