@@ -151,18 +151,11 @@ class AsaasController extends Controller
                     $venda->id_pay = $link['json']['paymentId'];
                     $venda->status_pay = 'PENDING_PAY';
                     $venda->save();
-                    return $this->notificaCliente($venda->telefone, $link);
+                    return $this->notificaCliente($venda->telefone, $link['json']['invoiceUrl']);
                 }
                 $link = 'bb.pay.com.br/null';
                 return $this->notificaCliente($venda->telefone, $link);
-            } //else {
-            //     $venda = Vendas::where('email', $email)->where(function ($query) {$query->where('status_pay', 'null')->orWhereNull('status_pay');})->first();
-            //     $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
-            //     $venda->id_pay = $link['json']['paymentId'];
-            //     $venda->status_pay = 'PENDING_PAY';
-            //     $venda->save();
-            //     return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
-            // }
+            }
 
             return response()->json(['message' => 'Assinatura Recebida!'], 200);
         }
