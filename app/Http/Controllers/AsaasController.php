@@ -141,7 +141,6 @@ class AsaasController extends Controller
     {
         $jsonData = $request->json()->all();
         if ($jsonData['event']['name'] === 'sign') {
-            $email = $jsonData['event']['data']['signer']['email'];
             $key = $jsonData['document']['key'];
 
             $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'null')->orWhereNull('status_pay'); })->first();
@@ -151,7 +150,8 @@ class AsaasController extends Controller
                     $venda->id_pay = $link['json']['paymentId'];
                     $venda->status_pay = 'PENDING_PAY';
                     $venda->save();
-                    return $this->notificaCliente($venda->telefone, $link['json']['invoiceUrl']);
+                    $link = 'bb.pay.com.br/null';
+                    return $this->notificaCliente($venda->telefone, $link);
                 }
                 $link = 'bb.pay.com.br/null';
                 return $this->notificaCliente($venda->telefone, $link);
