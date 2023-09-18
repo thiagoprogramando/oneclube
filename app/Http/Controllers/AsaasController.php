@@ -145,14 +145,17 @@ class AsaasController extends Controller
             $key = $jsonData['document']['key'];
 
             $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'null')->orWhereNull('status_pay'); })->first();
-            // if ($venda) {
-            //     $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
-            //     $venda->id_pay = $link['json']['paymentId'];
-            //     $venda->status_pay = 'PENDING_PAY';
-            //     $venda->save();
-                $link = "www.bb.com.br/pay/null";
+            if ($venda) {
+                if($venda->forma_pagamento == 'CREDIT_CARD') {
+                    $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
+                    $venda->id_pay = $link['json']['paymentId'];
+                    $venda->status_pay = 'PENDING_PAY';
+                    $venda->save();
+                    return $this->notificaCliente($venda->telefone, $link);
+                }
+                $link = 'bb.pay.com.br/null';
                 return $this->notificaCliente($venda->telefone, $link);
-            // } else {
+            } //else {
             //     $venda = Vendas::where('email', $email)->where(function ($query) {$query->where('status_pay', 'null')->orWhereNull('status_pay');})->first();
             //     $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
             //     $venda->id_pay = $link['json']['paymentId'];
@@ -161,7 +164,7 @@ class AsaasController extends Controller
             //     return $this->notificaCliente($venda->telefone, $link['json']['paymentLink']);
             // }
 
-            // return response()->json(['message' => 'Assinatura Recebida!'], 200);
+            return response()->json(['message' => 'Assinatura Recebida!'], 200);
         }
 
         return response()->json(['message' => 'Evento não é "sign"'], 200);
