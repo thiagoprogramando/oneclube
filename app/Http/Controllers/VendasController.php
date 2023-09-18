@@ -77,7 +77,7 @@ class VendasController extends Controller
             'valor' => null,
             'parcela' => $request->parcela,
             'cupom' => $request->cupom,
-            'forma_pagamento' => $request->forma_pagamento === 'CARTÃO' ? 'CREDIT_CARD' : $request->forma_pagamento,
+            'forma_pagamento' => $request->forma_pagamento == 'CARTÃO' ? 'CREDIT_CARD' : $request->forma_pagamento,
         ];
 
         if (!empty($request->cpfcnpj)) {
