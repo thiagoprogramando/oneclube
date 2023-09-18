@@ -25,6 +25,10 @@ class Vendas extends Authenticatable
         'id_produto',
         'id_vendedor',
         'valor',
+        'parcel',
+        'forma_pagamento',
+        'status_pay',
+        'cupom',
         'updatedat',
         'createdat'
     ];
