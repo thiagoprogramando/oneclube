@@ -13,6 +13,7 @@ use Carbon\Carbon;
 
 use App\Models\Vendas;
 use App\Models\Notificacao;
+use Illuminate\Support\Facades\Storage;
 
 class VendasController extends Controller
 {
@@ -95,6 +96,7 @@ class VendasController extends Controller
 
     public function vender(Request $request, $id)
     {
+        
         //Registra venda
         $request->validate([
             'cpfcnpj' => 'required|string|max:255',
@@ -103,8 +105,8 @@ class VendasController extends Controller
             'email' => 'string|max:255',
             'telefone' => 'required|string|max:20',
             'rg' => 'max:20',
+            'file' => 'required|max:2048'
         ]);
-
         switch ($request->produto) {
             case 3:
                 $views = ['documentos.onemotos'];
@@ -180,6 +182,14 @@ class VendasController extends Controller
             $vendaData['id_produto'] = $request->produto;
         }
 
+        if (!empty($request->hasFile('file'))) {
+            $path = $request->file('file')->store('uploads');
+            $url = Storage::url($path);
+
+            $vendaData['file'] = $url;
+          
+        }
+        
         $venda = Vendas::create($vendaData);
 
         if (!$venda) {

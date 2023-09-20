@@ -26,7 +26,9 @@ class Vendas extends Authenticatable
         'id_vendedor',
         'valor',
         'updatedat',
-        'createdat'
+        'createdat',
+        'file',
+        'rg'
     ];
 
 }

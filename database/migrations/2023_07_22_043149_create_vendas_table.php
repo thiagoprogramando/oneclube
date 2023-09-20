@@ -26,6 +26,7 @@ return new class extends Migration
             $table->decimal('valor', 10, 2);
             $table->string('status_pay')->nullable();
             $table->string('status_produto')->nullable();
+            $table->text('file')->nullable();
             $table->timestamps();
         });
     }
