@@ -29,16 +29,16 @@
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
                                                         <input type="hidden" value="{{ $produto }}" name="id">
                                                         <div class="row">
-                                                            <dil class="col-6">
+                                                            <div class="col-6">
                                                                 <div class="form-group">
                                                                     <input type="date" class="form-control" name="data_inicio" placeholder="Data inicial">
                                                                 </div>
-                                                            </dil>
-                                                            <dil class="col-6">
+                                                            </div>
+                                                            <div class="col-6">
                                                                 <div class="form-group">
                                                                     <input type="date" class="form-control" name="data_fim" placeholder="Data Final">
                                                                 </div>
-                                                            </dil>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -61,9 +61,9 @@
                                                 <th>ID</th>
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
-                                                <th>Contrato</th>
                                                 <th>Status</th>
                                                 <th>Data venda</th>
+                                                <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -74,7 +74,10 @@
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(2)
-                                                            Limpa Nome
+                                                            One Positive
+                                                            @break
+                                                        @case(12)
+                                                            One Positive
                                                             @break
                                                         @case(3)
                                                             One Motos/Beauty
@@ -90,9 +93,6 @@
                                                     @endswitch
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                </td>
-                                                <td>
                                                     @switch($venda->status_pay)
                                                         @case('PAYMENT_CONFIRMED')
                                                             Aprovado
@@ -105,6 +105,15 @@
                                                     @endswitch
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/'.$venda->id_produto.$venda->cpf.'.pdf') }}" download><i class="fa fa-file"></i></a>
+                                                    <?php
+                                                        $id_pay = str_replace('pay_', '', $venda->id_pay);
+                                                    ?>
+                                                    <a class="btn btn-outline-primary" href="https://www.asaas.com/i/{{ $id_pay }}" target="_blank">
+                                                        <i class="fa fa-credit-card"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>

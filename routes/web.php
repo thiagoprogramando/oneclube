@@ -36,7 +36,7 @@ Route::view('/contrato', 'relatorio.contrato')->name('relatorio.contrato');
 
 //Extras
 Route::view('/obrigado', 'obrigado');
-
+ 
 //Autenticados
 Route::middleware(['auth'])->group(function () {
 

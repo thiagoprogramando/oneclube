@@ -26,7 +26,8 @@
                                                 <th>Login</th>
                                                 <th>Email</th>
                                                 <th>CPF</th>
-                                                <th class="text-center">Alterar para:</th>
+                                                <th>Tipo</th>
+                                                <th class="text-center">Mudar para:</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -37,12 +38,35 @@
                                                 <td>{{ $user->login }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->cpf }}</td>
+                                                <td>
+                                                    @switch($user->tipo)
+                                                        @case(1)
+                                                            One Clube
+                                                            @break
+                                                        @case(2)
+                                                            Administrador
+                                                            @break
+                                                        @case(3)
+                                                            Associado
+                                                            @break
+                                                        @case(4)
+                                                            Cliente
+                                                            @break
+                                                        @default
+                                                            Tipo Desconhecido
+                                                    @endswitch
+                                                </td>
                                                 <td class="text-center">
                                                     <form method="POST" action="{{ route('relatorioUsuarios') }}">
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
                                                         <input type="hidden" value="{{  $user->id }}" name="id_usuario">
-                                                        @if($user->tipo == 1) <input type="hidden" value="2" name="tipo"> @else <input type="hidden" value="1" name="tipo">  @endif
-                                                        <button class="btn btn-outline-primary"> @if($user->tipo == 1) Administrador @else Comum  @endif</button>
+                                                        @if($user->tipo == 1)
+                                                            <input type="hidden" value="2" name="tipo">
+                                                            <button type="submit" class="btn btn-outline-primary"> One Clube </button>
+                                                        @else
+                                                            <input type="hidden" value="1" name="tipo">
+                                                            <button type="submit" class="btn btn-outline-primary"> Administrador </button>
+                                                        @endif
                                                     </form>
                                                 </td>
                                             </tr>

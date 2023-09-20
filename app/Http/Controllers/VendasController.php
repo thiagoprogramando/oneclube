@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\AsaasController;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
-use Illuminate\Contracts\Validation\Rule;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Carbon\Carbon;
 
 use App\Models\Vendas;
-use App\Models\Notificacao;
+use App\Models\VendaLance;
+use App\Models\VendaParcela;
+
 
 class VendasController extends Controller
 {
@@ -20,26 +22,9 @@ class VendasController extends Controller
     public function getVendas($id)
     {
         $users = auth()->user();
-
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')
-                        ->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)
-                        ->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
-
         $vendas = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id)->latest()->limit(30)->get();
 
-        // Retornar os dados para a view vendas
         return view('dashboard.vendas', [
-            'notfic' => $notfic,
             'users' => $users,
             'vendas' => $vendas,
             'produto' => $id
@@ -49,21 +34,6 @@ class VendasController extends Controller
     public function vendas(Request $request)
     {
         $users = auth()->user();
-
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')
-                        ->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)
-                        ->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
-
 
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
@@ -84,9 +54,7 @@ class VendasController extends Controller
                 ->get();
         }
 
-        // Retornar os dados para a view vendas
         return view('dashboard.vendas', [
-            'notfic' => $notfic,
             'users' => $users,
             'vendas' => $vendas,
             'produto' => $request->input('id')
@@ -95,7 +63,6 @@ class VendasController extends Controller
 
     public function vender(Request $request, $id)
     {
-        //Registra venda
         $request->validate([
             'cpfcnpj' => 'required|string|max:255',
             'cliente' => 'required|string|max:255',
@@ -140,13 +107,8 @@ class VendasController extends Controller
         if ($request->entrada) {
             $valor = $request->entrada;
         }
-        if (!empty($valor)) {
-            if ($request->entrada) {
-                $vendaData['valor'] = $request->entrada;
-            } else {
-                $vendaData['valor'] = $valor;
-            }
-        }
+
+        $vendaData['valor'] = $valor;
 
         if (!empty($request->cpfcnpj)) {
             $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
@@ -186,7 +148,6 @@ class VendasController extends Controller
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
 
-        //Gera Contrato
         $data = [
             'cpfcnpj' => preg_replace('/[^0-9]/', '', $request->cpfcnpj),
             'cliente' => $request->cliente,
@@ -207,7 +168,6 @@ class VendasController extends Controller
             'entrada'   => $request->entrada
         ];
 
-        // Crie uma instância do Dompdf
         $dompdf = new Dompdf();
 
         $html = '';
@@ -216,7 +176,7 @@ class VendasController extends Controller
             $html .= View::make($view, ['data' => $data])->render();
             $total++;
             if ($total != 4) {
-                $html .= '<div style="page-break-before:always;"></div>'; // Adicione uma quebra de página entre as views
+                $html .= '<div style="page-break-before:always;"></div>';
             }
         }
 
@@ -232,28 +192,22 @@ class VendasController extends Controller
         $pdfContent = file_get_contents($pdfPath);
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
-        //Cria documento na Clicksing
         $keyDocumento = $this->criaDocumento($data);
         if ($keyDocumento['type'] != true) {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keyDocumento['key']])->withInput();
         }
 
-        //Cria Signatario
         $keySignatario = $this->criaSignatario($data);
         if ($keySignatario['type'] != true) {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keySignatario['key']])->withInput();
         }
 
-        //Adicionar Signatarios ao Documento
         $addSignatarios = $this->adiconaSignatario($keyDocumento['key'], $keySignatario['key']);
         if ($addSignatarios['type'] != null) {
 
-            //Notifica
             $notificar = $this->notificarSignatario($addSignatarios['url'], $data['auth'], $data['telefone']);
 
-            //Atualiza Contrato
             $updateVenda = Vendas::where('cpf', $data['cpfcnpj'])->orderBy('id', 'desc')->first();
-
             if ($updateVenda) {
                 $updateVenda->id_contrato = $keyDocumento['key'];
                 $updateVenda->save();
@@ -325,7 +279,6 @@ class VendasController extends Controller
                 return $result;
             }
         } catch (RequestException $e) {
-            // Tratamento de erro: capturar e retornar a resposta de erro
             if ($e->hasResponse()) {
                 $errorResponse = json_decode($e->getResponse()->getBody(), true);
                 if (isset($errorResponse['errors']) && !empty($errorResponse['errors'])) {
@@ -400,7 +353,6 @@ class VendasController extends Controller
                 return $result;
             }
         } catch (RequestException $e) {
-            // Tratamento de erro: capturar e retornar a resposta de erro
             if ($e->hasResponse()) {
                 $errorResponse = json_decode($e->getResponse()->getBody(), true);
                 if (isset($errorResponse['errors']) && !empty($errorResponse['errors'])) {
@@ -471,7 +423,7 @@ class VendasController extends Controller
     {
         $client = new Client();
         if ($auth == 'whatsapp') {
-            $url = 'https://api.z-api.io/instances/3BF660F605143051CA98E2F1A4FCFFCB/token/3048386F0FE68A1828B852B1/send-link';
+            $url = 'https://api.z-api.io/instances/3C39E4D09323F0EC65030A65366C354F/token/BF1BD343228F26E59D57E7E3/send-link';
 
             $response = $client->post($url, [
                 'headers' => [
@@ -496,6 +448,60 @@ class VendasController extends Controller
             }
         } else {
             return "Não foi whatsapp";
+        }
+    }
+
+    public function lance(Request $request) {
+        $user = auth()->user();
+
+        $vendaId = $request->input('id');
+        $totalPago = $request->input('totalPago');
+        $oferta = $request->input('oferta');
+
+        $mesAtual = Carbon::now()->format('m');
+
+        VendaLance::where('venda_id', $vendaId)->delete();
+        VendaLance::create([
+            'venda_id' => $vendaId,
+            'user_id' => $user->id,
+            'pago' => $totalPago,
+            'oferta' => $oferta,
+            'mes' => $mesAtual
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Oferta realizada com sucesso!');
+    }
+
+    public function geraAssasParcela(Request $request) {
+
+        $user = auth()->user();
+        $id = $request->input('id');
+
+        $dados = [
+            'id_assas'  => 'false',
+            'nome'      => $user->nome,
+            'cpf'       => $request->input('cpf'),
+            'valor'     => $request->input('valor'),
+            'parcelas'  => 1,
+        ];
+
+        $request = new Request($dados);
+
+        $assasParcela = new AsaasController();
+        $resultado = $assasParcela->geraAssasOneClube($request);
+
+        if($resultado){
+            $paymentId = $resultado['json']['paymentId'];
+
+            $parcela = VendaParcela::where('id', $id)->first();
+            $parcela->id_assas = $paymentId;
+            $parcela->save();
+
+            $paymentLink = $resultado['json']['paymentLink'];
+            return redirect()->route('relatorioParcelas')->with('link', $paymentLink);
+        } else {
+            $mensagemErro = "Houve um erro ao gerar o link de pagamento!";
+            return redirect()->route('relatorioParcelas')->with('mensagemErro', $mensagemErro);
         }
     }
 }

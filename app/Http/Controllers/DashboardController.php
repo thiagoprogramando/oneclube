@@ -2,39 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notificacao;
-use App\Models\User;
-use App\Models\Vendas;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
+use App\Models\Vendas;
+use App\Models\VendaLance;
 
 class DashboardController extends Controller
 {
     public function dashboard (){
-        $users = auth()->user();
+        $user = auth()->user();
 
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')
-                        ->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)
-                        ->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
+        if($user->tipo == 4){
+            $vendas = Vendas::where('cpf', $user->cpf)->get();
+            $vendas->each(function ($venda) {
+                $venda->total_parcelas_confirmadas = $venda->vendaParcelas()->where('status', 'PAYMENT_CONFIRMED')->count();
+                $venda->total_parcelas_confirmadas_valor = $venda->vendaParcelas()->where('status', 'PAYMENT_CONFIRMED')->sum('valor');
+                $venda->soma_ofertas = VendaLance::where('venda_id', $venda->id)->sum('oferta');
+            });
+        } else {
+            $vendas = Vendas::where('id_vendedor', $user->id)->limit(15)->get();
+        }
 
-        $vendas = Vendas::where('id_vendedor', $users->id)->limit(15)->get();
+        $mes = Carbon::now()->month;
+        $lances = VendaLance::where('user_id', $user->id)->where('mes', $mes)->get();
 
         return view('dashboard.index', [
-            'notfic' => $notfic,
-            'users' => $users,
-            'vendas' => $vendas
+            'user' => $user,
+            'vendas' => $vendas,
+            'lances' => $lances
         ]);
     }
 
