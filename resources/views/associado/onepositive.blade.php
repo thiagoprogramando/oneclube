@@ -29,7 +29,7 @@
                                                 {{ $success }}
                                             </div>
                                         @endif
-                                        <form id="registrer" class="user" method="POST" action="{{ route('vender', ['id' => $id]) }}"  enctype="multipart/form-data">
+                                        <form id="registrer" class="user" method="POST" action="{{ route('vender', ['id' => $id]) }}">
                                             <input type="hidden" value={{  csrf_token() }} name="_token">
                                             <div class="col-sm-12 col-lg-8 offset-lg-2 row">
 
@@ -57,13 +57,7 @@
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="telefoneInput" oninput="mascaraTelefone(this)" maxlength="15" value="{{ old('telefone') }}" class="form-control form-control-user" name="telefone" placeholder="WhatsApp" required>
                                                 </div>
-                                                <div class="form-group col-sm-12 col-lg-12">
-                                                   
-                                                       
-                                                    <input type="file"   name="file">
-                                                
-                                               
-                                                </div>
+
                                                 <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                                     <div class="form-group">
                                                         <button type="submit" class="btn btn-primary btn-user btn-block"> Contratar </button>

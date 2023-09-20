@@ -38,6 +38,8 @@
                                     <hr>
                                     <div class="text-center">
                                         <a class="small" href="/register">Primeiro Acesso?</a>
+                                        <!--<br> ou <br>
+                                        <a class="small" href="/forgout">Esqueci minha senha!</a>-->
                                     </div>
                                 </div>
                             </div>

@@ -17,22 +17,10 @@ class PerfilController extends Controller
         $dados = Auth::User();
         $users = auth()->user();
 
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
-
-        return view('dashboard.perfil',['notfic'=> $notfic],['dados'=> $dados]);
+        return view('dashboard.perfil', ['dados'=> $dados]);
 
     }
-    
+
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -46,15 +34,11 @@ class PerfilController extends Controller
         }
 
         if ($request->filled('password')) {
-            $user->passwordHash = Hash::make($request->input('password'));
+            $user->password = Hash::make($request->input('password'));
         }
 
         $user->save();
 
         return redirect()->back()->with('success', 'Perfil atualizado com sucesso.');
     }
-
-
-
-
 }

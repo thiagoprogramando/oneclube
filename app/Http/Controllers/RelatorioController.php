@@ -7,30 +7,13 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 use App\Models\Vendas;
+use App\Models\VendaParcela;
 use App\Models\User;
-use App\Models\Notificacao;
 
 class RelatorioController extends Controller
 {
     public function index() {
-        $users = auth()->user();
-
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')
-                        ->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)
-                        ->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
-
         return view('dashboard.relatorio.vendas', [
-            'notfic' => $notfic,
             'users' => User::all(),
             'vendas' => Vendas::take(50)->get(),
         ]);
@@ -39,20 +22,6 @@ class RelatorioController extends Controller
     public function filtro(Request $request) {
 
         $users = auth()->user();
-
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')
-                        ->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)
-                        ->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
 
         $produto = $request->input('produto');
         $usuario = $request->input('usuario');
@@ -85,7 +54,6 @@ class RelatorioController extends Controller
         $vendas = $vendas->get();
 
         return view('dashboard.relatorio.vendas', [
-            'notfic' => $notfic,
             'users'  => $users,
             'vendas' => $vendas,
             'users'  => User::all(),
@@ -93,45 +61,12 @@ class RelatorioController extends Controller
     }
 
     public function usuarios() {
-        $users = auth()->user();
-
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')
-                        ->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)
-                        ->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
-
         return view('dashboard.relatorio.usuarios', [
-            'notfic' => $notfic,
             'users' => User::all(),
         ]);
     }
 
     public function upusuarios(Request $request) {
-        $users = auth()->user();
-
-        $notfic = Notificacao::where(function ($query) use ($users) {
-            if ($users->profile === 'admin') {
-                $query->where(function ($query) {
-                    $query->where('tipo', '!=', '')
-                        ->orWhere('tipo', 0);
-                });
-            } else {
-                $query->where(function ($query) use ($users) {
-                    $query->where('tipo', 0)
-                        ->orWhere('tipo', $users->id);
-                });
-            }
-        })->get();
-
         $usuario = User::where('id', $request->id_usuario)->first();
         if($usuario){
             $usuario->tipo = $request->tipo;
@@ -142,9 +77,68 @@ class RelatorioController extends Controller
         }
 
         return view('dashboard.relatorio.usuarios', [
-            'notfic' => $notfic,
             'users' => User::all(),
             'msg'   => $msg
+        ]);
+    }
+
+    public function premiados() {
+        $vendasPremiadas = Vendas::where('status_produto', 'PREMIADO')->get();
+        return view('dashboard.relatorio.premiados', [
+            'vendasPremiadas' => $vendasPremiadas,
+            'vendas'          => Vendas::all()
+        ]);
+    }
+
+    public function cria_premiados(Request $request) {
+        $venda = Vendas::where('id', $request->id)->first();
+        if($venda){
+            $venda->status_produto = 'PREMIADO';
+            $venda->save();
+        }
+
+        $vendasPremiadas = Vendas::where('status_produto', 'PREMIADO')->get();
+        return view('dashboard.relatorio.premiados', [
+            'vendasPremiadas' => $vendasPremiadas,
+            'vendas'          => Vendas::all()
+        ]);
+    }
+
+    public function atualiza_premiados(Request $request) {
+        $venda = Vendas::where('id', $request->id)->first();
+        if($venda){
+            $venda->status_produto = '';
+            $venda->save();
+        }
+
+        $vendasPremiadas = Vendas::where('status_produto', 'PREMIADO')->get();
+        return view('dashboard.relatorio.premiados', [
+            'vendasPremiadas' => $vendasPremiadas,
+            'vendas'          => Vendas::all()
+        ]);
+    }
+
+    public function relatorioParcelas($id = null) {
+        $users = auth()->user();
+
+        if($id) {
+            $parcelas = VendaParcela::where('venda_id', $id)->get();
+        } else {
+            $parcelas = VendaParcela::where('cpf', $users->cpf)->get();
+        }
+
+        return view('dashboard.relatorio.parcelas', [
+            'parcelas' => $parcelas,
+        ]);
+    }
+
+    public function relatorioContratos() {
+        $users = auth()->user();
+
+        $vendas = Vendas::where('cpf', $users->cpf)->get();
+
+        return view('dashboard.relatorio.contratos', [
+            'vendas' => $vendas,
         ]);
     }
 }

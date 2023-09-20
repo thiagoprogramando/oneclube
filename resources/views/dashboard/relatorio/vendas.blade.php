@@ -4,7 +4,7 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Minhas Vendas</h1>
+            <h1 class="h3 mb-0 text-gray-800">Vendas</h1>
         </div>
 
         <!-- Minhas Vendas -->
@@ -92,9 +92,9 @@
                                                 <th>ID</th>
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
-                                                <th>Contrato</th>
                                                 <th>Status</th>
                                                 <th>Data venda</th>
+                                                <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -124,30 +124,6 @@
                                                     @endswitch
                                                 </td>
                                                 <td>
-                                                    @switch($venda->id_produto)
-                                                        @case(1)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/1' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @case(2)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @case(3)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/3' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @case(8)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/8' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @case(11)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/11' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @case(12)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/12' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @default
-                                                            Produto Desconhecido
-                                                    @endswitch
-                                                </td>
-                                                <td>
                                                     @switch($venda->status_pay)
                                                         @case('PAYMENT_CONFIRMED')
                                                             Aprovado
@@ -160,6 +136,15 @@
                                                     @endswitch
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/'.$venda->id_produto.$venda->cpf.'.pdf') }}" download><i class="fa fa-file"></i></a>
+                                                    <?php
+                                                        $id_pay = str_replace('pay_', '', $venda->id_pay);
+                                                    ?>
+                                                    <a class="btn btn-outline-primary" href="https://www.asaas.com/i/{{ $id_pay }}" target="_blank">
+                                                        <i class="fa fa-credit-card"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>

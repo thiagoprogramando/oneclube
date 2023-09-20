@@ -154,7 +154,7 @@
             style="font-weight:bold">CLÁUSULA TERCEIRA</span><span>: O
             bem objeto do contrato é adquirido através de contrapartida
             monetária de forma parcelada, sendo 1 (uma) parcela de R$
-            500,00 (quinhentos) e mais 59 (cinquenta e nove)
+            1.000,00 (um mil reais) e mais 59 (cinquenta e nove)
             parcelas,</span><span style="-aw-import:spaces">&#xa0;
         </span><span>mensais</span><span style="-aw-import:spaces">&#xa0;
         </span><span>e</span><span style="-aw-import:spaces">&#xa0;

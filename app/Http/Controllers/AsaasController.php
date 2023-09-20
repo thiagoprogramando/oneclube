@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 
 use App\Models\Vendas;
 use App\Models\User;
+use App\Models\VendaParcela;
 
 use Carbon\Carbon;
 
@@ -42,7 +43,6 @@ class AsaasController extends Controller
             $customerId = $request->input('id');
         }
 
-        // Calculate tomorrow's date
         $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
 
         $options['json'] = [
@@ -73,7 +73,6 @@ class AsaasController extends Controller
 
     public function receberPagamento(Request $request)
     {
-
         $jsonData = $request->json()->all();
 
         if ($jsonData['event'] === 'PAYMENT_CONFIRMED' || $jsonData['event'] === 'PAYMENT_RECEIVED') {
@@ -87,6 +86,25 @@ class AsaasController extends Controller
                 $venda->status_pay = 'PAYMENT_CONFIRMED';
                 $venda->save();
 
+                $parcelas = $this->geraParcelas($venda->id);
+                if ($parcelas) {
+                    $user = User::where('cpf', $venda->cpf)->orWhere('email', $venda->email)->first();
+
+                    if (!$user) {
+                        $attributes = [
+                            'nome' => $venda->nome,
+                            'cpf' => $venda->cpf,
+                            'email' => $venda->email,
+                            'password' => bcrypt($venda->cpf),
+                            'tipo' => 4,
+                            'status' => 1,
+                        ];
+
+                        $user = User::create($attributes);
+                        $notifica = $this->notificaUsuario($attributes['email'], $venda->telefone);
+                    }
+                }
+
                 $user = User::where('id', $idUsuario)->first();
                 if ($user) {
                     $cpf = $user->cpf;
@@ -98,15 +116,12 @@ class AsaasController extends Controller
                         'product' => $venda->id_produto,
                     ];
 
-                    // Enviar a requisição POST para oneclube.com.br/recebe
                     $client = new Client();
                     $response = $client->post(env('API_URL_ONECLUBE') . 'confirm-sale-product', [
                         'form_params' => $dados
                     ]);
 
-                    // Verificar se a requisição teve sucesso
                     if ($response->getStatusCode() === 200) {
-                        // Retornar true em caso de sucesso
                         return response()->json(['status' => 'success', 'response' => true]);
                     } else {
                         return response()->json(['status' => 'error', 'response' => 'Comunicação com One Clube falhou']);
@@ -115,6 +130,13 @@ class AsaasController extends Controller
                     return response()->json(['status' => 'error', 'response' => 'Usuário não existe!']);
                 }
             } else {
+
+                $parcela = VendaParcela::where('id_assas', $idRequisicao)->first();
+                if($parcela) {
+                    $parcela->status = 'PAYMENT_CONFIRMED';
+                    $parcela->save();
+                }
+
                 $dados = [
                     'id_assas' => $idRequisicao,
                 ];
@@ -125,7 +147,6 @@ class AsaasController extends Controller
 
                 if ($response->getStatusCode() === 200) {
                     $responseData = json_decode($response->getBody(), true);
-                    // Exibir o retorno da requisição
                     return response()->json(['status' => 'success', 'response' => $responseData]);
                 } else {
                     return response()->json(['status' => 'success', 'response' => 'Erro ao quitar fatura!']);
@@ -133,7 +154,6 @@ class AsaasController extends Controller
             }
         }
 
-        // Caso contrário, retorne uma resposta de erro
         return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado']);
     }
 
@@ -232,7 +252,7 @@ class AsaasController extends Controller
     {
         $client = new Client();
 
-        $url = 'https://api.z-api.io/instances/3BF660F605143051CA98E2F1A4FCFFCB/token/3048386F0FE68A1828B852B1/send-link';
+        $url = 'https://api.z-api.io/instances/3C39E4D09323F0EC65030A65366C354F/token/BF1BD343228F26E59D57E7E3/send-link';
 
         $response = $client->post($url, [
             'headers' => [
@@ -256,6 +276,75 @@ class AsaasController extends Controller
         } else {
             return false;
         }
+    }
+
+    public function notificaUsuario($email, $telefone)
+    {
+        $client = new Client();
+
+        $url = 'https://api.z-api.io/instances/3C39E4D09323F0EC65030A65366C354F/token/BF1BD343228F26E59D57E7E3/send-link';
+        $link = "https://myonecrm.com.br/";
+        $response = $client->post($url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'phone'     => '55' . $telefone,
+                'message'   => "Prezado Cliente, segue seu link de acesso ao sistema da One Clube! \r\n Para acessar, informe o email: ".$email." e o seu CPF como senha! \r\n",
+                'image'     => 'https://oneclube.com.br/images/logo.png',
+                'linkUrl'   => $link,
+                'title'     => 'Acesso One Clube',
+                'linkDescription' => 'Link Para Acesso Digital'
+            ],
+        ]);
+
+        $responseData = json_decode($response->getBody(), true);
+
+        if (isset($responseData['id'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function geraParcelas($id)
+    {
+        $venda = Vendas::where('id', $id)->first();
+
+        $parcelas = 0;
+        switch ($venda->id_produto) {
+            case 3:
+                $parcelas = 59;
+                $valor = 375;
+                break;
+            case 11:
+                $parcelas = 59;
+                $valor = 375;
+                break;
+            default:
+                return false;
+        }
+
+        $primeiraParcelaDate = Carbon::parse($venda->created_at)->addMonth();
+        if ($primeiraParcelaDate->day < 28) {
+            $primeiraParcelaDate->day = 28;
+        }
+
+        $interval = $primeiraParcelaDate->diffInMonths(Carbon::now());
+
+        for ($i = 1; $i <= $parcelas; $i++) {
+            $parcela = new VendaParcela();
+            $parcela->venda_id = $id;
+            $parcela->numero_parcela = $i;
+            $parcela->cpf = $venda->cpf;
+            $parcela->valor = $valor;
+            $parcela->status = "PENDING_PAY";
+            $parcela->vencimento = $primeiraParcelaDate->copy()->addMonths($interval + ($i - 1));
+            $parcela->save();
+        }
+
+        return true;
     }
 
     public function consultaFatura($id)
