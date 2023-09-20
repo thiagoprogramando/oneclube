@@ -316,11 +316,11 @@ class AsaasController extends Controller
         switch ($venda->id_produto) {
             case 3:
                 $parcelas = 59;
-                $valor = 375;
+                $valor = 317;
                 break;
             case 11:
                 $parcelas = 59;
-                $valor = 375;
+                $valor = 317;
                 break;
             default:
                 return false;
