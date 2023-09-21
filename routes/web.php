@@ -4,7 +4,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OneBeautyController;
 use App\Http\Controllers\OneMotosController;
@@ -36,7 +35,7 @@ Route::view('/contrato', 'relatorio.contrato')->name('relatorio.contrato');
 
 //Extras
 Route::view('/obrigado', 'obrigado');
- 
+
 //Autenticados
 Route::middleware(['auth'])->group(function () {
 
@@ -46,14 +45,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/vendas/{id}', [VendasController::class, 'getVendas'])->name('vendas');
     Route::post('vendas', [VendasController::class, 'vendas'])->name('vendas');
 
+    Route::post('lance', [VendasController::class, 'lance'])->name('lance');
+
     Route::get('/relatorioVendas', [RelatorioController::class, 'index'])->name('relatorioVendas');
     Route::post('relatorioVendas', [RelatorioController::class, 'filtro'])->name('relatorioVendas');
 
     Route::get('/relatorioUsuarios', [RelatorioController::class, 'usuarios'])->name('relatorioUsuarios');
     Route::post('relatorioUsuarios', [RelatorioController::class, 'upusuarios'])->name('relatorioUsuarios');
 
-    Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('notificacao.destroy');
-    Route::post('/cadastroNotficacao', [NotificacaoController::class, 'cadastroNotficacao'])->name('cadastroNotficacao');
+    Route::get('/relatorioParcelas/{id?}', [RelatorioController::class, 'relatorioParcelas'])->name('relatorioParcelas');
+    Route::post('geraAssasParcela', [VendasController::class, 'geraAssasParcela'])->name('geraAssasParcela');
+
+    Route::get('/relatorioPremiados', [RelatorioController::class, 'premiados'])->name('relatorioPremiados');
+    Route::post('relatorioPremiados', [RelatorioController::class, 'cria_premiados'])->name('relatorioPremiados');
+    Route::post('relatorioPremiadosUp', [RelatorioController::class, 'atualiza_premiados'])->name('relatorioPremiadosUp');
+
+    Route::get('/relatorioContratos', [RelatorioController::class, 'relatorioContratos'])->name('relatorioContratos');
+
+
+
 
     Route::get('/perfil',[PerfilController::class, 'perfil'])->name('perfil');
     Route::post('/user/update', [PerfilController::class, 'update'])->name('update');

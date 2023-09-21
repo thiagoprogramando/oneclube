@@ -187,7 +187,7 @@
         @if (Auth::user()->tipo == 4)
             <div class="row">
                 <div class="col-xl-8 col-lg-7">
-                    <div style="height: 50vh; overflow: auto;" class="card shadow mb-4">
+                    <div style="height: 60vh; overflow: auto;" class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-success">Meus Contratos</h6>
                             <div class="dropdown no-arrow">
@@ -307,7 +307,7 @@
                 </div>
 
                 <div class="col-xl-4 col-lg-5">
-                    <div style="height: 50vh; overflow: auto;" class="card shadow mb-4">
+                    <div style="height: 60vh; overflow: auto;" class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-success">Oferta de Quitação Válida</h6>
                             <div class="dropdown no-arrow">
@@ -355,7 +355,7 @@
                     </div>
                 </div>
 
-                <div class="col-xl-12 col-lg-12">
+                <!--<div class="col-xl-12 col-lg-12">
                     <div style="height: 50vh; overflow: auto;" class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-success">Últimos Contratos Quitados Por Antecipação</h6>
@@ -381,19 +381,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($vencedores as $key => $premiada)
-                                            <tr>
-                                                <td>{{ \Carbon\Carbon::parse($premiada->created_at)->format('d/m/Y') }} </td>
-                                                <td>{{ $premiada->nome }}</td>
-                                                <td> @if($premiada->soma_ofertas > 0) Oferta de Quitação - R$ {{ number_format($premiada->soma_ofertas, 2, ',', '.') }} @else Sorteio - {{ $premiada->parcelas_pagas_count }} parcelas pagas  @endif</td>
-                                            </tr>
-                                        @endforeach
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
 
             <script>

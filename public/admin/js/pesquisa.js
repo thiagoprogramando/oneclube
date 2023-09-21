@@ -116,6 +116,55 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
     });
+
+    const gerarLinksOneMotos = document.querySelectorAll(".gerar-link-one-motos");
+
+    gerarLinksOneMotos.forEach(function(gerarLink) {
+        gerarLink.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            const url = gerarLink.getAttribute("data-url");
+            const produto = gerarLink.getAttribute("data-produto");
+
+            if (produto === '3') {
+                // Se o produto for igual a 3, exiba um select para escolher o valor da entrada
+                exibirModalLinkGeradoParaProduto3(url);
+            }
+        });
+    });
+
+    function exibirModalLinkGeradoParaProduto3(url) {
+        Swal.fire({
+            title: 'Selecione o valor da entrada',
+            input: 'select',
+            inputOptions: {
+                '500': '500',
+                '700': '700',
+                '1000': '1000'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Gerar Link',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const entrada = result.value;
+                const linkGerado = `${url}/${entrada}`;
+                exibirModalLinkGerado(linkGerado);
+            } else {
+                Swal.fire('Operação cancelada!', '', 'info');
+            }
+        });
+    }
+
+    function exibirModalLinkGerado(linkGerado) {
+        Swal.fire({
+            title: 'Link gerado',
+            html: `<input class="form-control form-control-user mb-2" type="text" value="${linkGerado}" id="linkGeradoInput" readonly>
+                        <button class="btn btn-success" onclick="copiarLink()">Copiar</button>`,
+            showCancelButton: false,
+            showConfirmButton: false,
+        });
+    }
 });
 
 function copiarLink() {
