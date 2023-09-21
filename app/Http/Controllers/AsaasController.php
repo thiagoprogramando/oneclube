@@ -50,7 +50,7 @@ class AsaasController extends Controller
             'billingType'       => "BOLETO",
             'value'             => $request->valor,
             'dueDate'           => $tomorrow,
-            'description'       => 'Franquias One Clube',
+            'description'       => 'One Clube',
             'installmentCount'  => $request->parcelas,
             'installmentValue'  => ($request->valor / $request->parcelas),
         ];
@@ -193,6 +193,24 @@ class AsaasController extends Controller
     public function geraPagamentoAssas($nome, $cpfcnpj, $produto, $valor)
     {
 
+        switch ($produto) {
+            case 2:
+                $nomeProduto = "One Positive";
+                break;
+            case 3:
+                $nomeProduto = "One Motos";
+                break;
+            case 8:
+                $nomeProduto = "One Serviços";
+                break;
+            case 11:
+                $nomeProduto = "One Motos";
+                break;
+            case 12:
+                $nomeProduto = "One Positive";
+                break;
+        }
+
         $client = new Client();
 
         $options = [
@@ -222,7 +240,7 @@ class AsaasController extends Controller
                 'billingType' => 'BOLETO',
                 'value' => $valor,
                 'dueDate' => $tomorrow,
-                'description' => 'One Clube Franquias',
+                'description' => 'One Clube -'.$nomeProduto,
             ];
 
             $response = $client->post(env('API_URL_ASSAS') . 'api/v3/payments', $options);
