@@ -145,16 +145,18 @@ class AsaasController extends Controller
 
             $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'null')->orWhereNull('status_pay'); })->first();
             if ($venda) {
-                if($venda->forma_pagamento == 'CREDIT_CARD') {
-                    $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
-                    $venda->id_pay = $link['json']['paymentId'];
-                    $venda->status_pay = 'PENDING_PAY';
-                    $venda->save();
-                    $link = 'bb.pay.com.br/null';
-                    return $this->notificaCliente($venda->telefone, $link);
-                }
-                $link = 'bb.pay.com.br/null';
-                return $this->notificaCliente($venda->telefone, $link);
+                $venda->status_pay = 'PENDING_PAY';
+                return response()->json(['message' => 'Assinatura Recebida!'], 200);
+                // if($venda->forma_pagamento == 'CREDIT_CARD') {
+                //     $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
+                //     $venda->id_pay = $link['json']['paymentId'];
+                //     $venda->status_pay = 'PENDING_PAY';
+                //     $venda->save();
+                //     $link = 'bb.pay.com.br/null';
+                //     return $this->notificaCliente($venda->telefone, $link);
+                // }
+                // $link = 'bb.pay.com.br/null';
+                // return $this->notificaCliente($venda->telefone, $link);
             }
 
             return response()->json(['message' => 'Assinatura Recebida!'], 200);
