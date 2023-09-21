@@ -98,8 +98,6 @@ class VendasController extends Controller
                 break;
         }
 
-
-
         $vendaData = [
             'id_vendedor' => $id,
         ];
