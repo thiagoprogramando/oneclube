@@ -1,3 +1,4 @@
+@if (Auth::user()->tipo == 2)
 @extends('dashboard/layout')
     @section('conteudo')
     <div class="container-fluid">
@@ -78,3 +79,4 @@
    
 
     @endsection
+    @endif
