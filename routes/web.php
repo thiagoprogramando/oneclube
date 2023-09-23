@@ -9,6 +9,7 @@ use App\Http\Controllers\OneBeautyController;
 use App\Http\Controllers\OneMotosController;
 use App\Http\Controllers\OnePositiveController;
 use App\Http\Controllers\OneServicosController;
+use App\Http\Controllers\ParcelaController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\VendasController;
 use Illuminate\Support\Facades\Route;
@@ -62,10 +63,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/relatorioContratos', [RelatorioController::class, 'relatorioContratos'])->name('relatorioContratos');
 
-
-
-
     Route::get('/perfil',[PerfilController::class, 'perfil'])->name('perfil');
     Route::post('/user/update', [PerfilController::class, 'update'])->name('update');
+
+    Route::get('/relatorio', [ParcelaController::class, 'index'])->name('relatorio');
+    Route::post('/relatorio', [ParcelaController::class, 'relatorioAction'])->name('relatorioAction');
 
 });
