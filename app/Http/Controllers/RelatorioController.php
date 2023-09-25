@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Session;
 use App\Models\Vendas;
 use App\Models\VendaParcela;
 use App\Models\User;
@@ -140,5 +140,35 @@ class RelatorioController extends Controller
         return view('dashboard.relatorio.contratos', [
             'vendas' => $vendas,
         ]);
+    }
+
+    public function indexx()
+    {
+        $parcela = VendaParcela::all();
+
+        return view('dashboard.relatorio.parcela',['parcela'=> $parcela]);
+    }
+
+    public function relatorioAction(Request $request)
+    {
+        $parcelaId = $request->input('parcela_id');
+
+        $parcela = VendaParcela::find($parcelaId);
+
+        if (!$parcela) {
+            Session::flash('erro', 'Parcela não encontrada.');
+        } else {
+            if ($parcela->status === 'PAYMENT_CONFIRMED') {
+                $parcela->status = 'PENDING_PAY';
+                Session::flash('sucesso', 'Status atualizado para PENDING_PAY.');
+            } elseif ($parcela->status === 'PENDING_PAY') {
+                $parcela->status = 'PAYMENT_CONFIRMED';
+                Session::flash('sucesso', 'Status atualizado para PAYMENT_CONFIRMED.');
+            }
+
+            $parcela->save();
+        }
+
+        return redirect()->back();
     }
 }
