@@ -34,7 +34,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>CPF</th>
-                                                <th>PARCELAS</th>
+                                                <th>N°</th>
                                                 <th>VALOR</th>
                                                 <th>STATUS</th>
                                                 <th>VENCIMENTO</th>
@@ -44,7 +44,7 @@
                                         <tbody>
                                             @foreach ($parcela as $parcelas)
                                             <tr>
-                                                <td>{{ $parcelas->venda_id }}</td>
+                                                <td>{{ $parcelas->id }}</td>
                                                 <td>{{ $parcelas->cpf }}</td>
                                                 <td>{{ $parcelas->numero_parcela }}</td>
                                                 <td>{{ $parcelas->valor }}</td>

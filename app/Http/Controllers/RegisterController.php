@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Forgout;
 use App\Models\User;
-use App\Models\UserQueue;
+use App\Models\Token;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -67,5 +70,52 @@ class RegisterController extends Controller
     public function registerAssociado(Request $request)
     {
         return view('registerAssociado');
+    }
+
+    public function forgout(Request $request)
+    {
+        if (isset(auth()->user()->id)) {
+            return redirect()->route('dashboard');
+        }
+        return view('forgout');
+    }
+
+    public function forgout_action(Request $request) {
+        $user = User::where('email', $request->input('email'))->first();
+        if (!$user) {
+            return redirect()->back()->with('error', 'Conta não encontrada com Email informado!');
+        }
+
+        $codigoAleatorio = mt_rand(1000, 9999);
+        $sent = Mail::to('naoresponda@myonecrm.com.br', 'One Clube')->send(new Forgout([
+            'fromName' => $user->nome,
+            'fromEmail' => $request->input('email'),
+            'subject' => 'Recuperação de Dados!',
+            'message' => $codigoAleatorio,
+        ]));
+
+        if ($sent) {
+            Token::create([
+                'email' => $user->email,
+                'token' => $codigoAleatorio,
+            ]);
+
+            return view('forgout', compact('codigoAleatorio'));
+        }
+    }
+
+    public function forgout_token(Request $request) {
+        $token = Token::where('token', $request->input('token'))->first();
+        if($token) {
+            $user = User::where('email', $token->email)->first();
+            $user->password = Hash::make($request->input('senha'));
+            $user->save();
+
+            $token->delete();
+
+            return redirect()->route('login')->with('success', 'Senha atualizada com Sucesso! Acesse sua conta.');
+        }
+
+        return redirect()->back()->with('error', 'Código inválido!');
     }
 }

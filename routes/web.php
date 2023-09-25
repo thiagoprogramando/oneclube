@@ -22,6 +22,9 @@ Route::post('/', [LoginController::class, 'login_action'])->name('login_action')
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'register_action'])->name('register_action');
 Route::get('/registerAssociado', [RegisterController::class, 'registerAssociado'])->name('registerAssociado');
+Route::get('/forgout', [RegisterController::class, 'forgout'])->name('forgout');
+Route::post('forgout', [RegisterController::class, 'forgout_action'])->name('forgout');
+Route::post('forgout_token', [RegisterController::class, 'forgout_token'])->name('forgout_token');
 
 //Vendas
 Route::get('/associadonemotos/{id}/{entrada}', [OneMotosController::class, 'associado'])->name('associado');
