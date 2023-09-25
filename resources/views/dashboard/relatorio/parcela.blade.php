@@ -1,5 +1,4 @@
-@if (Auth::user()->tipo == 2)
-@extends('dashboard/layout')
+@extends('dashboard.layout')
     @section('conteudo')
     <div class="container-fluid">
         @if(Session::has('erro'))
@@ -7,13 +6,13 @@
             {{ Session::get('erro') }}
         </div>
     @endif
-    
+
     @if(Session::has('sucesso'))
         <div class="alert alert-success">
             {{ Session::get('sucesso') }}
         </div>
     @endif
-    
+
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Vendas</h1>
@@ -26,7 +25,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                               
+
                             </div>
                             <div class="col-12">
                                 <div class="table-responsive">
@@ -49,20 +48,29 @@
                                                 <td>{{ $parcelas->cpf }}</td>
                                                 <td>{{ $parcelas->numero_parcela }}</td>
                                                 <td>{{ $parcelas->valor }}</td>
-                                                <td>{{ $parcelas->status }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($parcelas->vencimento)->format('d/m/Y') }}</td>
                                                 <td>
-                                                    <form action="{{ route('relatorioAction') }}" method="POST" onsubmit="return confirm('Tem certeza que deseja Atualizar o status do CPF : {{ $parcelas->cpf }}?')">
+                                                    @switch($parcelas->status)
+                                                    @case('PAYMENT_CONFIRMED')
+                                                        Aprovado
+                                                        @break
+                                                    @case('PENDING_PAY')
+                                                        Aguardando Pagamento
+                                                        @break
+                                                    @default
+                                                        Status Desconhecido
+                                                    @endswitch
+                                                </td>
+                                                <td>{{ \Carbon\Carbon::parse($parcelas->vencimento)->format('d/m/Y') }}</td>
+                                                <td class="text-center">
+                                                    <form action="{{ route('relatorioParcelasAdmin') }}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="parcela_id" value="{{ $parcelas->id }}">
-                                                        <button type="submit" class="btn btn-outline-primary" style="border: 2px solid black;">
-                                                            <i><img src="{{ asset('icone/relatorio.png') }}" alt="icone" style="max-width:20px;"></i>
-                                                        </button>
+                                                        <button type="submit" class="btn btn-outline-info">Alterar Status</button>
                                                     </form>
                                                 </td>
                                             </tr>
                                         @endforeach
-                                        
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -71,12 +79,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Fim Vendas -->
         </div>
 
     </div>
-
-   
-
-    @endsection
-    @endif
+@endsection

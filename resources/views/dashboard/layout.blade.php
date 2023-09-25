@@ -190,7 +190,7 @@
                             <a class="collapse-item" href="/relatorioVendas">Vendas</a>
                             <a class="collapse-item" href="/relatorioUsuarios">Usuários</a>
                             <a class="collapse-item" href="/relatorioPremiados">Premiados</a>
-                            <a class="collapse-item" href="{{ route('relatorio') }}">Relatorio</a>
+                            <a class="collapse-item" href="/relatorioParcelasAdmin">Parcelas</a>
                         </div>
                     </div>
                 </li>
