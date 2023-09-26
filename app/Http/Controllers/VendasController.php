@@ -94,11 +94,6 @@ class VendasController extends Controller
             $vendaData['valor'] = $valor;
         }
 
-        $venda = Vendas::create($vendaData);
-        if (!$venda) {
-            return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
-        }
-
         $data = [
             'cpfcnpj' => preg_replace('/[^0-9]/', '', $request->cpfcnpj),
             'cliente' => $request->cliente,
@@ -144,6 +139,11 @@ class VendasController extends Controller
         $keySignatario = $this->criaSignatario($data);
         if ($keySignatario['type'] != true) {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keySignatario['key']])->withInput();
+        }
+
+        $venda = Vendas::create($vendaData);
+        if (!$venda) {
+            return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
 
         $addSignatarios = $this->adiconaSignatario($keyDocumento['key'], $keySignatario['key']);

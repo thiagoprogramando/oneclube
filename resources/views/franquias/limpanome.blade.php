@@ -49,7 +49,7 @@
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <input type="text" id="cpfInput" oninput="mascaraCpf(this)"
+                                                <input type="text" id="cpfInput" oninput="mascaraCpfCnpj(this)"
                                                     maxlength="14" value="{{ old('cpfcnpj') }}"
                                                     class="form-control " name="cpfcnpj"
                                                     placeholder="CPF/CNPJ">
@@ -123,13 +123,22 @@
             });
         });
 
-        function mascaraCpf(cpfInput) {
-            let cpf = cpfInput.value;
-            cpf = cpf.replace(/\D/g, '');
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            cpfInput.value = cpf;
+        function mascaraCpfCnpj(input) {
+            let value = input.value;
+            value = value.replace(/\D/g, '');
+
+            if (value.length <= 11) {
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            } else {
+                value = value.replace(/^(\d{2})(\d)/, '$1.$2');
+                value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+                value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
+                value = value.replace(/(\d{4})(\d)/, '$1-$2');
+            }
+
+            input.value = value;
         }
 
         function mascaraData(dataInput) {
