@@ -50,7 +50,7 @@
 
                                             <div class="form-group col-sm-12 col-lg-6">
                                                 <input type="text" id="cpfInput" oninput="mascaraCpfCnpj(this)"
-                                                    maxlength="14" value="{{ old('cpfcnpj') }}"
+                                                    value="{{ old('cpfcnpj') }}"
                                                     class="form-control " name="cpfcnpj"
                                                     placeholder="CPF/CNPJ">
                                             </div>
@@ -117,12 +117,6 @@
     </div>
 
     <script>
-        $(function() {
-            $("#datepicker").datepicker({
-                dateFormat: 'dd/mm/yy',
-            });
-        });
-
         function mascaraCpfCnpj(input) {
             let value = input.value;
             value = value.replace(/\D/g, '');
