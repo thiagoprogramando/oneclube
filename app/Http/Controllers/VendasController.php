@@ -257,9 +257,9 @@ class VendasController extends Controller
                         'auths' => [
                             $data['auth']
                         ],
-                        'documentation'  => $data['cpfcnpj'],
+                        'documentation' => strlen($data['cpfcnpj']) > 11 ? $data['cpfcnpj'] : '',
                         'birthday'  => $data['dataNascimento'],
-                        'has_documentation'  => 'true',
+                        'has_documentation'  => strlen($data['cpfcnpj']) > 11 ? false : true,
                         'selfie_enabled'  => 'false',
                         'handwritten_enabled'  => 'false',
                         'official_document_enabled'  => 'false',
