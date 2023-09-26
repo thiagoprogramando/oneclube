@@ -244,9 +244,13 @@
                                                 <td>
                                                     <form action="" method="POST">
                                                         <a href="{{ route('relatorioParcelas', ['id' => $venda->id]) }}" class="btn btn-outline-info">Extrato</a>
-                                                        @if ($venda->id_produto == 3 || $venda->id_produto == 12 || $venda->id_produto == 8 || $venda->id_produto == 11)
-                                                            @if($venda->total_parcelas_confirmadas > 3) <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#lanceModal{{ $venda->id }}">Ofertar Quitação</button> @endif
-                                                        @endif
+                                                        @if ($venda->id_produto == 3 || $venda->id_produto == 12)
+
+                                                        @if($venda->total_parcelas_confirmadas >= 4) <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#lanceModal{{ $venda->id }}">Ofertar Quitação</button> @endif
+                                                        @endif                                 
+
+                                                        @if($venda->total_parcelas_confirmadas <= 3)<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#avisoModal">Ofertar Quitação</button>    @endif                                               
+                                                        
                                                     </form>
                                                     <div class="modal fade" id="lanceModal{{ $venda->id }}"
                                                         tabindex="-1" role="dialog" aria-labelledby="lanceModalLabel"
@@ -293,6 +297,23 @@
                                                                         <button type="submit" class="btn btn-success m-1">Ofertar Quitação</button>
                                                                     </div>
                                                                 </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal fade" id="avisoModal"
+                                                        tabindex="-1" role="dialog" aria-labelledby="lanceModalLabel"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                 <div class="modal-header">
+                                                                    <h5 class="modal-title" id="lanceModalLabel">Informação</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                                                                  </div>
+                                                                  <div  style="margin:30px;">
+                                                                        Caro cliente, você somente poderá fazer uma OFERTA DE QUITAÇÃO, caso as quatro primeiras parcelas de seu contrato estejam pagas.
+                                                                    
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
