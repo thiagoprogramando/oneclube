@@ -101,7 +101,7 @@
                                             <tr>
                                                 <td>{{ $venda->id }}</td>
                                                 <td>{{ $venda->nome }}</td>
-                                                <td>{{ $venda->cep }} - <td>{{ $venda->endereco }}</td></td>
+                                                <td>{{ $venda->cep }} - {{ $venda->endereco }}</td>
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(2)
