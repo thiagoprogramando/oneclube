@@ -88,6 +88,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Cliente</th>
+                                                <th>Endereço</th>
                                                 <th>Produto</th>
                                                 <th>Contrato</th>
                                                 <th>Status Contrato</th>
@@ -100,6 +101,7 @@
                                             <tr>
                                                 <td>{{ $venda->id }}</td>
                                                 <td>{{ $venda->nome }}</td>
+                                                <td>{{ $venda->cep }} - <td>{{ $venda->endereco }}</td></td>
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(2)
