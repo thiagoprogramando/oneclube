@@ -84,14 +84,38 @@ class VendasController extends Controller
         ];
 
         if (!empty($request->cpfcnpj)) {
-            $valor = (strlen(preg_replace('/[^0-9]/', '', $request->cpfcnpj)) > 11) ? 1500 : 1000;
+            $cpfcnpj = strlen(preg_replace('/[^0-9]/', '', $request->cpfcnpj));
 
-            if (!empty($request->parcela) && strlen(preg_replace('/[^0-9]/', '', $request->cpfcnpj)) <= 11) {
-                $valor = ($request->parcela > 1) ? 1440 : $valor;
-            }
-
-            if (strlen(preg_replace('/[^0-9]/', '', $request->cpfcnpj)) > 2100) {
-                $valor = 2100;
+            if($cpfcnpj > 11) {
+                switch ($request->forma_pagamento) {
+                    case 'PIX':
+                        $valor = 1500;
+                        break;
+                    case 'BOLETO':
+                        $valor = 2100;
+                        break;
+                    case 'CARTÃO':
+                        $valor = 1900;
+                        break;
+                    default:
+                        $valor = 1500;
+                        break;
+                }
+            } else {
+                switch ($request->forma_pagamento) {
+                    case 'PIX':
+                        $valor = 1000;
+                        break;
+                    case 'BOLETO':
+                        $valor = 1440;
+                        break;
+                    case 'CARTÃO':
+                        $valor = 1280;
+                        break;
+                    default:
+                        $valor = 1000;
+                        break;
+                }
             }
 
             $vendaData['valor'] = $valor;
