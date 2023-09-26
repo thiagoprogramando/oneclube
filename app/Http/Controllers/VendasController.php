@@ -79,7 +79,7 @@ class VendasController extends Controller
             'cupom' => $request->cupom,
             'cep' => $request->cep,
             'endereco' => $request->endereco,
-            'status_contrato' => 'Pendente de Assinatura',
+            'status_contrato' => 'Pendente',
             'forma_pagamento' => $request->forma_pagamento == 'CARTÃO' ? 'CREDIT_CARD' : $request->forma_pagamento,
         ];
 

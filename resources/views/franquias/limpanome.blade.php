@@ -74,7 +74,7 @@
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <input type="text" id="cep" class="form-control " name="cep"
+                                                <input type="number" id="cep" class="form-control " name="cep"
                                                     placeholder="CEP" required>
                                             </div>
 
