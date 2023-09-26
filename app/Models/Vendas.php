@@ -21,6 +21,7 @@ class Vendas extends Authenticatable
         'cpf',
         'telefone',
         'email',
+        'cep',
         'endereco',
         'id_produto',
         'id_vendedor',
@@ -28,6 +29,7 @@ class Vendas extends Authenticatable
         'parcela',
         'forma_pagamento',
         'status_pay',
+        'status_contrato',
         'cupom',
         'updatedat',
         'createdat'
