@@ -146,6 +146,7 @@ class AsaasController extends Controller
             $venda = Vendas::where('id_contrato', $key)->where(function ($query) { $query->where('status_pay', 'null')->orWhereNull('status_pay'); })->first();
             if ($venda) {
                 $venda->status_pay = 'PENDING_PAY';
+                $venda->status_contrato = 'ASSINADO';
                 return response()->json(['message' => 'Assinatura Recebida!'], 200);
                 // if($venda->forma_pagamento == 'CREDIT_CARD') {
                 //     $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);

@@ -77,6 +77,9 @@ class VendasController extends Controller
             'valor' => null,
             'parcela' => $request->parcela,
             'cupom' => $request->cupom,
+            'cep' => $request->cep,
+            'endereco' => $request->endereco,
+            'status_contrato' => 'Pendente de Assinatura',
             'forma_pagamento' => $request->forma_pagamento == 'CARTÃO' ? 'CREDIT_CARD' : $request->forma_pagamento,
         ];
 
@@ -210,7 +213,6 @@ class VendasController extends Controller
                 return $result;
             }
         } catch (RequestException $e) {
-            // Tratamento de erro: capturar e retornar a resposta de erro
             if ($e->hasResponse()) {
                 $errorResponse = json_decode($e->getResponse()->getBody(), true);
                 if (isset($errorResponse['errors']) && !empty($errorResponse['errors'])) {
@@ -285,7 +287,6 @@ class VendasController extends Controller
                 return $result;
             }
         } catch (RequestException $e) {
-            // Tratamento de erro: capturar e retornar a resposta de erro
             if ($e->hasResponse()) {
                 $errorResponse = json_decode($e->getResponse()->getBody(), true);
                 if (isset($errorResponse['errors']) && !empty($errorResponse['errors'])) {

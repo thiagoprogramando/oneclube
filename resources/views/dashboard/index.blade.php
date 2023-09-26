@@ -56,7 +56,8 @@
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
                                                 <th>Contrato</th>
-                                                <th>Status</th>
+                                                <th>Status Contrato</th>
+                                                <th>Status Pagamento</th>
                                                 <th>Data venda</th>
                                             </tr>
                                         </thead>
@@ -85,6 +86,7 @@
                                                                 Produto Desconhecido
                                                         @endswitch
                                                     </td>
+                                                    <td>{{ $venda->status_contrato }}</td>
                                                     <td>
                                                         @switch($venda->status_pay)
                                                             @case('PAYMENT_CONFIRMED')

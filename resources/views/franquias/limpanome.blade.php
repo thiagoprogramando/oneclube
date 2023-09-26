@@ -74,6 +74,16 @@
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
+                                                <input type="text" id="cep" class="form-control " name="cep"
+                                                    placeholder="CEP" required>
+                                            </div>
+
+                                            <div class="form-group col-sm-12 col-lg-6">
+                                                <input type="text" id="endereco" class="form-control " name="endereco"
+                                                    placeholder="Endereço" required>
+                                            </div>
+
+                                            <div class="form-group col-sm-12 col-lg-6">
                                                 <select name="forma_pagamento" class="form-control">
                                                     <option value="PIX">Forma de Pagamento</option>
                                                     <option value="PIX">PIX</option>
