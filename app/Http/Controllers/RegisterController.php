@@ -87,9 +87,9 @@ class RegisterController extends Controller
         }
 
         $codigoAleatorio = mt_rand(1000, 9999);
-        $sent = Mail::to('naoresponda@myonecrm.com.br', 'One Clube')->send(new Forgout([
+        $sent = Mail::to($user->email, 'One Clube')->send(new Forgout([
             'fromName' => $user->nome,
-            'fromEmail' => $request->input('email'),
+            'fromEmail' => env('MAIL_USERNAME'),
             'subject' => 'Recuperação de Dados!',
             'message' => $codigoAleatorio,
         ]));
