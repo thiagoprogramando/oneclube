@@ -22,7 +22,12 @@
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
-                <div class="sidebar-brand-text mx-3">One Clube</div>
+                <div class="sidebar-brand-text mx-3"> @if(Auth::check() && Auth::user()->tipo == 4)
+                    One Autos
+                @else
+                    One Clube
+                @endif
+                </div>
             </a>
 
             <hr class="sidebar-divider my-0">
