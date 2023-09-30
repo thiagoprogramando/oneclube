@@ -69,7 +69,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perfil',[PerfilController::class, 'perfil'])->name('perfil');
     Route::post('/user/update', [PerfilController::class, 'update'])->name('update');
 
-    Route::get('/relatorioParcelasAdmin', [RelatorioController::class, 'indexx'])->name('relatorioParcelasAdmin');
-    Route::post('/relatorioParcelasAdmin', [RelatorioController::class, 'relatorioAction'])->name('relatorioParcelasAdmin');
+    Route::get('/relatorioParcelasAdmin/{id}', [RelatorioController::class, 'indexx'])->name('relatorioParcelasAdmin');
+
+
+    Route::post('/relatorioParcelasAdmin', [RelatorioController::class, 'relatorioAction'])->name('relatorioParcelasAdminn');
 
 });
