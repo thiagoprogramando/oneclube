@@ -144,6 +144,9 @@
                                                     <a class="btn btn-outline-primary" href="https://www.asaas.com/i/{{ $id_pay }}" target="_blank">
                                                         <i class="fa fa-credit-card"></i>
                                                     </a>
+                                                    <a class="btn btn-outline-secondary" href="{{ route('relatorioParcelasAdmin', ['id' => $venda->id]) }}" target="_blank">
+                                                        <i class="fa fa-credit-card"></i>
+                                                    </a>                                                    
                                                 </td>
                                             </tr>
                                             @endforeach

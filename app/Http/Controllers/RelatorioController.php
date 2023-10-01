@@ -142,11 +142,11 @@ class RelatorioController extends Controller
         ]);
     }
 
-    public function indexx()
+    public function indexx( $id)
     {
-        $parcela = VendaParcela::all();
-
-        return view('dashboard.relatorio.parcela',['parcela'=> $parcela]);
+        $parcela = VendaParcela::where('venda_id', $id)->get(); // Use get() para obter uma coleção de resultados
+    
+        return view('dashboard.relatorio.parcela', ['parcela' => $parcela]);
     }
 
     public function relatorioAction(Request $request)

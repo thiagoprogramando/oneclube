@@ -62,7 +62,7 @@
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($parcelas->vencimento)->format('d/m/Y') }}</td>
                                                 <td class="text-center">
-                                                    <form action="{{ route('relatorioParcelasAdmin') }}" method="POST">
+                                                    <form action="{{ route('relatorioParcelasAdminn') }}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="parcela_id" value="{{ $parcelas->id }}">
                                                         <button type="submit" class="btn btn-outline-info">Alterar Status</button>
