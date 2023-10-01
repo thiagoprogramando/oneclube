@@ -91,6 +91,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Cliente</th>
+                                                <th>Associado</th>
                                                 <th>Produto</th>
                                                 <th>Status</th>
                                                 <th>Data venda</th>
@@ -102,6 +103,16 @@
                                             <tr>
                                                 <td>{{ $venda->id }}</td>
                                                 <td>{{ $venda->nome }}</td>
+                                                <td> @php
+                                                    $vendedor = $users->where('id', $venda->id_vendedor)->first();
+                                                    if ($vendedor) {
+                                                        echo $vendedor->nome;
+                                                    } else {
+                                                        echo "Associado não encontrado";
+                                                    }
+                                                    @endphp
+                                                </td>
+
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(2)
