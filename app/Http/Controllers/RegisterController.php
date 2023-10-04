@@ -10,9 +10,9 @@ use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
-    public function register(Request $request)
+    public function register($codigo = null)
     {
-        return view('register');
+        return view('register', ['codigo' => $codigo]);
     }
 
     public function register_action(Request $request)

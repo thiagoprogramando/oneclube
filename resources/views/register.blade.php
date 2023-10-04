@@ -39,7 +39,7 @@
                                             <input type="password" class="form-control form-control-user" name="password" placeholder="Senha">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" name="cupom" placeholder="Código ou Cupom (opcional)">
+                                            <input type="text" class="form-control form-control-user" name="cupom" value="{{ $codigo }}" placeholder="Código ou Cupom (opcional)">
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary btn-user btn-block"> Cadastrar-me </button>

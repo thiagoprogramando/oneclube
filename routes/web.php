@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CupomController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PerfilController;
@@ -15,7 +16,7 @@ Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/', [LoginController::class, 'login_action'])->name('login_action');
 
 //Cadastro
-Route::get('/register', [RegisterController::class, 'register'])->name('register');
+Route::get('/register/{codigo?}', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'register_action'])->name('register_action');
 
 //Vendas
@@ -47,5 +48,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/perfil',[PerfilController::class, 'perfil'])->name('perfil');
     Route::post('/user/update', [PerfilController::class, 'update'])->name('update');
+
+    Route::get('/cupom',[CupomController::class, 'cupom'])->name('cupom');
+    Route::post('cadastraCupom', [CupomController::class, 'cadastraCupom'])->name('cadastraCupom');
+    Route::post('excluiCupom', [CupomController::class, 'excluiCupom'])->name('excluiCupom');
 
 });

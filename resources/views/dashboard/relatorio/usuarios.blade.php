@@ -2,12 +2,10 @@
     @section('conteudo')
     <div class="container-fluid">
 
-        <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Usuários</h1>
         </div>
 
-        <!-- Minhas Vendas -->
         <div class="row">
             @if(isset($msg))
                 {{ $msg }}
@@ -18,7 +16,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive">
-                                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                                    <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -55,7 +53,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Fim Vendas -->
         </div>
 
     </div>
