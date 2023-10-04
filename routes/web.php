@@ -10,6 +10,7 @@ use App\Http\Controllers\limpanomeController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\VendasController;
 use Illuminate\Support\Facades\Route;
+use app\http\Kernel;
 
 //Login
 Route::get('/', [LoginController::class, 'index'])->name('login');
@@ -52,5 +53,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cupom',[CupomController::class, 'cupom'])->name('cupom');
     Route::post('cadastraCupom', [CupomController::class, 'cadastraCupom'])->name('cadastraCupom');
     Route::post('excluiCupom', [CupomController::class, 'excluiCupom'])->name('excluiCupom');
+
+    Route::get('/cupom',[CupomController::class, 'cupom'])->name('cupom');
+    Route::post('cupom', [CupomController::class, 'cupomaction'])->name('cupomaction');
+
+
+
 
 });

@@ -74,6 +74,7 @@
                             <a class="collapse-item" href="{{ route('relatorioUsuarios') }}">Usuários</a>
                             <a class="collapse-item" href="{{ route('cupom') }}">Cupom</a>
                             <a class="collapse-item" href="{{ url('/register/') }}" target="_blank">Cadastro de Associado</a>
+                            <a class="collapse-item" href="{{route('cupom')}}">Cupom</a>
                         </div>
                     </div>
                 </li>
