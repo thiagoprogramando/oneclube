@@ -40,7 +40,7 @@
 
                                             <div class="form-group col-sm-12 col-lg-6">
                                                 <input type="text" id="cliente" class="form-control "
-                                                    name="cupom" value="{{ old('cupom') }}" placeholder="Cupom (opcional)">
+                                                    name="cupom" value="{{ $cupom }}" placeholder="Cupom (opcional)">
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">

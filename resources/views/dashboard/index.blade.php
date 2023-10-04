@@ -21,9 +21,7 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <a style="font-size: 15px;" class="text-green" id="copyLink"
-                                            href="{{ url('/limpanome/' . auth()->id()) }}"
-                                            target="_blank">{{ url('/limpanome/' . auth()->id()) }}</a>
+                                        <a style="font-size: 15px;" class="text-green" id="copyLink" href="{{ url('/limpanome/' . auth()->id() .'/'. Auth::user()->cupom)  }}" target="_blank">{{ url('/limpanome/' . auth()->id()) }}</a>
                                     </div>
                                 </div>
                             </div>

@@ -37,11 +37,6 @@
                                                                     <input type="date" class="form-control" name="data_fim" placeholder="Data Final">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-12">
-                                                                <div class="form-group">
-                                                                    <input type="text" class="form-control" name="cupom" placeholder="Código ou Cupom (opcional)">
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">

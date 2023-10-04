@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class limpanomeController extends Controller
 {
-    public function index($id) {
-        return view('franquias.limpanome', ['id' => $id]);
+    public function index($id, $cupom = null) {
+        return view('franquias.limpanome', ['id' => $id, 'cupom' => $cupom]);
     }
 }

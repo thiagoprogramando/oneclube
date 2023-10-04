@@ -21,7 +21,7 @@ Route::get('/register/{codigo?}', [RegisterController::class, 'register'])->name
 Route::post('/register', [RegisterController::class, 'register_action'])->name('register_action');
 
 //Vendas
-Route::get('/limpanome/{id}', [limpanomeController::class, 'index'])->name('limpanome');
+Route::get('/limpanome/{id}/{cupom?}', [limpanomeController::class, 'index'])->name('limpanome');
 
 Route::post('/venda/{id}', [VendasController::class, 'vender'])->name('vender');
 Route::view('/contrato', 'relatorio.contrato')->name('relatorio.contrato');
