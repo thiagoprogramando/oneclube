@@ -246,10 +246,10 @@
                                                         <a href="{{ route('relatorioParcelas', ['id' => $venda->id]) }}" class="btn btn-outline-info">Extrato</a>
                                                         @if ($venda->id_produto == 3 || $venda->id_produto == 12)
 
-                                                        @if($venda->total_parcelas_confirmadas >= 4) <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#lanceModal{{ $venda->id }}">Ofertar Quitação</button> @endif
+                                                        @if($venda->total_parcelas_confirmadas >= 3) <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#lanceModal{{ $venda->id }}">Ofertar Quitação</button> @endif
                                                         @endif                                 
 
-                                                        @if($venda->total_parcelas_confirmadas <= 3)<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#avisoModal">Ofertar Quitação</button>    @endif                                               
+                                                        @if($venda->total_parcelas_confirmadas <= 2)<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#avisoModal">Ofertar Quitação</button>    @endif                                               
                                                         
                                                     </form>
                                                     <div class="modal fade" id="lanceModal{{ $venda->id }}"
