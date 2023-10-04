@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('vendas', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->dropUnique(['cpf']);
             $table->string('cpf')->nullable()->change();
         });
@@ -16,7 +16,7 @@ return new class extends Migration
 
     public function down() //reverter a migration
     {
-        Schema::table('vendas', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->string('cpf')->unique()->change();
         });
     }
