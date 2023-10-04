@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CupomController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PerfilController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\limpanomeController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\VendasController;
 use Illuminate\Support\Facades\Route;
+use app\http\Kernel;
 
 //Login
 Route::get('/', [LoginController::class, 'index'])->name('login');
@@ -47,5 +49,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/perfil',[PerfilController::class, 'perfil'])->name('perfil');
     Route::post('/user/update', [PerfilController::class, 'update'])->name('update');
+
+    Route::get('/cupom',[CupomController::class, 'cupom'])->name('cupom');
+    Route::post('cupom', [CupomController::class, 'cupomaction'])->name('cupomaction');
+
+
+
 
 });
