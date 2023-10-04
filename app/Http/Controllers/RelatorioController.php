@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cupom;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -17,6 +18,7 @@ class RelatorioController extends Controller
         return view('dashboard.relatorio.vendas', [
             'users' => User::all(),
             'vendas' => Vendas::take(50)->get(),
+            'cupons' => Cupom::all(),
         ]);
     }
 
@@ -63,6 +65,7 @@ class RelatorioController extends Controller
             'users'  => $users,
             'vendas' => $vendas,
             'users'  => User::all(),
+            'cupons' => Cupom::all(),
         ]);
     }
 

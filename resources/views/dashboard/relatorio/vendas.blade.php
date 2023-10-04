@@ -64,7 +64,12 @@
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <input type="text" class="form-control" name="cupom" placeholder="Cupom ou Código">
+                                                                    <select class="form-control"  name="cupom">
+                                                                        <option value="ALL">Todos os Cupons</option>
+                                                                        @foreach ($cupons as $key =>$cupom)
+                                                                        <option value="{{ $cupom->codigo }}">{{ $cupom->titulo }}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
