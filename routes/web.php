@@ -54,9 +54,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('cadastraCupom', [CupomController::class, 'cadastraCupom'])->name('cadastraCupom');
     Route::post('excluiCupom', [CupomController::class, 'excluiCupom'])->name('excluiCupom');
 
-    Route::get('/cupom',[CupomController::class, 'cupom'])->name('cupom');
-    Route::post('cupom', [CupomController::class, 'cupomaction'])->name('cupomaction');
-
 
 
 
