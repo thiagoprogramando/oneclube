@@ -23,7 +23,7 @@ class BancoDoBrasilController extends Controller
         ];
 
         $response = $client->request('POST', 'https://oauth.sandbox.bb.com.br/oauth/token', $data);
-        if ($response->getStatusCode() == 200) {
+        if ($response->getStatusCode() == 201 || $response->getStatusCode() == 200) {
             $responseData = json_decode($response->getBody(), true);
             $accessToken = $responseData['access_token'];
 
