@@ -51,7 +51,6 @@
                                     <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">N° Contrato</th>
                                                 <th>Vencimento</th>
                                                 <th>Status</th>
                                                 <th>Valor</th>
@@ -61,7 +60,7 @@
                                         <tbody>
                                             @foreach ($parcelas as $key => $parcela)
                                             <tr>
-                                                <td class="text-center"> {{ $parcela->venda_id }} </td>
+                                                {{-- <td class="text-center" type="hidden"> {{ $parcela->venda_id }} </td> --}}
                                                 <td> {{ \Carbon\Carbon::parse($parcela->vencimento)->format('d/m/Y') }} </td>
                                                 <td>
                                                     @switch($parcela->status)

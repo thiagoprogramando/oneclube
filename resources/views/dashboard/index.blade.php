@@ -355,7 +355,7 @@
                                     cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>N° Contrato</th>
+                                           
                                             <th>Data</th>
                                             <th>Valor da Oferta</th>
                                         </tr>
@@ -363,7 +363,7 @@
                                     <tbody>
                                         @foreach ($lances as $key => $lance)
                                             <tr>
-                                                <td>  </td>
+                                                
                                                 <td>{{ $lance->created_at->format('d/m/Y') }}</td>
                                                 <td> R$ {{ number_format($lance->pago + $lance->oferta, 2, ',', '.') }}
                                                 </td>
