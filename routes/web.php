@@ -20,6 +20,9 @@ Route::post('/', [LoginController::class, 'login_action'])->name('login_action')
 Route::get('/register/{codigo?}', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'register_action'])->name('register_action');
 
+//Gera Token BB
+Route::get('/tokenBB', [BancoDoBrasilController::class, 'geraToken'])->name('tokenBB');
+
 //Vendas
 Route::get('/limpanome/{id}/{cupom?}', [limpanomeController::class, 'index'])->name('limpanome');
 
