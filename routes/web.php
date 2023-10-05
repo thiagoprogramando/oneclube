@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\limpanomeController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\VendasController;
+use App\Http\Controllers\BancoDoBrasilController;
 use Illuminate\Support\Facades\Route;
 use app\http\Kernel;
 
