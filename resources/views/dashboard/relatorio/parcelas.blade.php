@@ -14,7 +14,6 @@
                             <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
                                         <th>N°</th>
                                         <th>Vencimento</th>
                                         <th>Valor</th>
@@ -24,7 +23,6 @@
                                 <tbody>
                                     @foreach ($parcelas as $parcela)
                                         <tr>
-                                            <td>{{ $parcela->id }}</td>
                                             <td>{{ $parcela->n_parcela }}</td>
                                             <td>{{ \Carbon\Carbon::parse($parcela->vencimento)->format('d/m/Y') }}</td>
                                             <td>{{ 'R$ ' . number_format($parcela->valor, 2, ',', '.') }}</td>
