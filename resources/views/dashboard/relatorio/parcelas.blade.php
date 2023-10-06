@@ -27,8 +27,8 @@
                                             <td>{{ $parcela->id }}</td>
                                             <td>{{ $parcela->n_parcela }}</td>
                                             <td>{{ \Carbon\Carbon::parse($parcela->vencimento)->format('d/m/Y') }}</td>
-                                            <td>{{ $parcela->valor }}</td>
-                                            <td>{{ $parcela->status }}</td>
+                                            <td>{{ 'R$ ' . number_format($parcela->valor, 2, ',', '.') }}</td>
+                                            <td>@if($parcela->status == 'PENDING_PAY') Aguardando Pagamento @else Aprovado @endif</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
