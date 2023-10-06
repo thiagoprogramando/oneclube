@@ -72,7 +72,7 @@
                                                     <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }} </td>
                                                     <td class="text-center">
                                                         <a class="btn btn-outline-dark" href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}" download><i class="fa fa-file"></i></a>
-                                                        <a class="btn btn-outline-success" href="{{ route('parcelas', [id => $venda->id]) }}"><i class="fa fa-credit-card"></i></a>
+                                                        <a class="btn btn-outline-success" href="{{ route('parcelas', ['id' => $venda->id]) }}"><i class="fa fa-credit-card"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach
