@@ -246,10 +246,10 @@
                                                         <a href="{{ route('relatorioParcelas', ['id' => $venda->id]) }}" class="btn btn-outline-info">Extrato</a>
                                                         @if ($venda->id_produto == 3 || $venda->id_produto == 12)
 
-                                                        @if($venda->total_parcelas_confirmadas >= 4) <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#lanceModal{{ $venda->id }}">Ofertar Quitação</button> @endif
+                                                        @if($venda->total_parcelas_confirmadas >= 3) <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#lanceModal{{ $venda->id }}">Ofertar Quitação</button> @endif
                                                         @endif                                 
 
-                                                        @if($venda->total_parcelas_confirmadas <= 3)<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#avisoModal">Ofertar Quitação</button>    @endif                                               
+                                                        @if($venda->total_parcelas_confirmadas <= 2)<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#avisoModal">Ofertar Quitação</button>    @endif                                               
                                                         
                                                     </form>
                                                     <div class="modal fade" id="lanceModal{{ $venda->id }}"
@@ -311,7 +311,7 @@
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                                                                   </div>
                                                                   <div  style="margin:30px;">
-                                                                        Caro cliente, você somente poderá fazer uma OFERTA DE QUITAÇÃO, caso as quatro primeiras parcelas de seu contrato estejam pagas.
+                                                                        Caro cliente, você somente poderá fazer uma OFERTA DE QUITAÇÃO, caso as três primeiras parcelas de seu contrato estejam pagas.
                                                                     
                                                                 </div>
                                                             </div>
@@ -355,7 +355,7 @@
                                     cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>N° Contrato</th>
+                                           
                                             <th>Data</th>
                                             <th>Valor da Oferta</th>
                                         </tr>
@@ -363,7 +363,7 @@
                                     <tbody>
                                         @foreach ($lances as $key => $lance)
                                             <tr>
-                                                <td>  </td>
+                                                
                                                 <td>{{ $lance->created_at->format('d/m/Y') }}</td>
                                                 <td> R$ {{ number_format($lance->pago + $lance->oferta, 2, ',', '.') }}
                                                 </td>

@@ -21,7 +21,7 @@
                                     <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">N° Contrato</th>
+                                                <th class="text-center"></th>
                                                 <th>Produto</th>
                                                 <th class="text-center">Opções</th>
                                             </tr>
@@ -29,7 +29,7 @@
                                         <tbody>
                                             @foreach ($vendas as $key => $venda)
                                             <tr>
-                                                <td class="text-center"> {{ $venda->id }} </td>
+                                                <td class="text-center" type="hidden">  </td>
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(2)
