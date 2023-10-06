@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Parcela;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
@@ -43,6 +44,14 @@ class VendasController extends Controller
             'users' => $users,
             'vendas' => $vendas,
             'produto' => $id
+        ]);
+    }
+
+    public function parcelas($id) {
+        $parcelas = Parcela::where('id_venda', $id)->get();
+
+        return view('dashboard.relatorio.parcelas', [
+            'parcelas' => $parcelas,
         ]);
     }
 

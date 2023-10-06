@@ -21,9 +21,6 @@ Route::post('/', [LoginController::class, 'login_action'])->name('login_action')
 Route::get('/register/{codigo?}', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'register_action'])->name('register_action');
 
-//Gera Token BB
-Route::get('/tokenBB', [BancoDoBrasilController::class, 'geraToken'])->name('tokenBB');
-
 //Vendas
 Route::get('/limpanome/{id}/{cupom?}', [limpanomeController::class, 'index'])->name('limpanome');
 
@@ -41,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/vendas/{id}', [VendasController::class, 'getVendas'])->name('vendas');
     Route::post('vendas', [VendasController::class, 'getVendas'])->name('vendas');
+    Route::get('/parcelas/{id}',[VendasController::class, 'parcelas'])->name('parcelas');
 
     Route::get('/relatorioVendas', [RelatorioController::class, 'index'])->name('relatorioVendas');
     Route::post('relatorioVendas', [RelatorioController::class, 'filtro'])->name('relatorioVendas');
@@ -57,8 +55,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cupom',[CupomController::class, 'cupom'])->name('cupom');
     Route::post('cadastraCupom', [CupomController::class, 'cadastraCupom'])->name('cadastraCupom');
     Route::post('excluiCupom', [CupomController::class, 'excluiCupom'])->name('excluiCupom');
-
-
-
 
 });

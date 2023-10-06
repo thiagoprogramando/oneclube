@@ -56,11 +56,11 @@ class BancoDoBrasilController extends Controller
         ];
 
         $body = '{
-            "numeroConvenio": '.env('numeroConvenio').',
+            "numeroConvenio": '.env('NUMEROCONVENIO').',
             "dataVencimento": "'.$dataVencimento.'",
             "valorOriginal": "'.$parcela->valor.'",
-            "numeroCarteira": '.env('numeroCarteira').',
-            "numeroVariacaoCarteira": '.env('numeroVariacaoCarteira').',
+            "numeroCarteira": '.env('NUMEROCARTEIRA').',
+            "numeroVariacaoCarteira": '.env('NUMEROVARIACAOCARTEIRA').',
             "codigoModalidade": "1",
             "dataEmissao": "'.date('d.m.Y').'",
             "valorAbatimento": "0",
