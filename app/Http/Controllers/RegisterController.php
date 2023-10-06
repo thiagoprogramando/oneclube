@@ -39,7 +39,6 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'tipo' => 1,
-            'status' => 1,
         ];
 
         if (!empty($request->cupom)) {

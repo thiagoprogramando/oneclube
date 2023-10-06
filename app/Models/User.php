@@ -25,7 +25,6 @@ class User extends Authenticatable
         'cpf',
         'tipo',
         'cupom',
-        'status',
     ];
 
     protected $hidden = [
