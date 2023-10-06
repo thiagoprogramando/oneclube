@@ -49,8 +49,9 @@ class AsaasController extends Controller
                         }
                         break;
                     case 'CREDIT_CARD':
-                        if($this->parcela($venda->id, 1, $venda->valor)) {
-                            $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
+                        $parcela = 1;
+                        if($this->parcela($venda->id, $parcela, $venda->valor)) {
+                            $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->valor, $venda->parcela, $venda->forma_pagamento);
                             $parcela = Parcela::where('id_venda', $venda->id)->where('status', 'PENDING_PAY')->first();
                             $parcela->codigocliente = $link['json']['customerId'];
                             $parcela->txid = $link['json']['paymentId'];
@@ -129,7 +130,7 @@ class AsaasController extends Controller
         }
     }
 
-    public function geraPagamentoAssas($nome, $cpfcnpj, $produto, $valor, $parcela, $forma_pagamento)
+    public function geraPagamentoAssas($nome, $cpfcnpj, $valor, $parcela, $forma_pagamento)
     {
 
         $client = new Client();
