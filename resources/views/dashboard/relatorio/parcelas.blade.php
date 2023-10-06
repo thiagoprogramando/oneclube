@@ -26,7 +26,7 @@
                                         <tr>
                                             <td>{{ $parcela->id }}</td>
                                             <td>{{ $parcela->n_parcela }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($parcelas->vencimento)->format('d/m/Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($parcela->vencimento)->format('d/m/Y') }}</td>
                                             <td>{{ $parcela->valor }}</td>
                                             <td>{{ $parcela->status }}</td>
                                         </tr>
