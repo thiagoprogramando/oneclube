@@ -12,6 +12,7 @@ use App\Models\Vendas;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Carbon\Carbon;
 
 class AsaasController extends Controller
 {
@@ -48,7 +49,18 @@ class AsaasController extends Controller
                         }
                         break;
                     case 'CREDIT_CARD':
+                        if($this->parcela($venda->id, 1, $venda->valor)) {
+                            $link = $this->geraPagamentoAssas($venda->nome, $venda->cpf, $venda->id_produto, $venda->valor, $venda->parcela, $venda->forma_pagamento);
+                            $parcela = Parcela::where('id_venda', $venda->id)->where('status', 'PENDING_PAY')->first();
+                            $parcela->codigocliente = $link['json']['customerId'];
+                            $parcela->txid = $link['json']['paymentId'];
+                            $parcela->url = $link['json']['paymentLink'];
+                            $parcela->numerocontratocobranca = $link['json']['paymentId'];
+                            $parcela->linhadigitavel = $link['json']['paymentLink'];
+                            $parcela->save();
 
+                            return $this->enviaCartao($venda->telefone, $link['json']['paymentLink']);
+                        }
                         break;
                     case 'BOLETO':
                         if($this->parcela($venda->id, $venda->parcela, $venda->valor)) {
@@ -115,6 +127,69 @@ class AsaasController extends Controller
         } else {
             return false;
         }
+    }
+
+    public function geraPagamentoAssas($nome, $cpfcnpj, $produto, $valor, $parcela, $forma_pagamento)
+    {
+
+        $client = new Client();
+
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'access_token' => env('API_TOKEN'),
+            ],
+            'json' => [
+                'name'      => $nome,
+                'cpfCnpj'   => $cpfcnpj,
+            ],
+        ];
+
+        $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
+
+        $body = (string) $response->getBody();
+
+        $data = json_decode($body, true);
+
+        if ($response->getStatusCode() === 200) {
+
+            $customerId = $data['id'];
+            $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
+
+            $options['json'] = [
+                'customer' => $customerId,
+                'billingType' => $forma_pagamento,
+                'value' => $valor,
+                'dueDate' => $tomorrow,
+                'description' => 'Positivo Brasil',
+                "installmentCount"=> $parcela,
+                "installmentValue"=> ($valor / $parcela)
+            ];
+
+            $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
+
+            $body = (string) $response->getBody();
+
+            $data = json_decode($body, true);
+
+            if ($response->getStatusCode() === 200) {
+
+                $dados['json'] = [
+                    'paymentId'     => $data['id'],
+                    'customer'      => $data['customer'],
+                    'paymentLink'   => $data['invoiceUrl'],
+                    'customerId'    => $customerId
+                ];
+
+                return $dados;
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
     }
 
     public function enviaCartao($telefone, $assas) {
@@ -204,85 +279,24 @@ class AsaasController extends Controller
         }
     }
 
-    // public function geraPagamentoAssas($nome, $cpfcnpj, $produto, $valor, $parcela, $forma_pagamento)
-    // {
+    public function receberPagamentoAssas(Request $request) {
+        $jsonData = $request->json()->all();
+        if ($jsonData['event'] === 'PAYMENT_CONFIRMED' || $jsonData['event'] === 'PAYMENT_RECEIVED') {
 
-    //     $client = new Client();
+            $idRequisicao = $jsonData['payment']['id'];
 
-    //     $options = [
-    //         'headers' => [
-    //             'Content-Type' => 'application/json',
-    //             'access_token' => env('API_TOKEN'),
-    //         ],
-    //         'json' => [
-    //             'name'      => $nome,
-    //             'cpfCnpj'   => $cpfcnpj,
-    //         ],
-    //     ];
+            $parcela = Parcela::where('txid', $idRequisicao)->first();
+            if ($parcela) {
+                $parcela->status = 'PAYMENT_CONFIRMED';
+                $parcela->save();
 
-    //     $response = $client->post(env('API_URL_ASSAS').'api/v3/customers', $options);
+                return response()->json(['status' => 'success', 'message' => 'Venda Atualizada!']);
+            }
+            return response()->json(['status' => 'success', 'message' => 'Venda Não Existe!']);
+        }
 
-    //     $body = (string) $response->getBody();
-
-    //     $data = json_decode($body, true);
-
-    //     if ($response->getStatusCode() === 200) {
-
-    //         $customerId = $data['id'];
-    //         $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
-
-    //         $options['json'] = [
-    //             'customer' => $customerId,
-    //             'billingType' => $forma_pagamento,
-    //             'value' => $valor,
-    //             'dueDate' => $tomorrow,
-    //             'description' => 'Positivo Brasil',
-    //             "installmentCount"=> $parcela,
-    //             "installmentValue"=> ($valor / $parcela)
-    //         ];
-
-    //         $response = $client->post(env('API_URL_ASSAS').'api/v3/payments', $options);
-
-    //         $body = (string) $response->getBody();
-
-    //         $data = json_decode($body, true);
-
-    //         if ($response->getStatusCode() === 200) {
-
-    //             $dados['json'] = [
-    //                 'paymentId'     => $data['id'],
-    //                 'customer'      => $data['customer'],
-    //                 'paymentLink'   => $data['invoiceUrl'],
-    //             ];
-
-    //             return $dados;
-    //         } else {
-    //             return false;
-    //         }
-
-    //     } else {
-    //         return false;
-    //     }
-
-    // }
-    // public function receberPagamento(Request $request) {
-    //     $jsonData = $request->json()->all();
-    //     if ($jsonData['event'] === 'PAYMENT_CONFIRMED' || $jsonData['event'] === 'PAYMENT_RECEIVED') {
-
-    //         $idRequisicao = $jsonData['payment']['id'];
-
-    //         $venda = Vendas::where('txid', $idRequisicao)->first();
-    //         if ($venda) {
-    //             $venda->status_pay = 'PAYMENT_CONFIRMED';
-    //             $venda->save();
-
-    //             return response()->json(['status' => 'success', 'message' => 'Venda Atualizada!']);
-    //         }
-    //         return response()->json(['status' => 'success', 'message' => 'Venda Não Existe!']);
-    //     }
-
-    //     return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado']);
-    // }
+        return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado']);
+    }
 
 }
 
