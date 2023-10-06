@@ -56,54 +56,25 @@
                                     <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
                                                 <th>Cliente</th>
-                                                <th>Produto</th>
+                                                <th>CPF/CNPJ</th>
                                                 <th>Contrato</th>
-                                                <th>Status</th>
                                                 <th>Data venda</th>
+                                                <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($vendas as $key =>$venda)
-                                            <tr>
-                                                <td>{{ $venda->id }}</td>
-                                                <td>{{ $venda->nome }}</td>
-                                                <td>
-                                                    @switch($venda->id_produto)
-                                                        @case(2)
-                                                            Limpa Nome
-                                                            @break
-                                                        @case(3)
-                                                            One Motos/Beauty
-                                                            @break
-                                                        @case(11)
-                                                            One Motos/Beauty
-                                                            @break
-                                                        @case(8)
-                                                            One Serviços
-                                                            @break
-                                                        @default
-                                                            Produto Desconhecido
-                                                    @endswitch
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                </td>
-                                                <td>
-                                                    @switch($venda->status_pay)
-                                                        @case('PAYMENT_CONFIRMED')
-                                                            Aprovado
-                                                            @break
-                                                        @case('PENDING_PAY')
-                                                            Aguardando Pagamento
-                                                            @break
-                                                        @default
-                                                            Status Desconhecido
-                                                    @endswitch
-                                                </td>
-                                                <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}</td>
-                                            </tr>
+                                            @foreach ($vendas as $key => $venda)
+                                                <tr>
+                                                    <td>{{ $venda->nome }}</td>
+                                                    <td>{{ $venda->cpf }}</td>
+                                                    <td>{{ $venda->status_contrato }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }} </td>
+                                                    <td class="text-center">
+                                                        <a class="btn btn-outline-dark" href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}" download><i class="fa fa-file"></i></a>
+                                                        <a class="btn btn-outline-success" href="#"><i class="fa fa-credit-card"></i></a>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -113,38 +84,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Fim Vendas -->
         </div>
 
     </div>
-
-    <script>
-        $(document).ready(function() {
-            $('#exportar').click(function() {
-                var tabela = document.getElementById('tabela');
-                var wb = XLSX.utils.table_to_book(tabela, { sheet: 'Sheet 1' });
-                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-
-                function s2ab(s) {
-                    var buf = new ArrayBuffer(s.length);
-                    var view = new Uint8Array(buf);
-                    for (var i = 0; i < s.length; i++) {
-                        view[i] = s.charCodeAt(i) & 0xFF;
-                    }
-                    return buf;
-                }
-
-                var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
-                var url = URL.createObjectURL(blob);
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = 'tabela.xlsx';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                setTimeout(function() { URL.revokeObjectURL(url); }, 100);
-            });
-        });
-    </script>
-
     @endsection

@@ -183,6 +183,17 @@
                 setTimeout(function() { URL.revokeObjectURL(url); }, 100);
             });
         });
+
+        function copyToClipboard() {
+            const link = document.getElementById('copyLink').href;
+            const tempInput = document.createElement('input');
+            tempInput.setAttribute('value', link);
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            Swal.fire('Copiado!', 'Link copiado para a área de transferência!', 'success');
+        }
     </script>
 </body>
 

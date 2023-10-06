@@ -8,23 +8,6 @@ function formatarData(data) {
     return dia + '/' + mes + '/' + ano;
 }
 
-function copiaLink(botao) {
-    var link = botao.getAttribute('data-link');
-    var tempInput = document.createElement('input');
-    tempInput.value = link;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    tempInput.setSelectionRange(0, 99999);
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
-
-    Swal.fire(
-        'Sucesso!',
-        'Link de pagamento copiado!',
-        'success'
-    )
-}
-
 function consultarEndereco() {
     const cep = document.getElementById('cep').value;
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
@@ -38,11 +21,10 @@ function consultarEndereco() {
                 const bairro    = data.bairro;
                 const estado    = data.uf;
 
-                // Preencher campos de cidade e endereço
-                document.getElementById('cidade').value = cidade;
-                document.getElementById('endereco').value = endereco;
-                document.getElementById('bairro').value = bairro;
-                document.getElementById('estado').value = estado;
+                $('#cidade').val(cidade);
+                $('#endereco').val(endereco);
+                $('#bairro').val(bairro);
+                $('#estado').val(estado);
             }
         })
         .catch(error => console.log(error));

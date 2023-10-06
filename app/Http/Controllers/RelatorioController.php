@@ -41,10 +41,6 @@ class RelatorioController extends Controller
             $vendas = $vendas->where('id_vendedor', $usuario);
         }
 
-        if ($status != 'ALL') {
-            $vendas = $vendas->where('status_pay', $status);
-        }
-
         if ($cupom) {
             $vendas = $vendas->where('cupom', $cupom);
         }

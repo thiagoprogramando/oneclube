@@ -14,6 +14,7 @@
                                         <h1 class="h4 text-gray-900 mb-2">Olá, cliente Positivo Brasil!</h1>
                                         <p class="mb-4">Preencha com os seus dados todas às informações.</p>
                                     </div>
+
                                     @if ($errors->any())
                                         <div class="alert alert-danger">
                                             <ul>
@@ -28,59 +29,48 @@
                                             {{ $success }}
                                         </div>
                                     @endif
-                                    <form id="registrer" class="user" method="POST"
-                                        action="{{ route('vender', ['id' => $id]) }}">
+
+                                    <form id="registrer" class="user" method="POST" action="{{ route('vender', ['id' => $id]) }}">
                                         <input type="hidden" value={{ csrf_token() }} name="_token">
                                         <div class="col-sm-12 col-lg-8 offset-lg-2 row">
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <input type="text" id="cliente" class="form-control "
-                                                    name="cliente" value="{{ old('cliente') }}" placeholder="Nome">
+                                                <input type="text" id="cliente" class="form-control" name="cliente" value="{{ old('cliente') }}" placeholder="Nome">
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <input type="text" id="cliente" class="form-control "
-                                                    name="cupom" value="{{ $cupom }}" placeholder="Cupom (opcional)">
+                                                <input type="text" id="cliente" class="form-control" name="cupom" value="{{ $cupom }}" placeholder="Cupom (opcional)">
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <input type="email" id="email" class="form-control "
-                                                    name="email" value="{{ old('email') }}" placeholder="Email">
+                                                <input type="email" id="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <input type="text" id="cpfInput" oninput="mascaraCpfCnpj(this)"
-                                                    value="{{ old('cpfcnpj') }}"
-                                                    class="form-control " name="cpfcnpj"
-                                                    placeholder="CPF/CNPJ">
+                                                <input type="text" id="cpfInput" oninput="mascaraCpfCnpj(this)" value="{{ old('cpfcnpj') }}" class="form-control " name="cpfcnpj" placeholder="CPF/CNPJ">
                                             </div>
 
                                             <input type="hidden" name="id_user" value="{{ $id }}">
                                             <input type="hidden" name="produto" value="2">
                                             <input type="hidden" name="franquia" value="limpanome">
+                                            <input type="hidden" name="uf" id="estado">
+                                            <input type="hidden" name="bairro" id="bairro">
+                                            <input type="hidden" name="cidade" id="cidade">
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <input type="text" id="dataInput" class="form-control "
-                                                    name="dataNascimento" value="{{ old('dataNascimento') }}"
-                                                    oninput="mascaraData(this)" maxlength="10"
-                                                    placeholder="Data de Nascimento" required>
+                                                <input type="text" id="dataInput" class="form-control" name="dataNascimento" value="{{ old('dataNascimento') }}" oninput="mascaraData(this)" maxlength="10" placeholder="Data de Nascimento" required>
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <input type="text" id="telefoneInput" oninput="mascaraTelefone(this)"
-                                                    maxlength="15" value="{{ old('telefone') }}"
-                                                    class="form-control " name="telefone"
-                                                    placeholder="WhatsApp" required>
+                                                <input type="text" id="telefoneInput" oninput="mascaraTelefone(this)" maxlength="15" value="{{ old('telefone') }}" class="form-control " name="telefone" placeholder="WhatsApp" required>
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <input type="number" id="cep" class="form-control " name="cep"
-                                                    placeholder="CEP" required>
+                                                <input type="number" id="cep" class="form-control " name="cep" placeholder="CEP" onchange="consultarEndereco()" required>
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <input type="text" id="endereco" class="form-control " name="endereco"
-                                                    placeholder="Endereço" required>
+                                                <input type="text" id="endereco" class="form-control " name="endereco" placeholder="Endereço" required>
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">

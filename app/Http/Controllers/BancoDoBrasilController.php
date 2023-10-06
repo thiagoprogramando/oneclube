@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Nossonumero;
+use App\Models\Parcela;
+use App\Models\Vendas;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 
 class BancoDoBrasilController extends Controller
 {
-    public function geraToken() {
+
+    public function geraToken()
+    {
         $client = new Client();
 
         $data = [
@@ -30,6 +35,87 @@ class BancoDoBrasilController extends Controller
             return $accessToken;
         } else {
             return false;
+        }
+    }
+
+    public function geraBoleto($venda)
+    {
+        $accessToken = $this->geraToken();
+
+        $venda = Vendas::find($venda);
+        $tipoInscricao = (strlen($venda->cpf) > 11) ? '2' : '1';
+        $parcela = Parcela::where('id_venda', $venda->id)->where('status', 'PENDING_PAY')->first();
+        $dataVencimento = date('d.m.Y', strtotime($parcela->vencimento));
+
+        $client = new Client();
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $accessToken
+        ];
+
+        $body = '{
+            "numeroConvenio": '.env('numeroConvenio').',
+            "dataVencimento": "'.$dataVencimento.'",
+            "valorOriginal": "'.$parcela->valor.'",
+            "numeroCarteira": '.env('numeroCarteira').',
+            "numeroVariacaoCarteira": '.env('numeroVariacaoCarteira').',
+            "codigoModalidade": "1",
+            "dataEmissao": "'.date('d.m.Y').'",
+            "valorAbatimento": "0",
+            "quantidadeDiasProtesto": "0",
+            "quantidadeDiasNegativacao": "0",
+            "orgaoNegativador": "10",
+            "indicadorAceiteTituloVencido": "N",
+            "numeroDiasLimiteRecebimento": "0",
+            "codigoAceite": "A",
+            "codigoTipoTitulo": "2",
+            "descricaoTipoTitulo": "DM",
+            "indicadorPermissaoRecebimentoParcial": "N",
+            "numeroTituloCliente": "'.Nossonumero::gerarNumeroTituloCliente().'",
+            "pagador": {
+                "tipoInscricao": "'.$tipoInscricao.'",
+                "numeroInscricao": "'.$venda->cpf.'",
+                "nome": "'.$venda->nome.'",
+                "endereco": "'.$venda->endereco.'",
+                "cep": "'.$venda->cep.'",
+                "cidade": "'.$venda->cidade.'",
+                "bairro": "'.$venda->bairro.'",
+                "uf": "'.$venda->uf.'",
+                "telefone": "'.$venda->telefone.'"
+            },
+            "indicadorPix": "S"
+        }';
+
+        $options = [
+            'headers' => $headers,
+            'body' => $body,
+            'verify' => false,
+        ];
+
+        $request = new Request('POST', 'https://api.sandbox.bb.com.br/cobrancas/v2/boletos?gw-dev-app-key=eb3f8901f8222d55f78f481f2a55c8bf', $headers, $body);
+
+        try {
+            $res = $client->sendAsync($request, $options)->wait();
+            $responseData = json_decode($res->getBody(), true);
+
+            if ($responseData) {
+                return [
+                    'result' => 'success',
+                    'qrCodeUrl' => $responseData['qrCode']['url'],
+                    'qrCodeTxId' => $responseData['qrCode']['txId'],
+                    'qrCodeEmv' => $responseData['qrCode']['emv'],
+                    'linhaDigitavel' => $responseData['linhaDigitavel'],
+                    'codigoBarraNumerico' => $responseData['codigoBarraNumerico'],
+                    'numeroContratoCobranca' => $responseData['numeroContratoCobranca'],
+                    'codigoCliente' => $responseData['codigoCliente'],
+                ];
+            } else {
+                return ['result' => 'error', 'message' => 'Erro desconhecido'];
+            }
+        } catch (\Exception $e) {
+            return ['result' => 'error', 'message' => $e->getMessage()];
         }
     }
 }

@@ -35,15 +35,6 @@
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <select class="form-control"  name="status">
-                                                                        <option value="ALL">Todos os Status</option>
-                                                                        <option value="PAYMENT_CONFIRMED">Aprovados</option>
-                                                                        <option value="PENDING_PAY">Pendentes de Pagamento</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <div class="form-group">
                                                                     <select class="form-control"  name="usuario">
                                                                         <option value="ALL">Todos os Usuários</option>
                                                                         @foreach ($users as $key =>$user)
@@ -91,55 +82,27 @@
                                     <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
                                                 <th>Cliente</th>
-                                                <th>Endereço</th>
-                                                <th>Produto</th>
+                                                <th>CPF/CNPJ</th>
+                                                <th>Telefone/Email</th>
                                                 <th>Contrato</th>
-                                                <th>Status Contrato</th>
-                                                <th>Status Pagamento</th>
                                                 <th>Data venda</th>
+                                                <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($vendas as $key =>$venda)
-                                            <tr>
-                                                <td>{{ $venda->id }}</td>
-                                                <td>{{ $venda->nome }}</td>
-                                                <td>{{ $venda->cep }} - {{ $venda->endereco }}</td>
-                                                <td>
-                                                    @switch($venda->id_produto)
-                                                        @case(2)
-                                                            Limpa Nome
-                                                            @break
-                                                        @default
-                                                            Produto Desconhecido
-                                                    @endswitch
-                                                </td>
-                                                <td>
-                                                    @switch($venda->id_produto)
-                                                        @case(2)
-                                                            <a class="btn btn-outline-success" href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}" download>Contrato</a>
-                                                            @break
-                                                        @default
-                                                            Produto Desconhecido
-                                                    @endswitch
-                                                </td>
-                                                <td>{{ $venda->status_contrato }}</td>
-                                                <td>
-                                                    @switch($venda->status_pay)
-                                                        @case('PAYMENT_CONFIRMED')
-                                                            Aprovado
-                                                            @break
-                                                        @case('PENDING_PAY')
-                                                            Aguardando Pagamento
-                                                            @break
-                                                        @default
-                                                            Pendente
-                                                    @endswitch
-                                                </td>
-                                                <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}</td>
-                                            </tr>
+                                            @foreach ($vendas as $key => $venda)
+                                                <tr>
+                                                    <td>{{ $venda->nome }}</td>
+                                                    <td>{{ $venda->cpf }}</td>
+                                                    <td>{{ $venda->telefone }} / {{ $venda->email }}</td>
+                                                    <td>{{ $venda->status_contrato }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }} </td>
+                                                    <td class="text-center">
+                                                        <a class="btn btn-outline-dark" href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}" download><i class="fa fa-file"></i></a>
+                                                        <a class="btn btn-outline-success" href="#"><i class="fa fa-credit-card"></i></a>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -149,7 +112,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Fim Vendas -->
         </div>
 
     </div>

@@ -12,17 +12,25 @@ return new class extends Migration
             $table->id();
             $table->string('nome')->nullable();
             $table->string('cpf');
-            $table->string('telefone')->nullable();
             $table->string('email')->nullable();
+            $table->string('telefone')->nullable();
+
             $table->string('id_contrato')->nullable();
             $table->unsignedBigInteger('id_produto');
-            $table->string('id_pay')->nullable();
             $table->unsignedBigInteger('id_vendedor');
+
             $table->decimal('valor', 10, 2);
             $table->string('parcela')->nullable();
-            $table->string('forma_pagamento')->nullable();
-            $table->string('status_pay')->nullable();
             $table->string('cupom')->nullable();
+            $table->string('forma_pagamento')->nullable();
+
+            $table->string('status_contrato')->nullable();
+
+            $table->string('cep')->nullable();
+            $table->string('endereco')->nullable();
+            $table->string('cidade')->nullable();
+            $table->string('bairro')->nullable();
+            $table->string('uf')->nullable();
             $table->timestamps();
         });
     }

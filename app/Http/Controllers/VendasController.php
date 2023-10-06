@@ -57,28 +57,24 @@ class VendasController extends Controller
             'telefone' => 'required|string|max:20',
         ]);
 
-        switch ($request->produto) {
-            case 2:
-                $views = ['documentos.limpanome'];
-                break;
-            default:
-                $views = ['documentos.limpanome'];
-                break;
-        }
+        $views = ['documentos.limpanome'];
 
         $vendaData = [
-            'id_vendedor' => $id,
-            'cpf' => !empty($request->cpfcnpj) ? preg_replace('/[^0-9]/', '', $request->cpfcnpj) : null,
-            'nome' => !empty($request->cliente) ? $request->cliente : null,
-            'dataNascimento' => !empty($request->dataNascimento) ? Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d') : null,
-            'email' => !empty($request->email) ? $request->email : null,
-            'telefone' => !empty($request->telefone) ? preg_replace('/[^0-9]/', '', $request->telefone) : null,
-            'id_produto' => !empty($request->produto) ? $request->produto : null,
-            'valor' => null,
-            'parcela' => $request->parcela,
-            'cupom' => $request->cupom,
-            'cep' => $request->cep,
-            'endereco' => $request->endereco,
+            'id_vendedor'     => $id,
+            'cpf'             => !empty($request->cpfcnpj) ? preg_replace('/[^0-9]/', '', $request->cpfcnpj) : null,
+            'nome'            => !empty($request->cliente) ? $request->cliente : null,
+            'dataNascimento'  => !empty($request->dataNascimento) ? Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d') : null,
+            'email'           => !empty($request->email) ? $request->email : null,
+            'telefone'        => !empty($request->telefone) ? preg_replace('/[^0-9]/', '', $request->telefone) : null,
+            'id_produto'      => !empty($request->produto) ? $request->produto : null,
+            'valor'           => null,
+            'parcela'         => $request->parcela,
+            'cupom'           => $request->cupom,
+            'cep'             => $request->cep,
+            'endereco'        => $request->endereco,
+            'cidade'          => $request->cidade,
+            'bairro'          => $request->bairro,
+            'uf'              => $request->uf,
             'status_contrato' => 'Pendente',
             'forma_pagamento' => $request->forma_pagamento == 'CARTÃO' ? 'CREDIT_CARD' : $request->forma_pagamento,
         ];
