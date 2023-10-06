@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 
 use App\Http\Controllers\BancoDoBrasilController;
 
@@ -40,7 +41,9 @@ class AsaasController extends Controller
 
                                 return $this->enviaPix($venda->telefone, $pix['qrCodeUrl']);
                             } else {
-                                return response()->json(['status' => 'success', 'message' => $pix['message']]);
+                                $nomeArquivo = date('Y-m-d') . 'erro.txt';
+                                $caminhoArquivo = public_path('erros/' . $nomeArquivo);
+                                File::put($caminhoArquivo, $pix['message']);
                             }
                         }
                         break;
@@ -63,7 +66,9 @@ class AsaasController extends Controller
 
                                 return $this->enviaBoleto($venda->telefone, $boleto['linhaDigitavel']);
                             } else {
-                                return response()->json(['status' => 'success', 'message' => $boleto['message']]);
+                                $nomeArquivo = date('Y-m-d') . 'erro.txt';
+                                $caminhoArquivo = public_path('erros/' . $nomeArquivo);
+                                File::put($caminhoArquivo, $boleto['message']);
                             }
                         }
                         break;

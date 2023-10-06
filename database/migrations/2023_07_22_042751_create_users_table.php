@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('cupom')->nullable();
             $table->integer('tipo');
-            $table->integer('status');
             $table->timestamps();
         });
     }
