@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 //Login
 Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::get('/cliente', [LoginController::class, 'cliente'])->name('cliente');
+Route::get('/associado', [LoginController::class, 'associado'])->name('associado');
 Route::post('/', [LoginController::class, 'login_action'])->name('login_action');
 
 //Cadastro

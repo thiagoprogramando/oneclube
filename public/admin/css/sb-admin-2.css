@@ -10876,6 +10876,13 @@ a:focus {
   background-repeat: no-repeat;
 }
 
+.bg-login-imagee {
+  background: url("../assets/logo1.png");
+  background-position: center;
+  background-size: 90%;
+  background-repeat: no-repeat;
+}
+
 .bg-register-image {
   background: url("../assets/logo.png");
   background-position: center;

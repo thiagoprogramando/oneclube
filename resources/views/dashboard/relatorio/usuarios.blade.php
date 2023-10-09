@@ -21,7 +21,7 @@
                                     <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
+                                               
                                                 <th>Nome</th>
                                                 <th>Login</th>
                                                 <th>Email</th>
@@ -33,7 +33,7 @@
                                         <tbody>
                                             @foreach ($users as $key =>$user)
                                             <tr>
-                                                <td>{{ $user->id }}</td>
+                                                
                                                 <td>{{ $user->nome }}</td>
                                                 <td>{{ $user->login }}</td>
                                                 <td>{{ $user->email }}</td>

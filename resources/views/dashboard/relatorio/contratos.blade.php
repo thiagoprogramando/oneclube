@@ -57,7 +57,7 @@
                                                     @endswitch
                                                 </td>
                                                 <td class="text-center">
-                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/'.$venda->id_produto.$venda->cpf.'.pdf') }}" download><i class="fa fa-file"></i></a>
+                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/'.$venda->id_produto.$venda->cpf.'.pdf') }}" download>Contrato</a>
                                                     <a href="{{ route('relatorioParcelas', ['id' => $venda->id]) }}" class="btn btn-outline-success">Extrato/Parcelas</a>
                                                 </td>
                                             </tr>
