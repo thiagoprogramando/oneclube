@@ -236,10 +236,23 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <p>Olá,
                             @if (Auth::user()->login)
-                                {{ Auth::user()->login }}
+                            @php
+                            $nomeCompleto = Auth::user()->login;
+                            $partesNome = explode(' ', $nomeCompleto);
+                            $primeiroNome = $partesNome[0];
+                            echo ucwords(strtolower($primeiroNome));
+                        @endphp
                             @else
-                                {{ Auth::user()->nome }}
+                                @php
+                                    $nomeCompleto = Auth::user()->nome;
+                                    $partesNome = explode(' ', $nomeCompleto);
+                                    $primeiroNome = $partesNome[0];
+                                    echo ucwords(strtolower($primeiroNome));
+                                @endphp
                             @endif
+                        
+                        
+
                             . Bem-vindo(a)!
                         </p>
                     </div>

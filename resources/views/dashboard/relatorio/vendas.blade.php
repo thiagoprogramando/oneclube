@@ -89,7 +89,7 @@
                                     <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
+                                                
                                                 <th>Cliente</th>
                                                 <th>Associado</th>
                                                 <th>Produto</th>
@@ -101,7 +101,6 @@
                                         <tbody>
                                             @foreach ($vendas as $key =>$venda)
                                             <tr>
-                                                <td>{{ $venda->id }}</td>
                                                 <td>{{ $venda->nome }}</td>
                                                 <td> @php
                                                     $vendedor = $users->where('id', $venda->id_vendedor)->first();

@@ -58,7 +58,6 @@
                                     <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
                                                 <th>Status</th>
@@ -69,7 +68,6 @@
                                         <tbody>
                                             @foreach ($vendas as $key =>$venda)
                                             <tr>
-                                                <td>{{ $venda->id }}</td>
                                                 <td>{{ $venda->nome }}</td>
                                                 <td>
                                                     @switch($venda->id_produto)

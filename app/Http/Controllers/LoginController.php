@@ -14,6 +14,20 @@ class LoginController extends Controller
         }
         return view('index');
     }
+    public function cliente(Request $request)
+    {   
+        if (isset(auth()->user()->id)) {
+            return redirect()->route('dashboard');
+        }
+        return view('loginClient');
+    }
+    public function associado(Request $request)
+    {   
+        if (isset(auth()->user()->id)) {
+            return redirect()->route('dashboard');
+        }
+        return view('loginAssociado');
+    }
 
     public function login_action(Request $request)
     {
