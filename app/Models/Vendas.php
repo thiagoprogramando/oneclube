@@ -22,6 +22,7 @@ class Vendas extends Authenticatable
         'endereco',
         'id_produto',
         'id_vendedor',
+        'n_contrato',
         'valor',
         'updatedat',
         'createdat'
