@@ -57,11 +57,6 @@
                                             Login
                                         </button>
                                     </form>
-                                    <hr>
-                                    <div class="text-center">
-                                      
-                                        <a class="small" href="/forgout">Esqueci minha senha!</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>

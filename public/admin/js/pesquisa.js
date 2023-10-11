@@ -127,7 +127,6 @@ document.addEventListener("DOMContentLoaded", function() {
             const produto = gerarLink.getAttribute("data-produto");
 
             if (produto === '3') {
-                // Se o produto for igual a 3, exiba um select para escolher o valor da entrada
                 exibirModalLinkGeradoParaProduto3(url);
             }
         });
@@ -141,6 +140,44 @@ document.addEventListener("DOMContentLoaded", function() {
                 '500': '500',
                 '700': '700',
                 '1000': '1000'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Gerar Link',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const entrada = result.value;
+                const linkGerado = `${url}/${entrada}`;
+                exibirModalLinkGerado(linkGerado);
+            } else {
+                Swal.fire('Operação cancelada!', '', 'info');
+            }
+        });
+    }
+
+    const gerarLinksOnePositive = document.querySelectorAll(".gerar-link-one-positive");
+
+    gerarLinksOnePositive.forEach(function(gerarLink) {
+        gerarLink.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            const url = gerarLink.getAttribute("data-url");
+            const produto = gerarLink.getAttribute("data-produto");
+
+            if (produto === '2') {
+                exibirModalLinkGeradoParaProduto2(url);
+            }
+        });
+    });
+
+    function exibirModalLinkGeradoParaProduto2(url) {
+        Swal.fire({
+            title: 'Selecione o valor do Produto',
+            input: 'select',
+            inputOptions: {
+                '970': '970',
+                '1200': '1200',
+                '1500': '1500'
             },
             showCancelButton: true,
             confirmButtonText: 'Gerar Link',

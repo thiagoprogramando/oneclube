@@ -69,7 +69,7 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="/vendas/12">Minhas Vendas</a>
-                            <a class="collapse-item gerar-link" href="#" data-produto="2"
+                            <a class="collapse-item gerar-link-one-positive" href="#" data-produto="2"
                                 data-url="{{ url('/associadonepositive/' . auth()->id()) }}">Gerar Link de Venda</a>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                             <a class="collapse-item" href="/relatorioVendas">Vendas</a>
                             <a class="collapse-item" href="/relatorioUsuarios">Usuários</a>
                             <a class="collapse-item" href="/relatorioPremiados">Premiados</a>
-                           
+
                         </div>
                     </div>
                 </li>
@@ -250,8 +250,8 @@
                                     echo ucwords(strtolower($primeiroNome));
                                 @endphp
                             @endif
-                        
-                        
+
+
 
                             . Bem-vindo(a)!
                         </p>
