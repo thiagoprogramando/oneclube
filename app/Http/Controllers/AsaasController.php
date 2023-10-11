@@ -38,6 +38,7 @@ class AsaasController extends Controller
                                 $parcela->url = $pix['qrCodeUrl'];
                                 $parcela->numerocontratocobranca = $pix['numeroContratoCobranca'];
                                 $parcela->linhadigitavel = $pix['linhaDigitavel'];
+                                $parcela->numero = $pix['numero'];
                                 $parcela->save();
 
                                 return $this->enviaPix($venda->telefone, $pix['qrCodeUrl']);
@@ -74,6 +75,7 @@ class AsaasController extends Controller
                                 $parcela->url = $boleto['qrCodeUrl'];
                                 $parcela->numerocontratocobranca = $boleto['numeroContratoCobranca'];
                                 $parcela->linhadigitavel = $boleto['linhaDigitavel'];
+                                $parcela->numero = $boleto['numero'];
                                 $parcela->save();
 
                                 return $this->enviaBoleto($venda->telefone, $boleto['linhaDigitavel']);

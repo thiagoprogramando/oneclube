@@ -21,5 +21,6 @@ class Parcela extends Model
         'txid',
         'numerocontratocobranca',
         'linhadigitavel',
+        'numero',
     ];
 }

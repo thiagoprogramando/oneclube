@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('numerocontratocobranca')->nullable();
             $table->longText('linhadigitavel')->nullable();
             $table->longText('url')->nullable();
+            $table->longText('numero')->nullable();
             $table->timestamps();
         });
     }

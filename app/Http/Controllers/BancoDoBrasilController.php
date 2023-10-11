@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Nossonumero;
 use App\Models\Parcela;
 use App\Models\Vendas;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request as IlluminateRequest;
+
 
 class BancoDoBrasilController extends Controller
 {
@@ -110,6 +113,7 @@ class BancoDoBrasilController extends Controller
                     'codigoBarraNumerico' => $responseData['codigoBarraNumerico'],
                     'numeroContratoCobranca' => $responseData['numeroContratoCobranca'],
                     'codigoCliente' => $responseData['codigoCliente'],
+                    'numero' => $responseData['numero'],
                 ];
             } else {
                 return ['result' => 'error', 'message' => 'Erro desconhecido'];
@@ -118,4 +122,30 @@ class BancoDoBrasilController extends Controller
             return ['result' => 'error', 'message' => $e->getMessage()];
         }
     }
+
+    public function webHookBancoDoBrasil(\Illuminate\Http\Request $request) {
+        $data = $request->all();
+
+        if (!empty($data)) {
+            foreach ($data as $item) {
+                $id = $item['id'];
+                $baixa = $item['codigoEstadoBaixaOperacional'];
+                $parcela = Parcela::where('numero', $id)->first();
+                if($parcela) {
+                    if($baixa == 1 || $baixa == 2) {
+                        $parcela->status = "PAYMENT_CONFIRMED";
+                        $parcela->save();
+
+                        return ['result' => 'success', 'message' => 'Parcela atualizada!'];
+                    } else {
+                        return ['result' => 'success', 'message' => 'Código da Baixa não necessário, nenhuma alteração realizada!'];
+                    }
+                }
+                return ['result' => 'success', 'message' => 'Cobrança não existe!'];
+            }
+        } else {
+            return ['result' => 'error', 'message' => 'JSON não interpretado!'];
+        }
+    }
+
 }
