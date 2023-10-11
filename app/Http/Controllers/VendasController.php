@@ -71,7 +71,20 @@ class VendasController extends Controller
             'telefone' => 'required|string|max:20',
             'rg' => 'max:20',
         ]);
-
+    
+        $ultimaVenda = Vendas::latest('created_at')->first();
+    
+        if ($ultimaVenda) {
+            $nContrato = $ultimaVenda->n_contrato;
+            if ($nContrato === '999') {
+                $nContrato = '000';
+            } else {
+                $nContrato = str_pad((int)$nContrato + 1, 3, '0', STR_PAD_LEFT);
+            }
+        } else {
+            $nContrato = '001';
+        }
+    
         switch ($request->produto) {
             case 3:
                 $views = ['documentos.onemotos'];
@@ -97,49 +110,50 @@ class VendasController extends Controller
                 $views = ['documentos.contratoonepage'];
                 break;
         }
-
+    
         $vendaData = [
             'id_vendedor' => $id,
+            'n_contrato' => $nContrato, // Adicione o número do contrato aqui
         ];
-
+    
         if ($request->entrada) {
             $valor = $request->entrada;
         }
-
+    
         $vendaData['valor'] = $valor;
-
+    
         if (!empty($request->cpfcnpj)) {
             $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
         }
-
+    
         if (!empty($request->cliente)) {
             $vendaData['nome'] = $request->cliente;
         }
-
+    
         if (!empty($request->dataNascimento)) {
             $vendaData['dataNascimento'] = Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d');
         }
-
+    
         if (!empty($request->email)) {
             $vendaData['email'] = $request->email;
         }
-
+    
         if (!empty($request->telefone)) {
             $vendaData['telefone'] = preg_replace('/[^0-9]/', '', $request->telefone);
         }
-
+    
         if (!empty($request->rg)) {
             $vendaData['rg'] = $request->rg;
         }
-
+    
         if (!empty($request->cep) && !empty($request->estado) && !empty($request->cidade) && !empty($request->bairro) && !empty($request->numero)) {
             $vendaData['endereco'] = $request->cep . ' - ' . $request->estado . '/' . $request->cidade . ' - ' . $request->bairro . ' N° ' . $request->numero;
         }
-
+    
         if (!empty($request->produto)) {
             $vendaData['id_produto'] = $request->produto;
         }
-
+    
         $venda = Vendas::create($vendaData);
 
         if (!$venda) {
