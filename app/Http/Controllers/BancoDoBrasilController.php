@@ -30,7 +30,7 @@ class BancoDoBrasilController extends Controller
             'verify' => false
         ];
 
-        $response = $client->request('POST', 'https://oauth.sandbox.bb.com.br/oauth/token', $data);
+        $response = $client->request('POST', env('API_URL_BB_AUTH'), $data);
         if ($response->getStatusCode() == 201 || $response->getStatusCode() == 200) {
             $responseData = json_decode($response->getBody(), true);
             $accessToken = $responseData['access_token'];
@@ -97,7 +97,7 @@ class BancoDoBrasilController extends Controller
             'verify' => false,
         ];
 
-        $request = new Request('POST', 'https://api.sandbox.bb.com.br/cobrancas/v2/boletos?gw-dev-app-key=eb3f8901f8222d55f78f481f2a55c8bf', $headers, $body);
+        $request = new Request('POST', env('API_URL_BB_COBRANCA').'v2/boletos?gw-dev-app-key=eb3f8901f8222d55f78f481f2a55c8bf', $headers, $body);
 
         try {
             $res = $client->sendAsync($request, $options)->wait();
