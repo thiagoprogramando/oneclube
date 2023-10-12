@@ -19,7 +19,7 @@ class Nossonumero extends Model
 
     public static function gerarNumeroTituloCliente()
     {
-        $numeroConvenio = '3128557';
+        $numeroConvenio = env('numeroConvenio');
 
         $ultimoNumeroControle = self::select('numeroControle')
             ->where('numeroConvenio', $numeroConvenio)

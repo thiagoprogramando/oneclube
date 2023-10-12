@@ -15,5 +15,3 @@ Route::post('clicksing', [AsaasController::class, 'enviaLinkPagamento'])->name('
 Route::post('assas', [AsaasController::class, 'receberPagamentoAssas'])->name('assas');
 //Webhook BancoDoBrasil
 Route::post('webHookBancoDoBrasil', [BancoDoBrasilController::class, 'webHookBancoDoBrasil'])->name('webHookBancoDoBrasil');
-//Token BB
-Route::get('geraToken', [BancoDoBrasilController::class, 'geraToken'])->name('geraToken');
