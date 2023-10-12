@@ -24,7 +24,7 @@ class BancoDoBrasilController extends Controller
                 'scope' => 'cobrancas.boletos-info, cobrancas.boletos-requisicao',
             ],
             'headers' => [
-                'Authorization' => 'Basic ZXlKcFpDSTZJbUZrT1Rka01EZ3RZV0k1TXkwME9HVTRMVGcyWWpJdFlqVTNOemN3SWl3aVkyOWthV2R2VUhWaWJHbGpZV1J2Y2lJNk1Dd2lZMjlrYVdkdlUyOW1kSGRoY21VaU9qYzFOREkwTENKelpYRjFaVzVqYVdGc1NXNXpkR0ZzWVdOaGJ5STZNWDA6ZXlKcFpDSTZJbUpoWkRJeE1qYzRMV0V3TkRFdE5EQmxZUzA0TkROakxUUXpZMkUxTXpNek1qVXhOQ0lzSW1OdlpHbG5iMUIxWW14cFkyRmtiM0lpT2pBc0ltTnZaR2xuYjFOdlpuUjNZWEpsSWpvM05UUXlOQ3dpYzJWeGRXVnVZMmxoYkVsdWMzUmhiR0ZqWVc4aU9qRXNJbk5sY1hWbGJtTnBZV3hEY21Wa1pXNWphV0ZzSWpveExDSmhiV0pwWlc1MFpTSTZJbWh2Ylc5c2IyZGhZMkZ2SWl3aWFXRjBJam94TmprMk1ERXpOekE1TnpVMWZR',
+                'Authorization' => 'Basic ZXlKcFpDSTZJbUV4T0dZMk1XTXROMlEwWlMwME9EQTRMVGdpTENKamIyUnBaMjlRZFdKc2FXTmhaRzl5SWpvd0xDSmpiMlJwWjI5VGIyWjBkMkZ5WlNJNk5UVXpNak1zSW5ObGNYVmxibU5wWVd4SmJuTjBZV3hoWTJGdklqb3lmUTpleUpwWkNJNklqRWlMQ0pqYjJScFoyOVFkV0pzYVdOaFpHOXlJam93TENKamIyUnBaMjlUYjJaMGQyRnlaU0k2TlRVek1qTXNJbk5sY1hWbGJtTnBZV3hKYm5OMFlXeGhZMkZ2SWpveUxDSnpaWEYxWlc1amFXRnNRM0psWkdWdVkybGhiQ0k2TVN3aVlXMWlhV1Z1ZEdVaU9pSndjbTlrZFdOaGJ5SXNJbWxoZENJNk1UWTVOakF4TXpnMU5qUTFNWDA=',
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
             'verify' => false
