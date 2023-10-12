@@ -97,7 +97,7 @@ class BancoDoBrasilController extends Controller
             'verify' => false,
         ];
 
-        $request = new Request('POST', env('API_URL_BB_COBRANCA').'v2/boletos?gw-dev-app-key=eb3f8901f8222d55f78f481f2a55c8bf', $headers, $body);
+        $request = new Request('POST', env('API_URL_BB_COBRANCA').'v2/boletos?gw-dev-app-key=e473e86931108e1253aacf51a52ca777', $headers, $body);
 
         try {
             $res = $client->sendAsync($request, $options)->wait();
