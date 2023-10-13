@@ -32,7 +32,6 @@
                                     <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
                                                 <th>CPF</th>
                                                 <th>N°</th>
                                                 <th>VALOR</th>
@@ -42,9 +41,27 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <tr>
+                                                <td>{{ $venda->cpf }}</td>
+                                                <td>{{ $venda->n_contrato }}</td>
+                                                <td>{{ $venda->valor }}</td>
+                                                <td>
+                                                    @switch($venda->status)
+                                                    @case('PAYMENT_CONFIRMED')
+                                                        Aprovado
+                                                        @break
+                                                    @case('PENDING_PAY')
+                                                        Aguardando Pagamento
+                                                        @break
+                                                    @default
+                                                        Status Desconhecido
+                                                    @endswitch
+                                                </td>
+                                                <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}</td>
+                                                <td class="text-center">Entrada</td>
+                                            </tr>
                                             @foreach ($parcela as $parcelas)
                                             <tr>
-                                                <td>{{ $parcelas->id }}</td>
                                                 <td>{{ $parcelas->cpf }}</td>
                                                 <td>{{ $parcelas->numero_parcela }}</td>
                                                 <td>{{ $parcelas->valor }}</td>

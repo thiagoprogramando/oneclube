@@ -60,7 +60,6 @@
                                         <tbody>
                                             @foreach ($parcelas as $key => $parcela)
                                             <tr>
-                                                {{-- <td class="text-center" type="hidden"> {{ $parcela->venda_id }} </td> --}}
                                                 <td> {{ \Carbon\Carbon::parse($parcela->vencimento)->format('d/m/Y') }} </td>
                                                 <td>
                                                     @switch($parcela->status)
@@ -68,10 +67,10 @@
                                                             Aprovado
                                                             @break
                                                         @case('PENDING_PAY')
-                                                            Aguardando Pagamento
+                                                            Pendente
                                                             @break
                                                         @default
-                                                            Status Desconhecido
+                                                            Pendente
                                                     @endswitch
                                                 </td>
                                                 <td> R$ {{ number_format($parcela->valor, 2, ',', '.') }} </td>

@@ -89,8 +89,8 @@
                                     <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                
                                                 <th>Cliente</th>
+                                                <th>Contrato</th>
                                                 <th>Associado</th>
                                                 <th>Produto</th>
                                                 <th>Status</th>
@@ -101,17 +101,15 @@
                                         <tbody>
                                             @foreach ($vendas as $key =>$venda)
                                             <tr>
-                                                <td>{{ $venda->nome }}</td>
+                                                <td>{{ substr($venda->nome, 0, 15) }}...</td>
+                                                <td>N° {{ $venda->n_contrato }}</td>
                                                 <td> @php
                                                     $vendedor = $users->where('id', $venda->id_vendedor)->first();
                                                     if ($vendedor) {
-                                                        echo $vendedor->nome;
-                                                    } else {
-                                                        echo "Associado não encontrado";
+                                                        echo substr($vendedor->nome, 0, 15).'...';
                                                     }
                                                     @endphp
                                                 </td>
-
                                                 <td>
                                                     @switch($venda->id_produto)
                                                         @case(2)
@@ -121,10 +119,10 @@
                                                             One Positive
                                                             @break
                                                         @case(3)
-                                                            One Motos/Beauty
+                                                            One Motos
                                                             @break
                                                         @case(11)
-                                                            One Motos/Beauty
+                                                            One Motos
                                                             @break
                                                         @case(8)
                                                             One Serviços
@@ -139,24 +137,16 @@
                                                             Aprovado
                                                             @break
                                                         @case('PENDING_PAY')
-                                                            Aguardando Pagamento
+                                                            Pendente
                                                             @break
                                                         @default
-                                                            Status Desconhecido
+                                                            Pendente
                                                     @endswitch
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}</td>
                                                 <td class="text-center">
                                                     <a class="btn btn-outline-success" href="{{ asset('contratos/'.$venda->id_produto.$venda->cpf.'.pdf') }}" download><i class="fa fa-file"></i></a>
-                                                    <?php
-                                                        $id_pay = str_replace('pay_', '', $venda->id_pay);
-                                                    ?>
-                                                    <a class="btn btn-outline-primary" href="https://www.asaas.com/i/{{ $id_pay }}" target="_blank">
-                                                        <i class="fa fa-credit-card"></i>
-                                                    </a>
-                                                    <a class="btn btn-outline-secondary" href="{{ route('relatorioParcelasAdmin', ['id' => $venda->id]) }}" target="_blank">
-                                                        <i class="fa fa-credit-card"></i>
-                                                    </a>                                                    
+                                                    <a class="btn btn-outline-secondary" href="{{ route('relatorioParcelasAdmin', ['id' => $venda->id]) }}" target="_blank"> <i class="fa fa-credit-card"></i> </a>
                                                 </td>
                                             </tr>
                                             @endforeach
