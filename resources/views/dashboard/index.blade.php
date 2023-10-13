@@ -311,8 +311,7 @@
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                                                                   </div>
                                                                   <div  style="margin:30px;">
-                                                                        Caro cliente, você somente poderá fazer uma OFERTA DE QUITAÇÃO, caso as três primeiras parcelas de seu contrato estejam pagas.
-
+                                                                        Caro cliente, você somente poderá fazer uma OFERTA DE QUITAÇÃO, caso a entrada e as três primeiras parcelas de seu contrato estejam pagas.
                                                                 </div>
                                                             </div>
                                                         </div>
