@@ -7,6 +7,7 @@ use App\Http\Controllers\AsaasController;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Carbon\Carbon;
@@ -72,39 +73,34 @@ class VendasController extends Controller
             'rg' => 'max:20',
         ]);
 
-        $ultimaVenda = Vendas::latest('created_at')->first();
-
-        if ($ultimaVenda) {
-            $nContrato = $ultimaVenda->n_contrato;
-            if ($nContrato === '999') {
-                $nContrato = '000';
-            } else {
-                $nContrato = str_pad((int)$nContrato + 1, 3, '0', STR_PAD_LEFT);
-            }
-        } else {
-            $nContrato = '001';
-        }
-
         switch ($request->produto) {
             case 3:
                 $views = ['documentos.onemotos'];
                 $valor = 500;
+                $produto = 3;
                 break;
             case 2:
                 $views = ['documentos.onepositive'];
                 $valor = 970;
+                $produto = 2;
                 break;
             case 8:
                 $views = ['documentos.oneservicos'];
                 $valor = 127;
+                $produto = 8;
+                break;
                 break;
             case 11:
                 $views = ['documentos.associadonemotos'];
                 $valor = 500;
+                $produto = 3;
                 break;
             case 12:
                 $views = ['documentos.onepositive'];
                 $valor = 1500;
+                $produto = 2;
+                $produto = 8;
+                break;
                 break;
             default:
                 $views = ['documentos.contratoonepage'];
@@ -113,7 +109,7 @@ class VendasController extends Controller
 
         $vendaData = [
             'id_vendedor' => $id,
-            'n_contrato' => $nContrato,
+            'n_contrato' => $this->geraNumeroContrato($produto),
         ];
 
         if ($request->entrada) {
@@ -235,8 +231,27 @@ class VendasController extends Controller
         }
     }
 
-    public function criaDocumento($data)
-    {
+    function geraNumeroContrato($id_produto) {
+
+        $maxNumeroContrato = DB::table('vendas')
+            ->where('id_produto', $id_produto)
+            ->max('n_contrato');
+
+        if ($maxNumeroContrato === null) {
+            return '000';
+        }
+
+        $maxNumeroContrato = (int)$maxNumeroContrato;
+        if ($maxNumeroContrato >= 999) {
+            return '000';
+        }
+
+        $proxNumeroContrato = str_pad($maxNumeroContrato + 1, 3, '0', STR_PAD_LEFT);
+
+        return $proxNumeroContrato;
+    }
+
+    public function criaDocumento($data) {
         $client = new Client();
 
         $url = env('API_URL_CLICKSIN') . 'api/v1/documents?access_token=' . env('API_TOKEN_CLICKSIN');
