@@ -266,6 +266,7 @@
                                                                         <input type="hidden" value={{ csrf_token() }} name="_token">
                                                                         <input type="hidden" name="totalPago" value="{{ $venda->total_parcelas_confirmadas_valor }}">
                                                                         <input type="hidden" value="{{ $venda->id }}" name="id">
+                                                                        <input type="hidden" id="entrada{{ $venda->id }}" value="{{ $venda->valor }}" name="entrada">
                                                                         <input type="hidden" id="totalPago{{ $venda->id }}" value="{{ $venda->total_parcelas_confirmadas_valor }}">
 
                                                                         <div class="row">
@@ -419,8 +420,9 @@
                 function valorLance(id) {
                     pago = parseFloat($('#totalPago' + id).val());
                     oferta = parseFloat($('#oferta' + id).val());
+                    entrada = parseFloat($('#entrada' + id).val());
 
-                    var totalLance = pago + oferta;
+                    var totalLance = pago + oferta + entrada;
 
                     if(totalLance < 1){
                         $('#lance' + id).val(0);
