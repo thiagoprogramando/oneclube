@@ -306,10 +306,10 @@ class AsaasController extends Controller
             ],
             'json' => [
                 'phone'     => '55' . $telefone,
-                'message'   => "Prezado Cliente, parabéns por sua compra! Este é o seu N° de Contrato: ".$n_contrato."\r\n\r\n segue seu link de acesso ao sistema da One Clube! \r\n Para acessar, informe o email: ".$email." e o seu CPF como senha! \r\n",
-                'image'     => 'https://oneclube.com.br/images/logo.png',
+                'message'   => "Prezado Cliente, parabéns por sua compra! Este é o seu N° de Contrato: ".$n_contrato."\r\n\r\n segue seu link de acesso ao sistema da One Autos! \r\n Para acessar, informe o email: ".$email." e o seu CPF como senha! \r\n",
+                'image'     => 'https://homologacao.myonecrm.com.br/public/admin/assets/logo1.png',
                 'linkUrl'   => $link,
-                'title'     => 'Acesso One Clube',
+                'title'     => 'Acesso One Autos',
                 'linkDescription' => 'Link Para Acesso Digital'
             ],
         ]);
