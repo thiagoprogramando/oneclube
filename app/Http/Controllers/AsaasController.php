@@ -101,6 +101,7 @@ class AsaasController extends Controller
                         $user = User::create($attributes);
                         $notifica = $this->notificaUsuario($attributes['email'], $venda->telefone, $venda->n_contrato);
                     }
+                    $notifica = $this->notificaUsuario($attributes['email'], $venda->telefone, $venda->n_contrato);
                 }
 
                 $user = User::where('id', $idUsuario)->first();
@@ -264,8 +265,7 @@ class AsaasController extends Controller
         }
     }
 
-    public function notificaCliente($telefone, $assas)
-    {
+    public function notificaCliente($telefone, $assas) {
         $client = new Client();
 
         $url = 'https://api.z-api.io/instances/3C39E4D09323F0EC65030A65366C354F/token/BF1BD343228F26E59D57E7E3/send-link';
@@ -324,8 +324,7 @@ class AsaasController extends Controller
         }
     }
 
-    public function geraParcelas($id)
-    {
+    public function geraParcelas($id) {
         $venda = Vendas::where('id', $id)->first();
 
         $parcelas = 0;
