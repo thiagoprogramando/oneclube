@@ -297,7 +297,7 @@ class AsaasController extends Controller
     public function notificaUsuario($email, $telefone, $n_contrato) {
         $client = new Client();
 
-        $url = 'https://api.z-api.io/instances/3C39E4D09323F0EC65030A65366C354F/token/BF1BD343228F26E59D57E7E3/end-link';
+        $url = 'https://api.z-api.io/instances/3C39E4D09323F0EC65030A65366C354F/token/BF1BD343228F26E59D57E7E3/send-link';
         $link = "https://myonecrm.com.br/cliente";
         $response = $client->post($url, [
             'headers' => [
