@@ -349,6 +349,11 @@
                                     {{ session('success') }}
                                 </div>
                             @endif
+                            @if (session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
                             <div class="table-responsive">
                                 <table class="table table-striped text-center" id="tabelaLances" width="100%"
                                     cellspacing="0">
