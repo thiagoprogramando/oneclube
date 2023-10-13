@@ -154,7 +154,7 @@
                 </li>
             @endif
 
-            @if (Auth::user()->tipo == 4)
+            @if (Auth::user()->tipo == 1)
                 <hr class="sidebar-divider">
 
                 <div class="sidebar-heading">
