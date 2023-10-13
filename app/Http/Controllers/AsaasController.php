@@ -99,9 +99,9 @@ class AsaasController extends Controller
                         ];
 
                         $user = User::create($attributes);
-                        $notifica = $this->notificaUsuario($attributes['email'], $venda->telefone, $venda->n_contrato);
+                        $notifica = $this->notificaUsuario($venda->email, $venda->telefone, $venda->n_contrato);
                     }
-                    $notifica = $this->notificaUsuario($attributes['email'], $venda->telefone, $venda->n_contrato);
+                    $notifica = $this->notificaUsuario($venda->email, $venda->telefone, $venda->n_contrato);
                 }
 
                 $user = User::where('id', $idUsuario)->first();
