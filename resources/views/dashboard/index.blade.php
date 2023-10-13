@@ -115,7 +115,7 @@
                                         <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
                                             <thead>
                                                 <tr>
-                                                   
+
                                                     <th>Cliente</th>
                                                     <th>Produto</th>
                                                     <th>Status</th>
@@ -126,7 +126,7 @@
                                             <tbody>
                                                 @foreach ($vendas as $key =>$venda)
                                                 <tr>
-                                                   
+
                                                     <td>{{ $venda->nome }}</td>
                                                     <td>
                                                         @switch($venda->id_produto)
@@ -137,10 +137,10 @@
                                                                 One Positive
                                                                 @break
                                                             @case(3)
-                                                                One Motos/Beauty
+                                                                One Motos
                                                                 @break
                                                             @case(11)
-                                                                One Motos/Beauty
+                                                                One Motos
                                                                 @break
                                                             @case(8)
                                                                 One Serviços
@@ -225,11 +225,11 @@
                                                         @break
 
                                                         @case(3)
-                                                            One Motos/Beauty
+                                                            One Motos
                                                         @break
 
                                                         @case(11)
-                                                            One Motos/Beauty
+                                                            One Motos
                                                         @break
 
                                                         @case(8)
@@ -247,10 +247,10 @@
                                                         @if ($venda->id_produto == 3 || $venda->id_produto == 12)
 
                                                         @if($venda->total_parcelas_confirmadas >= 3) <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#lanceModal{{ $venda->id }}">Ofertar Quitação</button> @endif
-                                                        @endif                                 
+                                                        @endif
 
-                                                        @if($venda->total_parcelas_confirmadas <= 2)<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#avisoModal">Ofertar Quitação</button>    @endif                                               
-                                                        
+                                                        @if($venda->total_parcelas_confirmadas <= 2)<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#avisoModal">Ofertar Quitação</button>    @endif
+
                                                     </form>
                                                     <div class="modal fade" id="lanceModal{{ $venda->id }}"
                                                         tabindex="-1" role="dialog" aria-labelledby="lanceModalLabel"
@@ -312,7 +312,7 @@
                                                                   </div>
                                                                   <div  style="margin:30px;">
                                                                         Caro cliente, você somente poderá fazer uma OFERTA DE QUITAÇÃO, caso as três primeiras parcelas de seu contrato estejam pagas.
-                                                                    
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -355,7 +355,7 @@
                                     cellspacing="0">
                                     <thead>
                                         <tr>
-                                           
+
                                             <th>Data</th>
                                             <th>Valor da Oferta</th>
                                         </tr>
@@ -363,7 +363,7 @@
                                     <tbody>
                                         @foreach ($lances as $key => $lance)
                                             <tr>
-                                                
+
                                                 <td>{{ $lance->created_at->format('d/m/Y') }}</td>
                                                 <td> R$ {{ number_format($lance->pago + $lance->oferta, 2, ',', '.') }}
                                                 </td>
