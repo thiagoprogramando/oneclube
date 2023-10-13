@@ -232,23 +232,32 @@ class VendasController extends Controller
     }
 
     function geraNumeroContrato($id_produto) {
-
+        // Obtém o número de contrato máximo existente na tabela para o produto
         $maxNumeroContrato = DB::table('vendas')
             ->where('id_produto', $id_produto)
             ->max('n_contrato');
 
         if ($maxNumeroContrato === null) {
+            // Se a tabela estiver vazia, comece com 000
             return '000';
         }
 
-        $maxNumeroContrato = (int)$maxNumeroContrato;
-        if ($maxNumeroContrato >= 999) {
-            return '000';
+        // Verifica se o número máximo já foi usado e está presente na tabela
+        $numerosUsados = DB::table('vendas')
+            ->where('id_produto', $id_produto)
+            ->pluck('n_contrato')
+            ->toArray();
+
+        // Procura o próximo número não usado entre 000 e 999
+        for ($i = 0; $i <= 999; $i++) {
+            $proximoNumero = str_pad($i, 3, '0', STR_PAD_LEFT);
+            if (!in_array($proximoNumero, $numerosUsados)) {
+                return $proximoNumero;
+            }
         }
 
-        $proxNumeroContrato = str_pad($maxNumeroContrato + 1, 3, '0', STR_PAD_LEFT);
-
-        return $proxNumeroContrato;
+        // Se todos os números de 000 a 999 estiverem usados, comece novamente com 000
+        return '000';
     }
 
     public function criaDocumento($data) {
