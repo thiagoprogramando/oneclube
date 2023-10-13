@@ -84,6 +84,8 @@ class AsaasController extends Controller
                 $venda->status_pay = 'PAYMENT_CONFIRMED';
                 $venda->save();
 
+                $this->notificaUsuario($venda->email, $venda->telefone, $venda->n_contrato);
+
                 $parcelas = $this->geraParcelas($venda->id);
                 if ($parcelas) {
                     $user = User::where('cpf', $venda->cpf)->orWhere('email', $venda->email)->first();
@@ -99,9 +101,7 @@ class AsaasController extends Controller
                         ];
 
                         $user = User::create($attributes);
-                        $notifica = $this->notificaUsuario($venda->email, $venda->telefone, $venda->n_contrato);
                     }
-                    $notifica = $this->notificaUsuario($venda->email, $venda->telefone, $venda->n_contrato);
                 }
 
                 $user = User::where('id', $idUsuario)->first();
@@ -294,8 +294,7 @@ class AsaasController extends Controller
         }
     }
 
-    public function notificaUsuario($email, $telefone, $n_contrato)
-    {
+    public function notificaUsuario($email, $telefone, $n_contrato) {
         $client = new Client();
 
         $url = 'https://api.z-api.io/instances/3C39E4D09323F0EC65030A65366C354F/token/BF1BD343228F26E59D57E7E3/end-link';
