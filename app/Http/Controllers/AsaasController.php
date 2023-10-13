@@ -14,8 +14,7 @@ use Carbon\Carbon;
 
 class AsaasController extends Controller
 {
-    public function geraAssasOneClube(Request $request)
-    {
+    public function geraAssasOneClube(Request $request) {
 
         $client = new Client();
 
@@ -71,8 +70,7 @@ class AsaasController extends Controller
         }
     }
 
-    public function receberPagamento(Request $request)
-    {
+    public function receberPagamento(Request $request) {
         $jsonData = $request->json()->all();
 
         if ($jsonData['event'] === 'PAYMENT_CONFIRMED' || $jsonData['event'] === 'PAYMENT_RECEIVED') {
@@ -101,7 +99,7 @@ class AsaasController extends Controller
                         ];
 
                         $user = User::create($attributes);
-                        $notifica = $this->notificaUsuario($attributes['email'], $venda->telefone);
+                        $notifica = $this->notificaUsuario($attributes['email'], $venda->telefone, $venda->n_contrato);
                     }
                 }
 
@@ -296,7 +294,7 @@ class AsaasController extends Controller
         }
     }
 
-    public function notificaUsuario($email, $telefone)
+    public function notificaUsuario($email, $telefone, $n_contrato)
     {
         $client = new Client();
 
@@ -309,7 +307,7 @@ class AsaasController extends Controller
             ],
             'json' => [
                 'phone'     => '55' . $telefone,
-                'message'   => "Prezado Cliente, segue seu link de acesso ao sistema da One Clube! \r\n Para acessar, informe o email: ".$email." e o seu CPF como senha! \r\n",
+                'message'   => "Prezado Cliente, parabéns por sua compra! Este é o seu N° de Contrato: ".$n_contrato."\r\n\r\n segue seu link de acesso ao sistema da One Clube! \r\n Para acessar, informe o email: ".$email." e o seu CPF como senha! \r\n",
                 'image'     => 'https://oneclube.com.br/images/logo.png',
                 'linkUrl'   => $link,
                 'title'     => 'Acesso One Clube',
