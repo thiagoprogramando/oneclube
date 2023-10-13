@@ -496,6 +496,11 @@ class VendasController extends Controller
 
         $mesAtual = Carbon::now()->format('m');
 
+        $valorTotal = $oferta + $totalPago;
+        if($valorTotal < 7.627) {
+            return redirect()->route('dashboard')->with('error', 'O valor mínimo da OFERTA DE QUITAÇÃO é de 50% do valor atual da moto (R$ 7.627,50). Mas, lembre-se, tudo que você já pagou desde a primeira parcela, é somado para chegar nesse valor mínimo de 50%.');
+        }
+
         VendaLance::where('venda_id', $vendaId)->delete();
         VendaLance::create([
             'venda_id' => $vendaId,
