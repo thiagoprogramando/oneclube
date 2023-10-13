@@ -277,7 +277,7 @@
                                                                             </div>
                                                                             <div class="col-12">
                                                                                 <div class="form-group">
-                                                                                    <input type="text" class="form-control" value="Valor total Pago: {{ number_format($venda->total_parcelas_confirmadas_valor, 2, ',', '.') + $venda->valor }}" readonly>
+                                                                                    <input type="text" class="form-control" value="Valor total Pago: {{ number_format($venda->total_parcelas_confirmadas_valor + $venda->valor, 2, ',', '.')  }}" readonly>
                                                                                 </div>
                                                                             </div>
 
