@@ -246,6 +246,19 @@ class AsaasController extends Controller
         $responseData = json_decode($response->getBody(), true);
 
         if( isset($responseData['id'])) {
+            $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-text';
+
+            $response = $client->post($url, [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ],
+                'json' => [
+                    'phone'     => '55'.$telefone,
+                    'message'   => $boleto,
+                ],
+            ]);
+
             return true;
         } else {
             return false;
