@@ -341,9 +341,9 @@ class AsaasController extends Controller
         }
 
         $primeiraParcelaDate = Carbon::parse($venda->created_at)->addMonth();
-        // if ($primeiraParcelaDate->day < 28) {
-        //     $primeiraParcelaDate->day = 28;
-        // }
+        if ($primeiraParcelaDate->day < 31) {
+            $primeiraParcelaDate->day = 20;
+        }
 
         $interval = $primeiraParcelaDate->diffInMonths(Carbon::now());
 
