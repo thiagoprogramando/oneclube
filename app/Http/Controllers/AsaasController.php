@@ -345,7 +345,7 @@ class AsaasController extends Controller
             $primeiraParcelaDate->day = 20;
         }
 
-        $interval = $primeiraParcelaDate->diffInMonths(Carbon::now());
+        // $interval = $primeiraParcelaDate->diffInMonths(Carbon::now());
 
         for ($i = 1; $i <= $parcelas; $i++) {
             $parcela = new VendaParcela();
@@ -354,7 +354,7 @@ class AsaasController extends Controller
             $parcela->cpf = $venda->cpf;
             $parcela->valor = $valor;
             $parcela->status = "PENDING_PAY";
-            $parcela->vencimento = $primeiraParcelaDate->copy()->addMonths($interval + ($i - 1));
+            $parcela->vencimento = $primeiraParcelaDate->copy()->addMonths($i - 1);
             $parcela->save();
         }
 
