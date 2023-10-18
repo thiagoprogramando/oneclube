@@ -54,6 +54,22 @@
                     </div>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse"
+                        data-target="#collapseScore" aria-expanded="true" aria-controls="collapseScore">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Score</span>
+                    </a>
+                    <div id="collapseScore" class="collapse" aria-labelledby="headingPositive"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="/vendas/1">Minhas Vendas</a>
+                            <a class="collapse-item" href="{{ url('/score/' . auth()->id() . '/' . Auth::user()->cupom) }}"
+                                target="_BLANK">Vender</a>
+                        </div>
+                    </div>
+                </li>
+
             @if (Auth::user()->tipo == 2)
                 <hr class="sidebar-divider">
 

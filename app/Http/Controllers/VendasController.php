@@ -16,8 +16,7 @@ use App\Models\Vendas;
 class VendasController extends Controller
 {
 
-    public function getVendas(Request $request, $id = null, $cupom = null)
-    {
+    public function getVendas(Request $request, $id = null, $cupom = null) {
         $users = auth()->user();
 
         $dataInicio = $request->input('data_inicio');
@@ -55,8 +54,7 @@ class VendasController extends Controller
         ]);
     }
 
-    public function vender(Request $request, $id)
-    {
+    public function vender(Request $request, $id) {
 
         $request->validate([
             'cpfcnpj' => 'required|string|max:255',
@@ -66,7 +64,7 @@ class VendasController extends Controller
             'telefone' => 'required|string|max:20',
         ]);
 
-        $views = ['documentos.limpanome'];
+        $views = ['documentos.'+$request->franquia];
 
         $vendaData = [
             'id_vendedor'     => $id,
@@ -124,6 +122,12 @@ class VendasController extends Controller
             }
 
             $vendaData['valor'] = $valor;
+
+            if($cpfcnpj > 12 && $request->produto == 1) {
+                $vendaData['valor'] = 697;
+            } elseif($cpfcnpj < 12 && $request->produto == 1) {
+                $vendaData['valor'] = 197;
+            }
         }
 
         $data = [

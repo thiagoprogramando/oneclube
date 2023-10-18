@@ -9,7 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\limpanomeController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\VendasController;
-use App\Http\Controllers\BancoDoBrasilController;
+use App\Http\Controllers\ScoreController;
 use Illuminate\Support\Facades\Route;
 use app\http\Kernel;
 
@@ -23,6 +23,7 @@ Route::post('/register', [RegisterController::class, 'register_action'])->name('
 
 //Vendas
 Route::get('/limpanome/{id}/{cupom?}', [limpanomeController::class, 'index'])->name('limpanome');
+Route::get('/score/{id}/{cupom?}', [ScoreController::class, 'index'])->name('score');
 
 Route::post('/venda/{id}', [VendasController::class, 'vender'])->name('vender');
 Route::view('/contrato', 'relatorio.contrato')->name('relatorio.contrato');

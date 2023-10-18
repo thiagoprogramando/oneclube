@@ -51,8 +51,8 @@
                                             </div>
 
                                             <input type="hidden" name="id_user" value="{{ $id }}">
-                                            <input type="hidden" name="produto" value="2">
-                                            <input type="hidden" name="franquia" value="limpanome">
+                                            <input type="hidden" name="produto" value="1">
+                                            <input type="hidden" name="franquia" value="score">
                                             <input type="hidden" name="uf" id="estado">
                                             <input type="hidden" name="bairro" id="bairro">
                                             <input type="hidden" name="cidade" id="cidade">
@@ -78,7 +78,6 @@
                                                     <option value="PIX">Forma de Pagamento</option>
                                                     <option value="PIX">PIX</option>
                                                     <option value="BOLETO">BOLETO</option>
-                                                    <option value="CARTÃO">CARTÃO</option>
                                                 </select>
                                             </div>
 
@@ -86,17 +85,6 @@
                                                 <select name="parcela" class="form-control">
                                                     <option value="1">Parcelas</option>
                                                     <option value="1">1x</option>
-                                                    <option value="2">2x</option>
-                                                    <option value="3">3x</option>
-                                                    <option value="4">4x</option>
-                                                    <option value="5">5x</option>
-                                                    <option value="6">6x</option>
-                                                    <option value="7">7x</option>
-                                                    <option value="8">8x</option>
-                                                    <option value="9">9x</option>
-                                                    <option value="10">10x</option>
-                                                    <option value="11">11x</option>
-                                                    <option value="12">12x</option>
                                                 </select>
                                             </div>
 
