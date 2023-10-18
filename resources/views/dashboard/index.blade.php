@@ -7,7 +7,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xl-12 col-md-12 mb-4">
+            <div class="col-xl-6 col-md-12 mb-4">
                 <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -16,7 +16,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
                                         <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                            <button class="btn btn-outline-success" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button>
+                                            <button class="btn btn-outline-success" data-link="{{ url('/limpanome/' . auth()->id() .'/'. Auth::user()->cupom)  }}" onclick="copiaLink(this)"><i class="fas fa-copy"></i></button>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -26,6 +26,30 @@
                             </div>
                             <div class="col-auto">
                                 <i class="fa fa-check fa-2x text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-md-12 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"> Score</div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                            <button class="btn btn-outline-primary" data-link="{{ url('/score/' . auth()->id() .'/'. Auth::user()->cupom)  }}" onclick="copiaLink(this)"><i class="fas fa-copy"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <a class="text-primary" id="copyLink" href="{{ url('/score/' . auth()->id() .'/'. Auth::user()->cupom)  }}" target="_blank">{{ url('/score/' . auth()->id()) }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-fw fa-chart-area fa-2x text-primary"></i>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Minhas Vendas</h1>
+            <h1 class="h3 mb-0 text-gray-800">Vendas</h1>
         </div>
 
         <div class="row">
@@ -30,6 +30,7 @@
                                                                 <div class="form-group">
                                                                     <select class="form-control"  name="produto">
                                                                         <option value="2">Limpa Nome</option>
+                                                                        <option value="1">Score</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
