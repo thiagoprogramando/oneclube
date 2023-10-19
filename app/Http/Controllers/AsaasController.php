@@ -98,7 +98,7 @@ class AsaasController extends Controller
                                 $parcela->numero = $pix['numero'];
                                 $parcela->save();
 
-                                return $this->enviaPix($venda->telefone, $pix['qrCodeUrl']);
+                                return $this->enviaPix($venda->telefone, $pix['qrCodeTxId']);
                             } else {
                                 $nomeArquivo = date('Y-m-d') . 'erro.txt';
                                 $caminhoArquivo = public_path('erros/' . $nomeArquivo);
