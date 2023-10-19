@@ -92,13 +92,13 @@ class AsaasController extends Controller
                                 $parcela = Parcela::where('id_venda', $venda->id)->where('status', 'PENDING_PAY')->first();
                                 $parcela->codigocliente = $pix['codigoCliente'];
                                 $parcela->txid = $pix['qrCodeTxId'];
-                                $parcela->url = $pix['qrCodeUrl'];
+                                $parcela->url = $pix['qrCodeEmv'];
                                 $parcela->numerocontratocobranca = $pix['numeroContratoCobranca'];
                                 $parcela->linhadigitavel = $pix['linhaDigitavel'];
                                 $parcela->numero = $pix['numero'];
                                 $parcela->save();
 
-                                return $this->enviaPix($venda->telefone, $pix['qrCodeTxId']);
+                                return $this->enviaPix($venda->telefone, $pix['qrCodeEmv']);
                             } else {
                                 $nomeArquivo = date('Y-m-d') . 'erro.txt';
                                 $caminhoArquivo = public_path('erros/' . $nomeArquivo);
