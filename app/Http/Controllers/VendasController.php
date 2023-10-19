@@ -64,7 +64,7 @@ class VendasController extends Controller
             'telefone' => 'required|string|max:20',
         ]);
 
-        $views = ['documentos.'+$request->franquia];
+        $views = ['documentos.'.$request->franquia];
 
         $vendaData = [
             'id_vendedor'     => $id,
