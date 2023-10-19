@@ -64,25 +64,45 @@ class AsaasController extends Controller
                         }
                         break;
                     case 'BOLETO':
-                        if($this->parcela($venda->id, $venda->parcela, $venda->valor)) {
-                            $boleto = new BancoDoBrasilController();
-                            $boleto = $boleto->geraBoleto($venda->id);
+                        // if($this->parcela($venda->id, $venda->parcela, $venda->valor)) {
+                        //     $boleto = new BancoDoBrasilController();
+                        //     $boleto = $boleto->geraBoleto($venda->id);
 
-                            if($boleto['result'] == 'success'){
+                        //     if($boleto['result'] == 'success'){
+                        //         $parcela = Parcela::where('id_venda', $venda->id)->where('status', 'PENDING_PAY')->first();
+                        //         $parcela->codigocliente = $boleto['codigoCliente'];
+                        //         $parcela->txid = $boleto['qrCodeTxId'];
+                        //         $parcela->url = $boleto['qrCodeUrl'];
+                        //         $parcela->numerocontratocobranca = $boleto['numeroContratoCobranca'];
+                        //         $parcela->linhadigitavel = $boleto['linhaDigitavel'];
+                        //         $parcela->numero = $boleto['numero'];
+                        //         $parcela->save();
+
+                        //         return $this->enviaBoleto($venda->telefone, $boleto['linhaDigitavel']);
+                        //     } else {
+                        //         $nomeArquivo = date('Y-m-d') . 'erro.txt';
+                        //         $caminhoArquivo = public_path('erros/' . $nomeArquivo);
+                        //         File::put($caminhoArquivo, $boleto['message']);
+                        //     }
+                        // }
+                        if($this->parcela($venda->id, $venda->parcela, $venda->valor)) {
+                            $pix = new BancoDoBrasilController();
+                            $pix = $pix->geraBoleto($venda->id);
+                            if($pix['result'] == 'success'){
                                 $parcela = Parcela::where('id_venda', $venda->id)->where('status', 'PENDING_PAY')->first();
-                                $parcela->codigocliente = $boleto['codigoCliente'];
-                                $parcela->txid = $boleto['qrCodeTxId'];
-                                $parcela->url = $boleto['qrCodeUrl'];
-                                $parcela->numerocontratocobranca = $boleto['numeroContratoCobranca'];
-                                $parcela->linhadigitavel = $boleto['linhaDigitavel'];
-                                $parcela->numero = $boleto['numero'];
+                                $parcela->codigocliente = $pix['codigoCliente'];
+                                $parcela->txid = $pix['qrCodeTxId'];
+                                $parcela->url = $pix['qrCodeUrl'];
+                                $parcela->numerocontratocobranca = $pix['numeroContratoCobranca'];
+                                $parcela->linhadigitavel = $pix['linhaDigitavel'];
+                                $parcela->numero = $pix['numero'];
                                 $parcela->save();
 
-                                return $this->enviaBoleto($venda->telefone, $boleto['linhaDigitavel']);
+                                return $this->enviaPix($venda->telefone, $pix['qrCodeUrl']);
                             } else {
                                 $nomeArquivo = date('Y-m-d') . 'erro.txt';
                                 $caminhoArquivo = public_path('erros/' . $nomeArquivo);
-                                File::put($caminhoArquivo, $boleto['message']);
+                                File::put($caminhoArquivo, $pix['message']);
                             }
                         }
                         break;
@@ -131,8 +151,7 @@ class AsaasController extends Controller
         }
     }
 
-    public function geraPagamentoAssas($nome, $cpfcnpj, $valor, $parcela, $forma_pagamento)
-    {
+    public function geraPagamentoAssas($nome, $cpfcnpj, $valor, $parcela, $forma_pagamento) {
 
         $client = new Client();
 

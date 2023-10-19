@@ -54,7 +54,7 @@
                     </div>
                 </li>
 
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse"
                         data-target="#collapseScore" aria-expanded="true" aria-controls="collapseScore">
                         <i class="fas fa-fw fa-chart-area"></i>
@@ -68,7 +68,7 @@
                                 target="_BLANK">Vender</a>
                         </div>
                     </div>
-                </li>
+                </li> -->
 
             @if (Auth::user()->tipo == 2)
                 <hr class="sidebar-divider">
