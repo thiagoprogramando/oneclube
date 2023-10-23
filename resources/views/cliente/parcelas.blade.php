@@ -36,10 +36,11 @@
                                             </td>
                                             <td class="text-center">
                                                 <form action="{{ route('geraParcelaBancoDoBrasil') }}" method="POST">
+                                                    @csrf
                                                     <input type="hidden" name="parcela" value="{{ $parcela->id }}">
                                                     <input type="hidden" name="venda" value="{{ $parcela->id_venda }}">
                                                     @if ($parcela->status == 'PENDING_PAY')
-                                                        <button type="submit" class="btn btn-outline-success">Boleto</button>
+                                                        <button type="submit" class="btn btn-outline-success">Receber Boleto</button>
                                                     @else
                                                         Cobrança Conciliada
                                                     @endif
