@@ -143,6 +143,7 @@ class BancoDoBrasilController extends Controller
                 $parcela->save();
 
                 $this->notificaCliente($dadosBoleto['qrCodeEmv'], $dadosBoleto['linhaDigitavel'], $venda->telefone);
+                return redirect()->back()->withErrors(['success' => 'Dados de pagamento enviados para seu whatsapp!']);
             }
         } else {
             return redirect()->back()->withErrors(['error' => 'Não encontramos informações sobre o contrato!']);
