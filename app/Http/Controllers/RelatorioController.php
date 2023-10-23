@@ -17,7 +17,7 @@ class RelatorioController extends Controller
 
         return view('dashboard.relatorio.vendas', [
             'users' => User::all(),
-            'vendas' => Vendas::take(50)->get(),
+            'vendas' => Vendas::with('vendedor')->take(50)->get(),
             'cupons' => Cupom::all(),
         ]);
     }
@@ -28,7 +28,6 @@ class RelatorioController extends Controller
 
         $produto = $request->input('produto');
         $usuario = $request->input('usuario');
-        $status = $request->input('status');
         $cupom = $request->input('cupom');
 
         $vendas = Vendas::query();
@@ -41,7 +40,7 @@ class RelatorioController extends Controller
             $vendas = $vendas->where('id_vendedor', $usuario);
         }
 
-        if ($cupom) {
+        if ($cupom != 'ALL') {
             $vendas = $vendas->where('cupom', $cupom);
         }
 
@@ -52,7 +51,9 @@ class RelatorioController extends Controller
             $dataInicio = Carbon::parse($dataInicio);
             $dataFim = Carbon::parse($dataFim);
 
-            $vendas->whereBetween('updated_at', [$dataInicio, $dataFim]);
+            $dataFim->addDay();
+
+            $vendas->whereDate('created_at', '>=', $dataInicio)->whereDate('created_at', '<=', $dataFim);
         }
 
         $vendas = $vendas->get();

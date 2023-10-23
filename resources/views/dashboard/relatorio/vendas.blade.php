@@ -30,7 +30,6 @@
                                                                 <div class="form-group">
                                                                     <select class="form-control"  name="produto">
                                                                         <option value="2">Limpa Nome</option>
-                                                                        <option value="1">Score</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -39,7 +38,7 @@
                                                                     <select class="form-control"  name="usuario">
                                                                         <option value="ALL">Todos os Usuários</option>
                                                                         @foreach ($users as $key =>$user)
-                                                                        <option value="{{ $user->id }}">{{ $user->nome }}</option>
+                                                                            <option value="{{ $user->id }}">{{ $user->nome }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -59,7 +58,7 @@
                                                                     <select class="form-control"  name="cupom">
                                                                         <option value="ALL">Todos os Cupons</option>
                                                                         @foreach ($cupons as $key =>$cupom)
-                                                                        <option value="{{ $cupom->codigo }}">{{ $cupom->titulo }}</option>
+                                                                            <option value="{{ $cupom->codigo }}">{{ $cupom->titulo }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -85,7 +84,7 @@
                                             <tr>
                                                 <th>Cliente</th>
                                                 <th>CPF/CNPJ</th>
-                                                <th>Telefone/Email</th>
+                                                <th>Vendedor</th>
                                                 <th>Contrato</th>
                                                 <th>Data venda</th>
                                                 <th class="text-center">Opções</th>
@@ -96,7 +95,7 @@
                                                 <tr>
                                                     <td>{{ $venda->nome }}</td>
                                                     <td>{{ $venda->cpf }}</td>
-                                                    <td>{{ $venda->telefone }} / {{ $venda->email }}</td>
+                                                    <td>{{ $venda->vendedor->nome }}</td>
                                                     <td>{{ $venda->status_contrato }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }} </td>
                                                     <td class="text-center">

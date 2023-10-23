@@ -14,8 +14,7 @@ use Illuminate\Http\Request as IlluminateRequest;
 class BancoDoBrasilController extends Controller
 {
 
-    public function geraToken()
-    {
+    public function geraToken() {
         $client = new Client();
 
         $data = [
@@ -41,13 +40,17 @@ class BancoDoBrasilController extends Controller
         }
     }
 
-    public function geraBoleto($venda)
-    {
+    public function geraBoleto($venda, $parcela = null) {
         $accessToken = $this->geraToken();
 
         $venda = Vendas::find($venda);
         $tipoInscricao = (strlen($venda->cpf) > 11) ? '2' : '1';
-        $parcela = Parcela::where('id_venda', $venda->id)->where('status', 'PENDING_PAY')->first();
+        if($parcela) {
+            $parcela = Parcela::where('id', $parcela)->first();
+        } else {
+            $parcela = Parcela::where('id_venda', $venda->id)->where('status', 'PENDING_PAY')->first();
+        }
+
         $dataVencimento = date('d.m.Y', strtotime($parcela->vencimento));
 
         $client = new Client();
@@ -59,13 +62,13 @@ class BancoDoBrasilController extends Controller
         ];
 
         $body = '{
-            "numeroConvenio": '.env('NUMEROCONVENIO').',
-            "dataVencimento": "'.$dataVencimento.'",
-            "valorOriginal": "'.$parcela->valor.'",
-            "numeroCarteira": '.env('NUMEROCARTEIRA').',
-            "numeroVariacaoCarteira": '.env('NUMEROVARIACAOCARTEIRA').',
+            "numeroConvenio": ' . env('NUMEROCONVENIO') . ',
+            "dataVencimento": "' . $dataVencimento . '",
+            "valorOriginal": "' . $parcela->valor . '",
+            "numeroCarteira": ' . env('NUMEROCARTEIRA') . ',
+            "numeroVariacaoCarteira": ' . env('NUMEROVARIACAOCARTEIRA') . ',
             "codigoModalidade": "1",
-            "dataEmissao": "'.date('d.m.Y').'",
+            "dataEmissao": "' . date('d.m.Y') . '",
             "valorAbatimento": "0",
             "quantidadeDiasProtesto": "0",
             "quantidadeDiasNegativacao": "0",
@@ -76,17 +79,17 @@ class BancoDoBrasilController extends Controller
             "codigoTipoTitulo": "2",
             "descricaoTipoTitulo": "DM",
             "indicadorPermissaoRecebimentoParcial": "N",
-            "numeroTituloCliente": "'.Nossonumero::gerarNumeroTituloCliente().'",
+            "numeroTituloCliente": "' . Nossonumero::gerarNumeroTituloCliente() . '",
             "pagador": {
-                "tipoInscricao": "'.$tipoInscricao.'",
-                "numeroInscricao": "'.$venda->cpf.'",
-                "nome": "'.$venda->nome.'",
-                "endereco": "'.$venda->endereco.'",
-                "cep": "'.$venda->cep.'",
-                "cidade": "'.$venda->cidade.'",
-                "bairro": "'.$venda->bairro.'",
-                "uf": "'.$venda->uf.'",
-                "telefone": "'.$venda->telefone.'"
+                "tipoInscricao": "' . $tipoInscricao . '",
+                "numeroInscricao": "' . $venda->cpf . '",
+                "nome": "' . $venda->nome . '",
+                "endereco": "' . $venda->endereco . '",
+                "cep": "' . $venda->cep . '",
+                "cidade": "' . $venda->cidade . '",
+                "bairro": "' . $venda->bairro . '",
+                "uf": "' . $venda->uf . '",
+                "telefone": "' . $venda->telefone . '"
             },
             "indicadorPix": "S"
         }';
@@ -97,7 +100,7 @@ class BancoDoBrasilController extends Controller
             'verify' => false,
         ];
 
-        $request = new Request('POST', env('API_URL_BB_COBRANCA').'v2/boletos?gw-dev-app-key=e473e86931108e1253aacf51a52ca777', $headers, $body);
+        $request = new Request('POST', env('API_URL_BB_COBRANCA') . 'v2/boletos?gw-dev-app-key=e473e86931108e1253aacf51a52ca777', $headers, $body);
 
         try {
             $res = $client->sendAsync($request, $options)->wait();
@@ -123,6 +126,101 @@ class BancoDoBrasilController extends Controller
         }
     }
 
+    public function geraParcela(\Illuminate\Http\Request $request) {
+        $dadosBoleto = $this->geraBoleto($request->venda, $request->parcela);
+
+        $venda = Vendas::find($request->venda);
+        $parcela = Parcela::find($request->parcela);
+        if ($parcela) {
+            if ($dadosBoleto['result'] == 'success') {
+
+                $parcela->codigocliente = $dadosBoleto['codigoCliente'];
+                $parcela->txid = $dadosBoleto['qrCodeTxId'];
+                $parcela->url = $dadosBoleto['qrCodeEmv'];
+                $parcela->numerocontratocobranca = $dadosBoleto['numeroContratoCobranca'];
+                $parcela->linhadigitavel = $dadosBoleto['linhaDigitavel'];
+                $parcela->numero = $dadosBoleto['numero'];
+
+                $this->notificaCliente($dadosBoleto['qrCodeEmv'], $dadosBoleto['linhaDigitavel'], $venda->telefone);
+            }
+        } else {
+            return redirect()->back()->withErrors(['error' => 'Não encontramos informações sobre o contrato!']);
+        }
+    }
+
+    public function notificaCliente($telefone, $qrcode, $linhadigitavel) {
+        $client = new Client();
+
+        $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-link';
+
+        $response = $client->post($url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'phone'     => '55'.$telefone,
+                'message'   => "Prezado Cliente, segue os dados pra pagamento da Positivo Brasil: \r\n Basta copiar e colar em seu Banco! \r\n Linha Digitavel: ".$linhadigitavel." ou caso prefira, QR CODE PIX:",
+                'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
+                'linkUrl'   => $qrcode,
+                'title'     => 'Pagamento Positivo Brasil',
+                'linkDescription' => 'Link para Pagamento Digital'
+            ],
+        ]);
+
+        $responseData = json_decode($response->getBody(), true);
+
+        if( isset($responseData['id'])) {
+            $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-text';
+
+            $response = $client->post($url, [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ],
+                'json' => [
+                    'phone'     => '55'.$telefone,
+                    'message'   => $linhadigitavel,
+                ],
+            ]);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function enviaPortalCliente($venda) {
+        $venda = Vendas::where('id', $venda)->first();
+
+        $client = new Client();
+
+        $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-link';
+
+        $response = $client->post($url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'phone'     => '55'.$venda->telefone,
+                'message'   => "Prezado Cliente, segue os dados pra acesso ao seu portal do cliente da Positivo Brasil: \r\n Basta informa seu CPF ou CNPJ para ter acesso! \r\n",
+                'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
+                'linkUrl'   => "https://grupopositivoafiliado.com.br/cliente",
+                'title'     => 'Acesso Positivo Brasil',
+                'linkDescription' => 'Link para Acesso Digital'
+            ],
+        ]);
+
+        $responseData = json_decode($response->getBody(), true);
+
+        if( isset($responseData['id'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function webHookBancoDoBrasil(\Illuminate\Http\Request $request) {
         $data = $request->all();
 
@@ -131,10 +229,12 @@ class BancoDoBrasilController extends Controller
                 $id = $item['id'];
                 $baixa = $item['codigoEstadoBaixaOperacional'];
                 $parcela = Parcela::where('numero', $id)->first();
-                if($parcela) {
-                    if($baixa == 1 || $baixa == 2) {
+                if ($parcela) {
+                    if ($baixa == 1 || $baixa == 2) {
                         $parcela->status = "PAYMENT_CONFIRMED";
                         $parcela->save();
+
+                        $this->enviaPortalCliente($parcela->id_venda);
 
                         return ['result' => 'success', 'message' => 'Parcela atualizada!'];
                     } else {
@@ -147,5 +247,4 @@ class BancoDoBrasilController extends Controller
             return ['result' => 'error', 'message' => 'JSON não interpretado!'];
         }
     }
-
 }

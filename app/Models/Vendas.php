@@ -43,4 +43,8 @@ class Vendas extends Authenticatable
         'createdat'
     ];
 
+    public function vendedor() {
+        return $this->belongsTo(User::class, 'id_vendedor', 'id');
+    }
+
 }

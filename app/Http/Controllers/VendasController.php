@@ -297,7 +297,7 @@ class VendasController extends Controller
                         'has_documentation'  => strlen($data['cpfcnpj']) < 12 ? true : false,
                         'selfie_enabled'  => 'false',
                         'handwritten_enabled'  => 'false',
-                        'official_document_enabled'  => 'true',
+                        'official_document_enabled'  => 'false',
                         'liveness_enabled'  => 'false',
                         'facial_biometrics_enabled'  => 'false',
                     ],
