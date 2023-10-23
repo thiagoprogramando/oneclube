@@ -142,7 +142,7 @@ class BancoDoBrasilController extends Controller
                 $parcela->numero = $dadosBoleto['numero'];
                 $parcela->save();
 
-                $this->notificaCliente($dadosBoleto['qrCodeEmv'], $dadosBoleto['linhaDigitavel'], $venda->telefone);
+                $this->notificaCliente($venda->telefone, $dadosBoleto['qrCodeEmv'], $dadosBoleto['linhaDigitavel']);
                 return redirect()->back()->withErrors(['success' => 'Dados de pagamento enviados para seu whatsapp!']);
             }
         } else {
@@ -206,7 +206,7 @@ class BancoDoBrasilController extends Controller
             ],
             'json' => [
                 'phone'     => '55'.$venda->telefone,
-                'message'   => "Prezado Cliente, segue os dados pra acesso ao seu portal do cliente da Positivo Brasil: \r\n Basta informa seu CPF ou CNPJ para ter acesso! \r\n",
+                'message'   => "Prezado Cliente, segue os dados pra acesso a todos os boletos da Positivo Brasil: \r\n Basta informa seu CPF ou CNPJ para ter acesso! \r\n",
                 'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
                 'linkUrl'   => "https://grupopositivoafiliado.com.br/cliente",
                 'title'     => 'Acesso Positivo Brasil',
