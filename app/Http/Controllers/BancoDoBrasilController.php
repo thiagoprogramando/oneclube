@@ -140,6 +140,7 @@ class BancoDoBrasilController extends Controller
                 $parcela->numerocontratocobranca = $dadosBoleto['numeroContratoCobranca'];
                 $parcela->linhadigitavel = $dadosBoleto['linhaDigitavel'];
                 $parcela->numero = $dadosBoleto['numero'];
+                $parcela->save();
 
                 $this->notificaCliente($dadosBoleto['qrCodeEmv'], $dadosBoleto['linhaDigitavel'], $venda->telefone);
             }
