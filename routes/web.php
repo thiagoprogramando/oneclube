@@ -21,7 +21,7 @@ Route::post('/', [LoginController::class, 'login_action'])->name('login_action')
 
 //Cliente
 Route::get('/cliente', [UserController::class, 'portalCliente'])->name('cliente');
-Route::post('/portalCliente', [UserController::class, 'consultaCliente'])->name('portalCliente');
+Route::post('/cliente', [UserController::class, 'consultaCliente'])->name('cliente');
 Route::post('/geraParcelaBancoDoBrasil', [BancoDoBrasilController::class, 'geraParcela'])->name('geraParcelaBancoDoBrasil');
 
 //Cadastro
