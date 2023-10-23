@@ -142,7 +142,7 @@ class BancoDoBrasilController extends Controller
                 $parcela->numero = $dadosBoleto['numero'];
                 $parcela->save();
 
-                $this->notificaCliente($venda->telefone, $dadosBoleto['qrCodeEmv'], $dadosBoleto['linhaDigitavel']);
+                $this->notificaCliente($venda->telefone, $dadosBoleto['qrCodeEmv'], $dadosBoleto['linhaDigitavel'], $parcela->n_parcela);
                 return redirect()->back()->withErrors(['success' => 'Dados de pagamento enviados para seu whatsapp!']);
             }
         } else {
@@ -150,7 +150,7 @@ class BancoDoBrasilController extends Controller
         }
     }
 
-    public function notificaCliente($telefone, $qrcode, $linhadigitavel) {
+    public function notificaCliente($telefone, $qrcode, $linhadigitavel, $n_parcela) {
         $client = new Client();
 
         $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-link';
@@ -162,7 +162,7 @@ class BancoDoBrasilController extends Controller
             ],
             'json' => [
                 'phone'     => '55'.$telefone,
-                'message'   => "Prezado Cliente, segue os dados pra pagamento da Positivo Brasil: \r\n \r\n QR Code: ".$qrcode." ou caso prefira, Boleto: \r\n\r\n",
+                'message'   => "Prezado Cliente, segue os dados para pagamento da parcela N°: ".$n_parcela." \r\n \r\n QR Code: ".$qrcode." ou caso prefira, Boleto: \r\n\r\n",
                 'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
                 'linkUrl'   => $linhadigitavel,
                 'title'     => 'Pagamento Positivo Brasil',
@@ -173,18 +173,18 @@ class BancoDoBrasilController extends Controller
         $responseData = json_decode($response->getBody(), true);
 
         if( isset($responseData['id'])) {
-            $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-text';
+            // $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-text';
 
-            $response = $client->post($url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'phone'     => '55'.$telefone,
-                    'message'   => $linhadigitavel,
-                ],
-            ]);
+            // $response = $client->post($url, [
+            //     'headers' => [
+            //         'Content-Type' => 'application/json',
+            //         'Accept' => 'application/json',
+            //     ],
+            //     'json' => [
+            //         'phone'     => '55'.$telefone,
+            //         'message'   => $linhadigitavel,
+            //     ],
+            // ]);
 
             return true;
         } else {
