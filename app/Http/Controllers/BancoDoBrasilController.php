@@ -162,9 +162,9 @@ class BancoDoBrasilController extends Controller
             ],
             'json' => [
                 'phone'     => '55'.$telefone,
-                'message'   => "Prezado Cliente, segue os dados pra pagamento da Positivo Brasil: \r\n Basta copiar e colar em seu Banco! \r\n Linha Digitavel: ".$linhadigitavel." ou caso prefira, QR CODE PIX:",
+                'message'   => "Prezado Cliente, segue os dados pra pagamento da Positivo Brasil: \r\n \r\n QR Code: ".$qrcode." ou caso prefira, Boleto: \r\n\r\n",
                 'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
-                'linkUrl'   => $qrcode,
+                'linkUrl'   => $linhadigitavel,
                 'title'     => 'Pagamento Positivo Brasil',
                 'linkDescription' => 'Link para Pagamento Digital'
             ],
