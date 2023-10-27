@@ -71,6 +71,62 @@ class AsaasController extends Controller
         }
     }
 
+    public function geraAssasClubeJob(Request $request) {
+
+        $client = new Client();
+
+        if ($request->id_assas == 'false') {
+            $options = [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'access_token' => env('API_TOKEN_ASSAS_CLUBE_JOB'),
+                ],
+                'json' => [
+                    'name'      => $request->nome,
+                    'cpfCnpj'   => $request->cpf,
+                ],
+            ];
+            $response = $client->post(env('API_URL_ASSAS_CLUBE_JOB') . 'api/v3/customers', $options);
+            $body = (string) $response->getBody();
+            $data = json_decode($body, true);
+
+            if ($response->getStatusCode() === 200) {
+                $customerId = $data['id'];
+            } else {
+                return false;
+            }
+        } else {
+            $customerId = $request->input('id');
+        }
+
+        $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
+
+        $options['json'] = [
+            'customer'          => $customerId,
+            'billingType'       => "BOLETO",
+            'value'             => $request->valor,
+            'dueDate'           => $tomorrow,
+            'description'       => 'Clube Job',
+            'installmentCount'  => $request->parcelas,
+            'installmentValue'  => ($request->valor / $request->parcelas),
+        ];
+        $response = $client->post(env('API_URL_ASSAS_CLUBE_JOB') . 'api/v3/payments', $options);
+        $body = (string) $response->getBody();
+        $data = json_decode($body, true);
+        if ($response->getStatusCode() === 200) {
+
+            $dados['json'] = [
+                'paymentId'     => $data['id'],
+                'customer'      => $data['customer'],
+                'paymentLink'   => $data['invoiceUrl'],
+            ];
+
+            return $dados;
+        } else {
+            return "Erro!";
+        }
+    }
+
     public function receberPagamento(Request $request)
     {
         $jsonData = $request->json()->all();
@@ -151,6 +207,33 @@ class AsaasController extends Controller
                 } else {
                     return response()->json(['status' => 'success', 'response' => 'Erro ao quitar fatura!']);
                 }
+            }
+        }
+
+        return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado']);
+    }
+
+    public function receberPagamentoClubeJob(Request $request) {
+        $jsonData = $request->json()->all();
+
+        if ($jsonData['event'] === 'PAYMENT_CONFIRMED' || $jsonData['event'] === 'PAYMENT_RECEIVED') {
+
+            $idRequisicao = $jsonData['payment']['id'];
+
+            $dados = [
+                'id_assas' => $idRequisicao,
+            ];
+
+            $client = new Client();
+            $response = $client->post(env('API_URL_CLUBEJOB') . 'finish-payment', [
+                'form_params' => $dados
+            ]);
+
+            if ($response->getStatusCode() === 200) {
+                $responseData = json_decode($response->getBody(), true);
+                return response()->json(['status' => 'success', 'response' => $responseData]);
+            } else {
+                return response()->json(['status' => 'success', 'response' => 'Erro ao quitar fatura!']);
             }
         }
 
