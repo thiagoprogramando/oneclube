@@ -54,6 +54,14 @@ class VendasController extends Controller
         ]);
     }
 
+    public function parcelaCliente($id) {
+        $parcelas = Parcela::where('id_venda', $id)->get();
+
+        return view('cliente.parcelas', [
+            'parcelas' => $parcelas,
+        ]);
+    }
+
     public function vender(Request $request, $id) {
 
         $request->validate([

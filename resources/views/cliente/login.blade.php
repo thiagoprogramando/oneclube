@@ -3,12 +3,12 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" type="image/png" href="{{ asset('admin/assets/logo.png') }}" />
+        <link rel="icon" type="image/png" href="{{ asset('admin/assets/logo.png') }}"/>
+
         <title>Positivo Brasil - Clientes</title>
+
         <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-        <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
         <link href="{{ asset('admin/css/sb-admin-2.css') }}" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
@@ -36,11 +36,9 @@
                                         <form class="user" method="POST" action="{{ route('cliente') }}">
                                             <input type="hidden" value={{ csrf_token() }} name="_token">
                                             <div class="form-group">
-                                                <input type="number" class="form-control form-control-user" name="cpfcnpj"
-                                                    placeholder="CPF ou CNPJ">
+                                                <input type="number" class="form-control form-control-user" name="cpfcnpj" placeholder="CPF ou CNPJ">
                                             </div>
-                                            <button type="submit" class="btn btn-primary btn-user btn-block"> Acessar
-                                            </button>
+                                            <button type="submit" class="btn btn-primary btn-user btn-block"> Acessar </button>
                                         </form>
                                         <hr>
                                         <div class="text-center">

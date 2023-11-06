@@ -13,7 +13,6 @@ use App\Http\Controllers\VendasController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use app\http\Kernel;
 
 //Login
 Route::get('/', [LoginController::class, 'index'])->name('login');
@@ -22,6 +21,7 @@ Route::post('/', [LoginController::class, 'login_action'])->name('login_action')
 //Cliente
 Route::get('/cliente', [UserController::class, 'portalCliente'])->name('cliente');
 Route::post('/cliente', [UserController::class, 'consultaCliente'])->name('cliente');
+Route::get('/parcelaCliente/{id}',[VendasController::class, 'parcelaCliente'])->name('parcelaCliente');
 Route::post('/geraParcelaBancoDoBrasil', [BancoDoBrasilController::class, 'geraParcela'])->name('geraParcelaBancoDoBrasil');
 
 //Cadastro
