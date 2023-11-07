@@ -153,7 +153,7 @@ class BancoDoBrasilController extends Controller
     public function notificaCliente($telefone, $qrcode, $linhadigitavel, $n_parcela) {
         $client = new Client();
 
-        $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-link';
+        $url = 'https://api.z-api.io/instances/3C44E6488AC460277EC9B2E461726623/token/4845B3E5DE0FB497C11BFF7D/send-link';
 
         $response = $client->post($url, [
             'headers' => [
@@ -173,7 +173,7 @@ class BancoDoBrasilController extends Controller
         $responseData = json_decode($response->getBody(), true);
 
         if( isset($responseData['id'])) {
-            // $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-text';
+            // $url = 'https://api.z-api.io/instances/3C44E6488AC460277EC9B2E461726623/token/4845B3E5DE0FB497C11BFF7D/send-text';
 
             // $response = $client->post($url, [
             //     'headers' => [
@@ -197,7 +197,7 @@ class BancoDoBrasilController extends Controller
 
         $client = new Client();
 
-        $url = 'https://api.z-api.io/instances/3C231BB3D577C079D30146A65441921E/token/9E7F18B45CD6EFB5BBB47D0A/send-link';
+        $url = 'https://api.z-api.io/instances/3C44E6488AC460277EC9B2E461726623/token/4845B3E5DE0FB497C11BFF7D/send-link';
 
         $response = $client->post($url, [
             'headers' => [
