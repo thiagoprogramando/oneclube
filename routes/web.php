@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/vendas/{id}', [VendasController::class, 'getVendas'])->name('vendas');
     Route::post('vendas', [VendasController::class, 'getVendas'])->name('vendas');
     Route::get('/parcelas/{id}',[VendasController::class, 'parcelas'])->name('parcelas');
+    Route::get('/vendaDelete/{id}', [VendasController::class, 'vendaDelete'])->name('vendaDelete');
 
     Route::get('/relatorioVendas', [RelatorioController::class, 'index'])->name('relatorioVendas');
     Route::post('relatorioVendas', [RelatorioController::class, 'filtro'])->name('relatorioVendas');

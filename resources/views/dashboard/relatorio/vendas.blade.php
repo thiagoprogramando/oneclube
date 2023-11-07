@@ -13,8 +13,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    <button class="btn btn-outline-success w-25" type="button" data-toggle="modal" data-target="#exampleModal">Filtros</button>
-                                    <button class="btn btn-outline-primary w-25" type="button" id="exportar">Excel</button>
+                                    <button class="btn btn-outline-success w-25 mb-3" type="button" data-toggle="modal" data-target="#exampleModal">Filtros</button>
+                                    <button class="btn btn-outline-primary w-25 mb-3" type="button" id="exportar">Excel</button>
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -28,8 +28,17 @@
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <select class="form-control"  name="produto">
+                                                                    <select class="form-control" name="produto">
                                                                         <option value="2">Limpa Nome</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <select class="form-control"  name="parcela">
+                                                                        <option value="ALL">Situação da venda</option>
+                                                                        <option value="1">Pagamento Recebido</option>
+                                                                        <option value="0">Pagamento Pendente</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -73,8 +82,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <hr>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -99,7 +106,15 @@
                                             @foreach ($vendas as $key => $venda)
                                                 <tr>
                                                     <td>{{ $venda->nome }}</td>
-                                                    <td>{{ $venda->cpf }}</td>
+                                                    <td>
+                                                        @if (strlen($venda->cpf) == 11)
+                                                            {{ substr($venda->cpf, 0, 3) }}.{{ substr($venda->cpf, 3, 3) }}.{{ substr($venda->cpf, 6, 3) }}-{{ substr($venda->cpf, 9, 2) }}
+                                                        @elseif (strlen($venda->cpf) == 14)
+                                                            {{ substr($venda->cpf, 0, 2) }}.{{ substr($venda->cpf, 2, 3) }}.{{ substr($venda->cpf, 5, 3) }}/{{ substr($venda->cpf, 8, 4) }}-{{ substr($venda->cpf, 12, 2) }}
+                                                        @else
+                                                            {{ $venda->cpf }}
+                                                        @endif
+                                                    </td>
 
                                                     <td class="d-none">{{ $venda->email }}</td>
                                                     <td class="d-none">{{ $venda->telefone }}</td>
@@ -113,6 +128,7 @@
                                                     <td class="text-center">
                                                         <a class="btn btn-outline-dark" href="{{ asset('contratos/2' . $venda->cpf . '.pdf') }}" download><i class="fa fa-file"></i></a>
                                                         <a class="btn btn-outline-success" href="{{ route('parcelas', ['id' => $venda->id]) }}"><i class="fa fa-credit-card"></i></a>
+                                                        <a class="btn btn-outline-danger delete-link" href="{{ route('vendaDelete', ['id' => $venda->id]) }}" data-venda-id="{{ $venda->id }}"><i class="fa fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -127,4 +143,31 @@
         </div>
 
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteLinks = document.querySelectorAll('.delete-link');
+    
+            deleteLinks.forEach(function(deleteLink) {
+                deleteLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+    
+                    const vendaId = deleteLink.getAttribute('data-venda-id');
+    
+                    Swal.fire({
+                        title: 'Atenção!',
+                        text: 'Esta ação irá apagar os dados da venda! Deseja continuar?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sim',
+                        cancelButtonText: 'Não'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = deleteLink.getAttribute('href');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
     @endsection

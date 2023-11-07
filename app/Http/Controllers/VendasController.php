@@ -23,8 +23,7 @@ class VendasController extends Controller
         $dataFim = $request->input('data_fim');
         $cupomInput = $request->input('cupom');
 
-        $query = Vendas::where('id_produto', $id)
-            ->where('id_vendedor', $users->id);
+        $query = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id);
 
         if ($cupom || $cupomInput) {
             $query->where('cupom', $cupom);
@@ -209,6 +208,19 @@ class VendasController extends Controller
         } else {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
         }
+    }
+
+    public function vendaDelete($id) {
+        $venda = Vendas::find($id);
+
+        if($venda) {
+            Parcela::where('id_venda', $venda->id)->delete();
+
+            $venda->delete();
+            return redirect()->back()->with('success', 'Venda excluída com sucesso!');
+        }
+
+        return redirect()->back()->with('error', 'Venda não encontrada!');
     }
 
     public function criaDocumento($data)
@@ -424,4 +436,15 @@ class VendasController extends Controller
             return "Não foi whatsapp";
         }
     }
+
+    function formatarCpfCnpj($documento) {
+        $documento = preg_replace('/[^0-9]/', '', $documento); // Remove caracteres não numéricos
+        if (strlen($documento) === 11) {
+            return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $documento); // Formata como CPF
+        } elseif (strlen($documento) === 14) {
+            return preg_replace('/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/', '$1.$2.$3/$4-$5', $documento); // Formata como CNPJ
+        }
+        return $documento; // Retorna o documento sem formatação se não for nem CPF nem CNPJ
+    }
+    
 }

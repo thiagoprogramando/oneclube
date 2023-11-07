@@ -23,41 +23,53 @@ class RelatorioController extends Controller
     }
 
     public function filtro(Request $request) {
-
         $users = auth()->user();
-
+    
         $produto = $request->input('produto');
         $usuario = $request->input('usuario');
         $cupom = $request->input('cupom');
-
+        $parcela = $request->input('parcela');
+    
         $vendas = Vendas::query();
-
+    
         if ($produto != 'ALL') {
             $vendas = $vendas->where('id_produto', $produto);
         }
-
+    
         if ($usuario != 'ALL') {
             $vendas = $vendas->where('id_vendedor', $usuario);
         }
-
+    
         if ($cupom != 'ALL') {
             $vendas = $vendas->where('cupom', $cupom);
         }
-
+    
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
-
+    
         if ($dataInicio && $dataFim) {
             $dataInicio = Carbon::parse($dataInicio);
             $dataFim = Carbon::parse($dataFim);
-
+    
             $dataFim->addDay();
-
+    
             $vendas->whereDate('created_at', '>=', $dataInicio)->whereDate('created_at', '<=', $dataFim);
         }
-
+    
+        if ($parcela == "1") {
+            // Filtrar vendas com pelo menos uma parcela com status PAYMENT_CONFIRMED
+            $vendas->whereHas('parcelas', function($q) {
+                $q->where('status', 'PAYMENT_CONFIRMED');
+            });
+        } elseif ($parcela == "0") {
+            // Filtrar vendas em que todas as parcelas têm status diferente de PAYMENT_CONFIRMED
+            $vendas->whereDoesntHave('parcelas', function($q) {
+                $q->where('status', 'PAYMENT_CONFIRMED');
+            });
+        }
+    
         $vendas = $vendas->get();
-
+    
         return view('dashboard.relatorio.vendas', [
             'users'  => $users,
             'vendas' => $vendas,
@@ -65,6 +77,7 @@ class RelatorioController extends Controller
             'cupons' => Cupom::all(),
         ]);
     }
+    
 
     public function usuarios() {
         $users = auth()->user();

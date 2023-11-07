@@ -46,5 +46,10 @@ class Vendas extends Authenticatable
     public function vendedor() {
         return $this->belongsTo(User::class, 'id_vendedor', 'id');
     }
+    
+    public function parcelas() {
+        return $this->hasMany(Parcela::class, 'id_venda', 'id');
+    }
+    
 
 }
