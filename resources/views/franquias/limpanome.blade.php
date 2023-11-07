@@ -74,7 +74,7 @@
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <select name="forma_pagamento" class="form-control">
+                                                <select name="forma_pagamento" class="form-control" id="forma_pagamento_select">
                                                     <option value="PIX">Forma de Pagamento</option>
                                                     <option value="PIX">PIX</option>
                                                     <option value="BOLETO">BOLETO</option>
@@ -83,7 +83,7 @@
                                             </div>
 
                                             <div class="form-group col-sm-12 col-lg-6">
-                                                <select name="parcela" class="form-control">
+                                                <select name="parcela" class="form-control" id="parcela_select">
                                                     <option value="1">Parcelas</option>
                                                     <option value="1">1x</option>
                                                     <option value="2">2x</option>
@@ -150,6 +150,18 @@
             telefone = telefone.replace(/(\d{5})(\d)/, '$1-$2');
             telefoneInput.value = telefone;
         }
+
+        const formaPagamentoSelect = document.getElementById('forma_pagamento_select');
+        const parcelaSelect = document.getElementById('parcela_select');
+    
+        formaPagamentoSelect.addEventListener('change', function () {
+            if (formaPagamentoSelect.value === 'PIX') {
+                parcelaSelect.value = '1';
+                parcelaSelect.disabled = true;
+            } else {
+                parcelaSelect.disabled = false;
+            }
+        });
     </script>
 
 @endsection
