@@ -84,6 +84,11 @@
                                             <tr>
                                                 <th>Cliente</th>
                                                 <th>CPF/CNPJ</th>
+                                                <th class="d-none">Email</th>
+                                                <th class="d-none">Telefone</th>
+                                                <th class="d-none">Endereço</th>
+                                                <th class="d-none">Valor</th>
+                                                <th class="d-none">Forma Pagamento</th>
                                                 <th>Vendedor</th>
                                                 <th>Contrato</th>
                                                 <th>Data venda</th>
@@ -95,6 +100,13 @@
                                                 <tr>
                                                     <td>{{ $venda->nome }}</td>
                                                     <td>{{ $venda->cpf }}</td>
+
+                                                    <td class="d-none">{{ $venda->email }}</td>
+                                                    <td class="d-none">{{ $venda->telefone }}</td>
+                                                    <td class="d-none">{{ $venda->cep }} - {{ $venda->bairro }} {{ $venda->endereco }}, {{ $venda->cidade }} - {{ $venda->uf }}</td>
+                                                    <td class="d-none">{{ $venda->valor }}</td>
+                                                    <td class="d-none">{{ $venda->forma_pagamento }}</td>
+
                                                     <td>{{ $venda->vendedor->nome }}</td>
                                                     <td>{{ $venda->status_contrato }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }} </td>

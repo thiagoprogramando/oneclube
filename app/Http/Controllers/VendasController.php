@@ -118,7 +118,7 @@ class VendasController extends Controller
                         $valor = 1000;
                         break;
                     case 'BOLETO':
-                        $valor = 1440;
+                        $valor = 1800;
                         break;
                     case 'CARTÃO':
                         $valor = 1280;
