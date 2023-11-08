@@ -173,18 +173,18 @@ class BancoDoBrasilController extends Controller
         $responseData = json_decode($response->getBody(), true);
 
         if( isset($responseData['id'])) {
-            // $url = 'https://api.z-api.io/instances/3C44E6488AC460277EC9B2E461726623/token/4845B3E5DE0FB497C11BFF7D/send-text';
+            $url = 'https://api.z-api.io/instances/3C44E6488AC460277EC9B2E461726623/token/4845B3E5DE0FB497C11BFF7D/send-text';
 
-            // $response = $client->post($url, [
-            //     'headers' => [
-            //         'Content-Type' => 'application/json',
-            //         'Accept' => 'application/json',
-            //     ],
-            //     'json' => [
-            //         'phone'     => '55'.$telefone,
-            //         'message'   => $linhadigitavel,
-            //     ],
-            // ]);
+            $response = $client->post($url, [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ],
+                'json' => [
+                    'phone'     => '55'.$telefone,
+                    'message'   => $linhadigitavel,
+                ],
+            ]);
 
             return true;
         } else {
@@ -236,8 +236,37 @@ class BancoDoBrasilController extends Controller
                         $parcela->status = "PAYMENT_CONFIRMED";
                         $parcela->save();
 
-                        $this->enviaPortalCliente($parcela->id_venda);
+                        $parcelasPendentes = Parcela::where('id_venda', $parcela->id_venda)->where('status', 'PENDING_PAY')->get();
 
+                        foreach ($parcelasPendentes as $parcelaPendente) {
+                            $boletoData = $this->geraBoleto($parcelaPendente->venda, $parcelaPendente->id);
+                            if($boletoData['result'] == 'success'){
+                                $parcelaPendente->update([
+                                    'txid' => $boletoData['qrCodeTxId'],
+                                    'url' => $boletoData['qrCodeEmv'],
+                                    'linhadigitavel' => $boletoData['linhaDigitavel'],
+                                    'codigoBarraNumerico' => $boletoData['codigoBarraNumerico'],
+                                    'numerocontratocobranca' => $boletoData['numeroContratoCobranca'],
+                                    'codigocliente' => $boletoData['codigoCliente'],
+                                    'numero' => $boletoData['numero'],
+                                ]);
+                            } else {
+                                $boletoData = $this->geraBoleto($parcelaPendente->venda, $parcelaPendente->id);
+                                if($boletoData['result'] == 'success'){
+                                    $parcelaPendente->update([
+                                        'txid' => $boletoData['qrCodeTxId'],
+                                        'url' => $boletoData['qrCodeEmv'],
+                                        'linhadigitavel' => $boletoData['linhaDigitavel'],
+                                        'codigoBarraNumerico' => $boletoData['codigoBarraNumerico'],
+                                        'numerocontratocobranca' => $boletoData['numeroContratoCobranca'],
+                                        'codigocliente' => $boletoData['codigoCliente'],
+                                        'numero' => $boletoData['numero'],
+                                    ]);
+                                }
+                            }
+                        }
+
+                        $this->enviaPortalCliente($parcela->id_venda);
                         return ['result' => 'success', 'message' => 'Parcela atualizada!'];
                     } else {
                         return ['result' => 'success', 'message' => 'Código da Baixa não necessário, nenhuma alteração realizada!'];

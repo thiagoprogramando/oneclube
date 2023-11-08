@@ -14,10 +14,11 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Carbon\Carbon;
 
-class AsaasController extends Controller
-{
+class AsaasController extends Controller {
+
     public function enviaLinkPagamento(Request $request) {
         $jsonData = $request->json()->all();
+
         if ($jsonData['event']['name'] === 'sign') {
             $key = $jsonData['document']['key'];
 
@@ -64,27 +65,6 @@ class AsaasController extends Controller
                         }
                         break;
                     case 'BOLETO':
-                        // if($this->parcela($venda->id, $venda->parcela, $venda->valor)) {
-                        //     $boleto = new BancoDoBrasilController();
-                        //     $boleto = $boleto->geraBoleto($venda->id);
-
-                        //     if($boleto['result'] == 'success'){
-                        //         $parcela = Parcela::where('id_venda', $venda->id)->where('status', 'PENDING_PAY')->first();
-                        //         $parcela->codigocliente = $boleto['codigoCliente'];
-                        //         $parcela->txid = $boleto['qrCodeTxId'];
-                        //         $parcela->url = $boleto['qrCodeUrl'];
-                        //         $parcela->numerocontratocobranca = $boleto['numeroContratoCobranca'];
-                        //         $parcela->linhadigitavel = $boleto['linhaDigitavel'];
-                        //         $parcela->numero = $boleto['numero'];
-                        //         $parcela->save();
-
-                        //         return $this->enviaBoleto($venda->telefone, $boleto['linhaDigitavel']);
-                        //     } else {
-                        //         $nomeArquivo = date('Y-m-d') . 'erro.txt';
-                        //         $caminhoArquivo = public_path('erros/' . $nomeArquivo);
-                        //         File::put($caminhoArquivo, $boleto['message']);
-                        //     }
-                        // }
                         if($this->parcela($venda->id, $venda->parcela, $venda->valor)) {
                             $pix = new BancoDoBrasilController();
                             $pix = $pix->geraBoleto($venda->id);
@@ -136,6 +116,8 @@ class AsaasController extends Controller
 
             for ($i = 2; $i <= $parcela; $i++) {
                 $proximoVencimento = $proximoVencimento->addDays(30);
+                $pix = new BancoDoBrasilController();
+                $pix = $pix->geraBoleto($venda->id);
                 Parcela::create([
                     'id_venda' => $venda->id,
                     'n_parcela' => $i,
