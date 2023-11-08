@@ -114,17 +114,19 @@ class AsaasController extends Controller {
 
             $proximoVencimento = $primeiroVencimento;
 
-            for ($i = 2; $i <= $parcela; $i++) {
-                $proximoVencimento = $proximoVencimento->addDays(30);
-                Parcela::create([
-                    'id_venda' => $venda->id,
-                    'n_parcela' => $i,
-                    'vencimento' => $proximoVencimento,
-                    'valor' => $valor,
-                    'status' => 'PENDING_PAY',
-                ]);
+            if($parcela != 1) {
+                for ($i = 2; $i <= $parcela; $i++) {
+                    $proximoVencimento = $proximoVencimento->addDays(30);
+                    Parcela::create([
+                        'id_venda' => $venda->id,
+                        'n_parcela' => $i,
+                        'vencimento' => $proximoVencimento,
+                        'valor' => $valor,
+                        'status' => 'PENDING_PAY',
+                    ]);
+                }
             }
-
+            
             return true;
         } else {
             return false;
