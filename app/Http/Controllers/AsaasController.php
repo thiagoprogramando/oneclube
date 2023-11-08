@@ -29,7 +29,7 @@ class AsaasController extends Controller {
 
                 switch($venda->forma_pagamento){
                     case 'PIX':
-                        if($this->parcela($venda->id, $venda->parcela, $venda->valor)) {
+                        if($this->parcela($venda->id, 1, $venda->valor)) {
                             $pix = new BancoDoBrasilController();
                             $pix = $pix->geraBoleto($venda->id);
                             if($pix['result'] == 'success'){
@@ -116,8 +116,6 @@ class AsaasController extends Controller {
 
             for ($i = 2; $i <= $parcela; $i++) {
                 $proximoVencimento = $proximoVencimento->addDays(30);
-                $pix = new BancoDoBrasilController();
-                $pix = $pix->geraBoleto($venda->id);
                 Parcela::create([
                     'id_venda' => $venda->id,
                     'n_parcela' => $i,
