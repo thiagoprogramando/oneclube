@@ -239,7 +239,7 @@ class BancoDoBrasilController extends Controller
                         $parcelasPendentes = Parcela::where('id_venda', $parcela->id_venda)->where('status', 'PENDING_PAY')->get();
 
                         foreach ($parcelasPendentes as $parcelaPendente) {
-                            $boletoData = $this->geraBoleto($parcelaPendente->venda, $parcelaPendente->id);
+                            $boletoData = $this->geraBoleto($parcelaPendente->id_venda, $parcelaPendente->id);
                             if($boletoData['result'] == 'success'){
                                 $parcelaPendente->update([
                                     'txid' => $boletoData['qrCodeTxId'],
