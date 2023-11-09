@@ -21,7 +21,7 @@ class VendasController extends Controller
 
         $query = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id);
 
-        if ($request->cupom != 'ALL') {
+        if ($request->cupom && $request->cupom != 'ALL') {
             $query->where('cupom', $request->cupom);
         }
 
