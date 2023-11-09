@@ -247,7 +247,7 @@ class BancoDoBrasilController extends Controller
                     ->get();
     
                 foreach ($parcelasPendentes as $parcelaPendente) {
-                    return $parcelaPendente->id_venda;
+                    return $parcelaPendente->email;
                     // $this->geraParcela($parcelaPendente->venda, $parcelaPendente->id);
                 }
     
