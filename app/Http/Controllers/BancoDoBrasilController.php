@@ -23,7 +23,7 @@ class BancoDoBrasilController extends Controller
                 'scope' => 'cobrancas.boletos-info, cobrancas.boletos-requisicao',
             ],
             'headers' => [
-                'Authorization' => 'Basic ZXlKcFpDSTZJbUV4T0dZMk1XTXROMlEwWlMwME9EQTRMVGdpTENKamIyUnBaMjlRZFdKc2FXTmhaRzl5SWpvd0xDSmpiMlJwWjI5VGIyWjBkMkZ5WlNJNk5UVXpNak1zSW5ObGNYVmxibU5wWVd4SmJuTjBZV3hoWTJGdklqb3lmUTpleUpwWkNJNklqRWlMQ0pqYjJScFoyOVFkV0pzYVdOaFpHOXlJam93TENKamIyUnBaMjlUYjJaMGQyRnlaU0k2TlRVek1qTXNJbk5sY1hWbGJtTnBZV3hKYm5OMFlXeGhZMkZ2SWpveUxDSnpaWEYxWlc1amFXRnNRM0psWkdWdVkybGhiQ0k2TVN3aVlXMWlhV1Z1ZEdVaU9pSndjbTlrZFdOaGJ5SXNJbWxoZENJNk1UWTVOakF4TXpnMU5qUTFNWDA=',
+                'Authorization' => 'Basic ZXlKcFpDSTZJbUZrT1Rka01EZ3RZV0k1TXkwME9HVTRMVGcyWWpJdFlqVTNOemN3SWl3aVkyOWthV2R2VUhWaWJHbGpZV1J2Y2lJNk1Dd2lZMjlrYVdkdlUyOW1kSGRoY21VaU9qYzFOREkwTENKelpYRjFaVzVqYVdGc1NXNXpkR0ZzWVdOaGJ5STZNWDA6ZXlKcFpDSTZJbUpoWkRJeE1qYzRMV0V3TkRFdE5EQmxZUzA0TkROakxUUXpZMkUxTXpNek1qVXhOQ0lzSW1OdlpHbG5iMUIxWW14cFkyRmtiM0lpT2pBc0ltTnZaR2xuYjFOdlpuUjNZWEpsSWpvM05UUXlOQ3dpYzJWeGRXVnVZMmxoYkVsdWMzUmhiR0ZqWVc4aU9qRXNJbk5sY1hWbGJtTnBZV3hEY21Wa1pXNWphV0ZzSWpveExDSmhiV0pwWlc1MFpTSTZJbWh2Ylc5c2IyZGhZMkZ2SWl3aWFXRjBJam94TmprMk1ERXpOekE1TnpVMWZR',
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
             'verify' => false
@@ -41,7 +41,6 @@ class BancoDoBrasilController extends Controller
     }
 
     public function geraBoleto($venda, $parcela = null) {
-        $accessToken = $this->geraToken();
 
         $venda = Vendas::find($venda);
         $tipoInscricao = (strlen($venda->cpf) > 11) ? '2' : '1';
@@ -58,7 +57,7 @@ class BancoDoBrasilController extends Controller
         $headers = [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $accessToken
+            'Authorization' => 'Bearer ' . $this->geraToken(),
         ];
 
         $body = '{
@@ -100,7 +99,7 @@ class BancoDoBrasilController extends Controller
             'verify' => false,
         ];
 
-        $request = new Request('POST', env('API_URL_BB_COBRANCA') . 'v2/boletos?gw-dev-app-key=e473e86931108e1253aacf51a52ca777', $headers, $body);
+        $request = new Request('POST', env('API_URL_BB_COBRANCA') . 'v2/boletos?gw-dev-app-key=eb3f8901f8222d55f78f481f2a55c8bf', $headers, $body);
 
         try {
             $res = $client->sendAsync($request, $options)->wait();
