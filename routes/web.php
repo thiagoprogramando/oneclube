@@ -22,7 +22,7 @@ Route::post('/', [LoginController::class, 'login_action'])->name('login_action')
 Route::get('/cliente', [UserController::class, 'portalCliente'])->name('cliente');
 Route::post('/cliente', [UserController::class, 'consultaCliente'])->name('cliente');
 Route::get('/parcelaCliente/{id}',[VendasController::class, 'parcelaCliente'])->name('parcelaCliente');
-Route::post('/recebeParcelaBancoDoBrasil', [AsaasController::class, 'recebeParcelaBancoDoBrasil', 'recebeParcelaBancoDoBrasil'])->name('recebeParcelaBancoDoBrasil');
+Route::post('/recebeParcelaBancoDoBrasil/{id}', [AsaasController::class, 'recebeParcelaBancoDoBrasil', 'recebeParcelaBancoDoBrasil'])->name('recebeParcelaBancoDoBrasil');
 
 //Cadastro
 Route::get('/register/{codigo?}', [RegisterController::class, 'register'])->name('register');

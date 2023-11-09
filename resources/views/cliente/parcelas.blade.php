@@ -30,16 +30,11 @@
                                             <td>{{ 'R$ ' . number_format($parcela->valor, 2, ',', '.') }}</td>
                                             <td>@if($parcela->status == 'PENDING_PAY') Aguardando Pagamento @else Aprovado @endif</td>
                                             <td  class="text-center">
-                                                <form action="{{ route('recebeParcelaBancoDoBrasil') }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="parcela" value="{{ $parcela->id }}">
-                                                    <input type="hidden" name="venda" value="{{ $parcela->id_venda }}">
-                                                    @if ($parcela->status == 'PENDING_PAY')
-                                                        <button type="submit" class="btn btn-outline-success">Receber Boleto</button>
-                                                    @else
-                                                        Cobrança Conciliada
-                                                    @endif
-                                                </form>
+                                                @if ($parcela->status == 'PENDING_PAY')
+                                                    <a href="{{ route('recebeParcelaBancoDoBrasil', ['id' => $parcela->id]) }}" class="btn btn-outline-success">Receber Boleto</a>
+                                                @else
+                                                    Cobrança Conciliada
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
