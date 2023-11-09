@@ -238,20 +238,21 @@ class BancoDoBrasilController extends Controller
             }
     
             if ($baixa == 1 || $baixa == 2) {
-                // $parcela->status = "PAYMENT_CONFIRMED";
-                // $parcela->save();
+                $parcela->status = "PAYMENT_CONFIRMED";
+                $parcela->save();
     
-                // $parcelasPendentes = Parcela::where('id_venda', $parcela->id_venda)
-                //     ->where('status', 'PENDING_PAY')
-                //     ->where('linhadigitavel', null)
-                //     ->get();
+                $parcelasPendentes = Parcela::where('id_venda', $parcela->id_venda)
+                    ->where('status', 'PENDING_PAY')
+                    ->where('linhadigitavel', null)
+                    ->get();
+
+                return  $this->geraParcela($parcela->id_venda, $parcela->id);
     
                 // foreach ($parcelasPendentes as $parcelaPendente) {
-                //     return $parcelaPendente->codigocliente;
-                //     // $this->geraParcela($parcelaPendente->venda, $parcelaPendente->id);
+                //     $this->geraParcela($parcelaPendente->venda, $parcelaPendente->id);
                 // }
     
-                // $this->enviaPortalCliente($parcela->id_venda);
+                $this->enviaPortalCliente($parcela->id_venda);
                 return ['result' => 'success', 'message' => 'Parcela atualizada!'];
             } else {
                 return ['result' => 'success', 'message' => 'Código da Baixa não necessário, nenhuma alteração realizada!'];
