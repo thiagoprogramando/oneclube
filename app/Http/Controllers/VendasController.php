@@ -16,10 +16,9 @@ use App\Models\Vendas;
 class VendasController extends Controller
 {
 
-    public function getVendas(Request $request) {
+    public function getVendas(Request $request, $id = null) {
         $users = auth()->user();
 
-        $id = $request->input('id');
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
         $cupom = $request->input('cupom');
