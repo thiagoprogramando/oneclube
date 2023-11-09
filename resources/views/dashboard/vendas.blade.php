@@ -25,7 +25,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <input type="hidden" value={{  csrf_token() }} name="_token">
-                                                        <input type="hidden" value="{{ $produto }}" name="id">
+                                                        <input type="text" value="{{ $produto }}" name="id">
                                                         <div class="row">
                                                             <div class="col-6">
                                                                 <div class="form-group">
