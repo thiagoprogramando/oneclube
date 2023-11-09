@@ -21,11 +21,11 @@ class VendasController extends Controller
 
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
-        $cupomInput = $request->input('cupom');
+        $cupom = $request->input('cupom');
 
         $query = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id);
 
-        if ($cupom || $cupomInput) {
+        if ($cupom != 'ALL') {
             $query->where('cupom', $cupom);
         }
 
