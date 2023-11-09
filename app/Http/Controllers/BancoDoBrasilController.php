@@ -231,31 +231,31 @@ class BancoDoBrasilController extends Controller
         foreach ($data as $item) {
             $id = $item['id'];
             $baixa = $item['codigoEstadoBaixaOperacional'];
-            return $parcela = Parcela::where('numero', $id)->first();
+            $parcela = Parcela::where('numero', $id)->first();
     
-            // if (!$parcela) {
-            //     return ['result' => 'error', 'message' => 'Cobrança não existe!'];
-            // }
+            if (!$parcela) {
+                return ['result' => 'error', 'message' => 'Cobrança não existe!'];
+            }
     
-            // if ($baixa == 1 || $baixa == 2) {
-            //     $parcela->status = "PAYMENT_CONFIRMED";
-            //     $parcela->save();
+            if ($baixa == 1 || $baixa == 2) {
+                // $parcela->status = "PAYMENT_CONFIRMED";
+                // $parcela->save();
     
-            //     $parcelasPendentes = Parcela::where('id_venda', $parcela->id_venda)
-            //         ->where('status', 'PENDING_PAY')
-            //         ->where('linhadigitavel', null)
-            //         ->get();
+                // $parcelasPendentes = Parcela::where('id_venda', $parcela->id_venda)
+                //     ->where('status', 'PENDING_PAY')
+                //     ->where('linhadigitavel', null)
+                //     ->get();
     
-            //     foreach ($parcelasPendentes as $parcelaPendente) {
-            //         return $parcelaPendente->codigocliente;
-            //         // $this->geraParcela($parcelaPendente->venda, $parcelaPendente->id);
-            //     }
+                // foreach ($parcelasPendentes as $parcelaPendente) {
+                //     return $parcelaPendente->codigocliente;
+                //     // $this->geraParcela($parcelaPendente->venda, $parcelaPendente->id);
+                // }
     
-            //     $this->enviaPortalCliente($parcela->id_venda);
-            //     return ['result' => 'success', 'message' => 'Parcela atualizada!'];
-            // } else {
-            //     return ['result' => 'success', 'message' => 'Código da Baixa não necessário, nenhuma alteração realizada!'];
-            // }
+                // $this->enviaPortalCliente($parcela->id_venda);
+                return ['result' => 'success', 'message' => 'Parcela atualizada!'];
+            } else {
+                return ['result' => 'success', 'message' => 'Código da Baixa não necessário, nenhuma alteração realizada!'];
+            }
         }
     }    
 }
