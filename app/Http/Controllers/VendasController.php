@@ -16,24 +16,25 @@ use App\Models\Vendas;
 class VendasController extends Controller
 {
 
-    public function getVendas(Request $request, $id = null, $cupom = null) {
+    public function getVendas(Request $request) {
         $users = auth()->user();
 
+        $id = $request->input('id');
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
-        // $cupom = $request->input('cupom');
+        $cupom = $request->input('cupom');
 
         $query = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id);
 
-        // if ($cupom && $cupom != 'ALL') {
-        //     $query->where('cupom', $cupom);
-        // }
+        if ($cupom && $cupom != 'ALL') {
+            $query->where('cupom', $cupom);
+        }
 
         if ($dataInicio && $dataFim) {
             $dataInicio = Carbon::parse($dataInicio);
             $dataFim = Carbon::parse($dataFim);
-
-            $vendas = $query->whereBetween('updated_at', [$dataInicio, $dataFim])->get();
+    
+            $vendas = $query->whereBetween('created_at', [$dataInicio, $dataFim])->get();
         } else {
             $vendas = $query->latest()->get();
         }
