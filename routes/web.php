@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\BancoDoBrasilController;
 use App\Http\Controllers\CupomController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificacaoController;
@@ -12,6 +11,7 @@ use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\VendasController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AsaasController;
 use Illuminate\Support\Facades\Route;
 
 //Login
@@ -22,7 +22,7 @@ Route::post('/', [LoginController::class, 'login_action'])->name('login_action')
 Route::get('/cliente', [UserController::class, 'portalCliente'])->name('cliente');
 Route::post('/cliente', [UserController::class, 'consultaCliente'])->name('cliente');
 Route::get('/parcelaCliente/{id}',[VendasController::class, 'parcelaCliente'])->name('parcelaCliente');
-Route::post('/geraParcelaBancoDoBrasil', [BancoDoBrasilController::class, 'geraParcela'])->name('geraParcelaBancoDoBrasil');
+Route::post('/recebeParcelaBancoDoBrasil', [AsaasController::class, 'recebeParcelaBancoDoBrasil', 'recebeParcelaBancoDoBrasil'])->name('recebeParcelaBancoDoBrasil');
 
 //Cadastro
 Route::get('/register/{codigo?}', [RegisterController::class, 'register'])->name('register');

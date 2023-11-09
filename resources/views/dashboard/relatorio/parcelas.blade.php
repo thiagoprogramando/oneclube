@@ -33,7 +33,7 @@
                                             <td class="d-none">{{ $parcela->id_venda }}</td>
                                             <td class="d-none">{{ $parcela->codigocliente }}</td>
                                             <td><span class="badge badge-info">{{ $parcela->numerocontratocobranca }}</span></td>
-                                            <td><span class="badge badge-success">{{ $parcela->numero }}</span></td>
+                                            <td><span class="badge badge-danger">{{ $parcela->numero }}</span></td>
                                             <td>{{ \Carbon\Carbon::parse($parcela->vencimento)->format('d/m/Y') }}</td>
                                             <td>{{ 'R$ ' . number_format($parcela->valor, 2, ',', '.') }}</td>
                                             <td>@if($parcela->status == 'PENDING_PAY') Aguardando Pagamento @else Aprovado @endif</td>

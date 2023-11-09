@@ -30,7 +30,7 @@
                                             <td>{{ 'R$ ' . number_format($parcela->valor, 2, ',', '.') }}</td>
                                             <td>@if($parcela->status == 'PENDING_PAY') Aguardando Pagamento @else Aprovado @endif</td>
                                             <td  class="text-center">
-                                                <form action="{{ route('geraParcelaBancoDoBrasil') }}" method="POST">
+                                                <form action="{{ route('recebeParcelaBancoDoBrasil') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="parcela" value="{{ $parcela->id }}">
                                                     <input type="hidden" name="venda" value="{{ $parcela->id_venda }}">

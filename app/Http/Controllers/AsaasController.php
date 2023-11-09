@@ -308,6 +308,17 @@ class AsaasController extends Controller {
         }
     }
 
+    public function recebeParcelaBancoDoBrasil($id) {
+
+        $parcelaCliente = Parcela::where('id', $id)->first();
+        $venda = Vendas::where('id', $parcelaCliente->id_venda)->first();
+        if($this->enviaBoleto($venda->telefone, $parcelaCliente->linhadigitavel)) {
+            return redirect()->back()->with('success', 'Dados enviados para o seu WhatsApp!');
+        }
+
+        return redirect()->back()->with('error', 'Parcela não encontrada!');
+    }
+
     public function receberPagamentoAssas(Request $request) {
         $jsonData = $request->json()->all();
         if ($jsonData['event'] === 'PAYMENT_CONFIRMED' || $jsonData['event'] === 'PAYMENT_RECEIVED') {
