@@ -19,7 +19,7 @@
                                         <th>N°</th>
                                         <th class="d-none">ID Venda</th>
                                         <th class="d-none">Código Cliente</th>
-                                        <th class="d-none">Número Contrato Cobrança</th>
+                                        <th>Número Contrato Cobrança</th>
                                         <th>Nosso Número</th>
                                         <th>Vencimento</th>
                                         <th>Valor</th>
@@ -32,8 +32,8 @@
                                             <td>{{ $parcela->n_parcela }}</td>
                                             <td class="d-none">{{ $parcela->id_venda }}</td>
                                             <td class="d-none">{{ $parcela->codigocliente }}</td>
-                                            <td class="d-none">{{ $parcela->numerocontratocobranca }}</td>
-                                            <td>{{ $parcela->numero }}</td>
+                                            <td><span class="badge badge-info">{{ $parcela->numerocontratocobranca }}</span></td>
+                                            <td><span class="badge badge-success">{{ $parcela->numero }}</span></td>
                                             <td>{{ \Carbon\Carbon::parse($parcela->vencimento)->format('d/m/Y') }}</td>
                                             <td>{{ 'R$ ' . number_format($parcela->valor, 2, ',', '.') }}</td>
                                             <td>@if($parcela->status == 'PENDING_PAY') Aguardando Pagamento @else Aprovado @endif</td>
