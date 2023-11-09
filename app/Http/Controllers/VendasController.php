@@ -21,18 +21,18 @@ class VendasController extends Controller
 
         $query = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id);
 
-        if ($request->cupom != 'ALL') {
-            $query->where('cupom', $request->cupom);
-        }
+        // if ($request->cupom != 'ALL') {
+        //     $query->where('cupom', $request->cupom);
+        // }
 
-        if ($request->data_inicio && $request->data_fim) {
-            $dataInicio = Carbon::parse($request->data_inicio);
-            $dataFim = Carbon::parse($request->data_fim);
+        // if ($request->data_inicio && $request->data_fim) {
+        //     $dataInicio = Carbon::parse($request->data_inicio);
+        //     $dataFim = Carbon::parse($request->data_fim);
     
-            $vendas = $query->whereBetween('created_at', [$dataInicio, $dataFim])->get();
-        } else {
+        //     $vendas = $query->whereBetween('created_at', [$dataInicio, $dataFim])->get();
+        // } else {
             $vendas = $query->latest()->get();
-        }
+        // }
 
         return view('dashboard.vendas', [
             'users' => $users,
