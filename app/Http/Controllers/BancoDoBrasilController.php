@@ -245,12 +245,10 @@ class BancoDoBrasilController extends Controller
                     ->where('status', 'PENDING_PAY')
                     ->where('linhadigitavel', null)
                     ->get();
-
-                return  $this->geraParcela($parcela->id_venda, $parcela->id);
     
-                // foreach ($parcelasPendentes as $parcelaPendente) {
-                //     $this->geraParcela($parcelaPendente->venda, $parcelaPendente->id);
-                // }
+                foreach ($parcelasPendentes as $parcelaPendente) {
+                    $this->geraParcela($parcelaPendente->id_venda, $parcelaPendente->id);
+                }
     
                 $this->enviaPortalCliente($parcela->id_venda);
                 return ['result' => 'success', 'message' => 'Parcela atualizada!'];
