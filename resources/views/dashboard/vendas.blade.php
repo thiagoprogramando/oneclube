@@ -37,6 +37,14 @@
                                                                     <input type="date" class="form-control" name="data_fim" placeholder="Data Final">
                                                                 </div>
                                                             </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <select name="cupom">
+                                                                        <option value="ALL" selected>Cupom</option>
+                                                                        <option value="{{ Auth::user()->cupom }}">{{ Auth::user()->cupom }}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">

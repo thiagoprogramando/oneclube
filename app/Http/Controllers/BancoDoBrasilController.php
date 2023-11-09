@@ -125,102 +125,6 @@ class BancoDoBrasilController extends Controller
         }
     }
 
-    public function geraParcela($venda, $parcela) {
-        $dadosBoleto = $this->geraBoleto($venda, $parcela);
-
-        $venda = Vendas::find($venda);
-        $parcela = Parcela::find($parcela);
-        if ($parcela) {
-            if ($dadosBoleto['result'] == 'success') {
-
-                $parcela->codigocliente = $dadosBoleto['codigoCliente'];
-                $parcela->txid = $dadosBoleto['qrCodeTxId'];
-                $parcela->url = $dadosBoleto['qrCodeEmv'];
-                $parcela->numerocontratocobranca = $dadosBoleto['numeroContratoCobranca'];
-                $parcela->linhadigitavel = $dadosBoleto['linhaDigitavel'];
-                $parcela->numero = $dadosBoleto['numero'];
-                $parcela->save();
-
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    public function notificaCliente($telefone, $qrcode, $linhadigitavel, $n_parcela) {
-        $client = new Client();
-
-        $url = 'https://api.z-api.io/instances/3C44E6488AC460277EC9B2E461726623/token/4845B3E5DE0FB497C11BFF7D/send-link';
-
-        $response = $client->post($url, [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ],
-            'json' => [
-                'phone'     => '55'.$telefone,
-                'message'   => "Prezado Cliente, segue os dados para pagamento da parcela N°: ".$n_parcela." \r\n \r\n QR Code: ".$qrcode." ou caso prefira, Boleto: \r\n\r\n",
-                'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
-                'linkUrl'   => $linhadigitavel,
-                'title'     => 'Pagamento Positivo Brasil',
-                'linkDescription' => 'Link para Pagamento Digital'
-            ],
-        ]);
-
-        $responseData = json_decode($response->getBody(), true);
-
-        if( isset($responseData['id'])) {
-            $url = 'https://api.z-api.io/instances/3C44E6488AC460277EC9B2E461726623/token/4845B3E5DE0FB497C11BFF7D/send-text';
-
-            $response = $client->post($url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'phone'     => '55'.$telefone,
-                    'message'   => $linhadigitavel,
-                ],
-            ]);
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function enviaPortalCliente($venda) {
-        $venda = Vendas::where('id', $venda)->first();
-
-        $client = new Client();
-
-        $url = 'https://api.z-api.io/instances/3C44E6488AC460277EC9B2E461726623/token/4845B3E5DE0FB497C11BFF7D/send-link';
-
-        $response = $client->post($url, [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ],
-            'json' => [
-                'phone'     => '55'.$venda->telefone,
-                'message'   => "Prezado Cliente, segue os dados pra acesso a todos os boletos da Positivo Brasil: \r\n Basta informa seu CPF ou CNPJ para ter acesso! \r\n",
-                'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
-                'linkUrl'   => "https://grupopositivoafiliado.com.br/cliente",
-                'title'     => 'Acesso Positivo Brasil',
-                'linkDescription' => 'Link para Acesso Digital'
-            ],
-        ]);
-
-        $responseData = json_decode($response->getBody(), true);
-
-        if( isset($responseData['id'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public function webHookBancoDoBrasil(\Illuminate\Http\Request $request) {
         $data = $request->all();
     
@@ -256,5 +160,59 @@ class BancoDoBrasilController extends Controller
                 return ['result' => 'success', 'message' => 'Código da Baixa não necessário, nenhuma alteração realizada!'];
             }
         }
-    }    
+    }
+
+    public function geraParcela($venda, $parcela) {
+        $dadosBoleto = $this->geraBoleto($venda, $parcela);
+
+        $venda = Vendas::find($venda);
+        $parcela = Parcela::find($parcela);
+        if ($parcela) {
+            if ($dadosBoleto['result'] == 'success') {
+
+                $parcela->codigocliente = $dadosBoleto['codigoCliente'];
+                $parcela->txid = $dadosBoleto['qrCodeTxId'];
+                $parcela->url = $dadosBoleto['qrCodeEmv'];
+                $parcela->numerocontratocobranca = $dadosBoleto['numeroContratoCobranca'];
+                $parcela->linhadigitavel = $dadosBoleto['linhaDigitavel'];
+                $parcela->numero = $dadosBoleto['numero'];
+                $parcela->save();
+
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    public function enviaPortalCliente($venda) {
+        $venda = Vendas::where('id', $venda)->first();
+
+        $client = new Client();
+
+        $url = 'https://api.z-api.io/instances/3C44E6488AC460277EC9B2E461726623/token/4845B3E5DE0FB497C11BFF7D/send-link';
+
+        $response = $client->post($url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'phone'     => '55'.$venda->telefone,
+                'message'   => "Prezado Cliente, segue os dados pra acesso a todos os boletos da Positivo Brasil: \r\n Basta informa seu CPF ou CNPJ para ter acesso! \r\n",
+                'image'     => 'https://grupopositivobrasil.com.br/wp-content/uploads/2022/09/Logo-Branco2.png',
+                'linkUrl'   => "https://grupopositivoafiliado.com.br/cliente",
+                'title'     => 'Acesso Positivo Brasil',
+                'linkDescription' => 'Link para Acesso Digital'
+            ],
+        ]);
+
+        $responseData = json_decode($response->getBody(), true);
+
+        if( isset($responseData['id'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
