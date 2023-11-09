@@ -19,19 +19,15 @@ class VendasController extends Controller
     public function getVendas(Request $request, $id = null) {
         $users = auth()->user();
 
-        $dataInicio = $request->input('data_inicio');
-        $dataFim = $request->input('data_fim');
-        $cupom = $request->input('cupom');
-
         $query = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id);
 
-        if ($cupom && $cupom != 'ALL') {
-            $query->where('cupom', $cupom);
+        if ($request->cupom != 'ALL') {
+            $query->where('cupom', $request->cupom);
         }
 
-        if ($dataInicio && $dataFim) {
-            $dataInicio = Carbon::parse($dataInicio);
-            $dataFim = Carbon::parse($dataFim);
+        if ($request->data_inicio && $request->data_fim) {
+            $dataInicio = Carbon::parse($request->data_inicio);
+            $dataFim = Carbon::parse($request->data_fim);
     
             $vendas = $query->whereBetween('created_at', [$dataInicio, $dataFim])->get();
         } else {
