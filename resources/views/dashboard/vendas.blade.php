@@ -39,7 +39,7 @@
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <select name="cupom">
+                                                                    <select name="cupom" class="form-control">
                                                                         <option value="ALL" selected>Cupom</option>
                                                                         <option value="{{ Auth::user()->cupom }}">{{ Auth::user()->cupom }}</option>
                                                                     </select>
