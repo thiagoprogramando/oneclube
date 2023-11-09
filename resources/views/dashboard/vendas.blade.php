@@ -24,7 +24,7 @@
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="hidden" value={{  csrf_token() }} name="_token">
+                                                        @csrf
                                                         <div class="row">
                                                             <div class="col-6">
                                                                 <div class="form-group">
