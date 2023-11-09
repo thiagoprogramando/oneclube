@@ -126,11 +126,11 @@ class BancoDoBrasilController extends Controller
         }
     }
 
-    public function geraParcela(\Illuminate\Http\Request $request) {
-        $dadosBoleto = $this->geraBoleto($request->venda, $request->parcela);
+    public function geraParcela($venda, $parcela) {
+        $dadosBoleto = $this->geraBoleto($venda, $parcela);
 
-        $venda = Vendas::find($request->venda);
-        $parcela = Parcela::find($request->parcela);
+        $venda = Vendas::find($venda);
+        $parcela = Parcela::find($parcela);
         if ($parcela) {
             if ($dadosBoleto['result'] == 'success') {
 
@@ -142,11 +142,10 @@ class BancoDoBrasilController extends Controller
                 $parcela->numero = $dadosBoleto['numero'];
                 $parcela->save();
 
-                $this->notificaCliente($venda->telefone, $dadosBoleto['qrCodeEmv'], $dadosBoleto['linhaDigitavel'], $parcela->n_parcela);
-                return redirect()->back()->with(['success' => 'Dados de pagamento enviados para seu whatsapp!']);
+                return true;
             }
         } else {
-            return redirect()->back()->with(['error' => 'Não encontramos informações sobre o contrato!']);
+            return false;
         }
     }
 
@@ -223,59 +222,95 @@ class BancoDoBrasilController extends Controller
         }
     }
 
+    // public function webHookBancoDoBrasil(\Illuminate\Http\Request $request) {
+    //     $data = $request->all();
+
+    //     if (!empty($data)) {
+    //         foreach ($data as $item) {
+    //             $id = $item['id'];
+    //             $baixa = $item['codigoEstadoBaixaOperacional'];
+    //             $parcela = Parcela::where('numero', $id)->first();
+    //             if ($parcela) {
+    //                 if ($baixa == 1 || $baixa == 2) {
+    //                     $parcela->status = "PAYMENT_CONFIRMED";
+    //                     $parcela->save();
+
+    //                     $parcelasPendentes = Parcela::where('id_venda', $parcela->id_venda)->where('status', 'PENDING_PAY')->where('linhadigitavel', null)->get();
+
+    //                     foreach ($parcelasPendentes as $parcelaPendente) {
+    //                         $boletoData = $this->geraBoleto($parcelaPendente->id_venda, $parcelaPendente->id);
+    //                         if($boletoData['result'] == 'success'){
+    //                             $parcelaPendente->update([
+    //                                 'txid' => $boletoData['qrCodeTxId'],
+    //                                 'url' => $boletoData['qrCodeEmv'],
+    //                                 'linhadigitavel' => $boletoData['linhaDigitavel'],
+    //                                 'codigoBarraNumerico' => $boletoData['codigoBarraNumerico'],
+    //                                 'numerocontratocobranca' => $boletoData['numeroContratoCobranca'],
+    //                                 'codigocliente' => $boletoData['codigoCliente'],
+    //                                 'numero' => $boletoData['numero'],
+    //                             ]);
+    //                         } else {
+    //                             $boletoData = $this->geraBoleto($parcelaPendente->venda, $parcelaPendente->id);
+    //                             if($boletoData['result'] == 'success'){
+    //                                 $parcelaPendente->update([
+    //                                     'txid' => $boletoData['qrCodeTxId'],
+    //                                     'url' => $boletoData['qrCodeEmv'],
+    //                                     'linhadigitavel' => $boletoData['linhaDigitavel'],
+    //                                     'codigoBarraNumerico' => $boletoData['codigoBarraNumerico'],
+    //                                     'numerocontratocobranca' => $boletoData['numeroContratoCobranca'],
+    //                                     'codigocliente' => $boletoData['codigoCliente'],
+    //                                     'numero' => $boletoData['numero'],
+    //                                 ]);
+    //                             }
+    //                         }
+    //                     }
+
+    //                     $this->enviaPortalCliente($parcela->id_venda);
+    //                     return ['result' => 'success', 'message' => 'Parcela atualizada!'];
+    //                 } else {
+    //                     return ['result' => 'success', 'message' => 'Código da Baixa não necessário, nenhuma alteração realizada!'];
+    //                 }
+    //             }
+    //             return ['result' => 'success', 'message' => 'Cobrança não existe!'];
+    //         }
+    //     } else {
+    //         return ['result' => 'error', 'message' => 'JSON não interpretado!'];
+    //     }
+    // }
     public function webHookBancoDoBrasil(\Illuminate\Http\Request $request) {
         $data = $request->all();
-
-        if (!empty($data)) {
-            foreach ($data as $item) {
-                $id = $item['id'];
-                $baixa = $item['codigoEstadoBaixaOperacional'];
-                $parcela = Parcela::where('numero', $id)->first();
-                if ($parcela) {
-                    if ($baixa == 1 || $baixa == 2) {
-                        $parcela->status = "PAYMENT_CONFIRMED";
-                        $parcela->save();
-
-                        $parcelasPendentes = Parcela::where('id_venda', $parcela->id_venda)->where('status', 'PENDING_PAY')->get();
-
-                        foreach ($parcelasPendentes as $parcelaPendente) {
-                            $boletoData = $this->geraBoleto($parcelaPendente->id_venda, $parcelaPendente->id);
-                            if($boletoData['result'] == 'success'){
-                                $parcelaPendente->update([
-                                    'txid' => $boletoData['qrCodeTxId'],
-                                    'url' => $boletoData['qrCodeEmv'],
-                                    'linhadigitavel' => $boletoData['linhaDigitavel'],
-                                    'codigoBarraNumerico' => $boletoData['codigoBarraNumerico'],
-                                    'numerocontratocobranca' => $boletoData['numeroContratoCobranca'],
-                                    'codigocliente' => $boletoData['codigoCliente'],
-                                    'numero' => $boletoData['numero'],
-                                ]);
-                            } else {
-                                $boletoData = $this->geraBoleto($parcelaPendente->venda, $parcelaPendente->id);
-                                if($boletoData['result'] == 'success'){
-                                    $parcelaPendente->update([
-                                        'txid' => $boletoData['qrCodeTxId'],
-                                        'url' => $boletoData['qrCodeEmv'],
-                                        'linhadigitavel' => $boletoData['linhaDigitavel'],
-                                        'codigoBarraNumerico' => $boletoData['codigoBarraNumerico'],
-                                        'numerocontratocobranca' => $boletoData['numeroContratoCobranca'],
-                                        'codigocliente' => $boletoData['codigoCliente'],
-                                        'numero' => $boletoData['numero'],
-                                    ]);
-                                }
-                            }
-                        }
-
-                        $this->enviaPortalCliente($parcela->id_venda);
-                        return ['result' => 'success', 'message' => 'Parcela atualizada!'];
-                    } else {
-                        return ['result' => 'success', 'message' => 'Código da Baixa não necessário, nenhuma alteração realizada!'];
-                    }
-                }
-                return ['result' => 'success', 'message' => 'Cobrança não existe!'];
-            }
-        } else {
+    
+        if (empty($data)) {
             return ['result' => 'error', 'message' => 'JSON não interpretado!'];
         }
-    }
+    
+        foreach ($data as $item) {
+            $id = $item['id'];
+            $baixa = $item['codigoEstadoBaixaOperacional'];
+            $parcela = Parcela::where('numero', $id)->first();
+    
+            if (!$parcela) {
+                return ['result' => 'error', 'message' => 'Cobrança não existe!'];
+            }
+    
+            if ($baixa == 1 || $baixa == 2) {
+                $parcela->status = "PAYMENT_CONFIRMED";
+                $parcela->save();
+    
+                $parcelasPendentes = Parcela::where('id_venda', $parcela->id_venda)
+                    ->where('status', 'PENDING_PAY')
+                    ->where('linhadigitavel', null)
+                    ->get();
+    
+                foreach ($parcelasPendentes as $parcelaPendente) {
+                    $this->geraParcela($parcelaPendente->venda, $parcelaPendente->id);
+                }
+    
+                $this->enviaPortalCliente($parcela->id_venda);
+                return ['result' => 'success', 'message' => 'Parcela atualizada!'];
+            } else {
+                return ['result' => 'success', 'message' => 'Código da Baixa não necessário, nenhuma alteração realizada!'];
+            }
+        }
+    }    
 }
