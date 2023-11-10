@@ -332,7 +332,18 @@ class AsaasController extends Controller {
 
                 return response()->json(['status' => 'success', 'message' => 'Venda Atualizada!']);
             }
-            return response()->json(['status' => 'success', 'message' => 'Venda Não Existe!']);
+            
+            $client = new Client();
+            $response = $client->post(env('API_URL_CLUBEPOSITIVO') . 'finish-payment', [
+                'id_assas' => $idRequisicao
+            ]);
+
+            if ($response->getStatusCode() === 200) {
+                return response()->json(['status' => 'success', 'response' => true]);
+            } else {
+                return response()->json(['status' => 'error', 'response' => 'Comunicação com Positivo Afiliados falhou']);
+            }
+            return response()->json(['status' => 'success', 'message' => 'Nenhum retorno obtido!']);
         }
 
         return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado']);
