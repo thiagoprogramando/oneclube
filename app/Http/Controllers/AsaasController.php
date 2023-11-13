@@ -112,9 +112,8 @@ class AsaasController extends Controller {
                 'status' => 'PENDING_PAY',
             ]);
 
-            $proximoVencimento = $primeiroVencimento;
-
-            if($parcela != 1) {
+            if($parcela > 1) {
+                $proximoVencimento = $primeiroVencimento;
                 for ($i = 2; $i <= $parcela; $i++) {
                     $proximoVencimento = $proximoVencimento->addDays(30);
                     Parcela::create([
