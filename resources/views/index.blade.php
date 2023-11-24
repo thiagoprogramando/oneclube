@@ -14,7 +14,7 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Acesso para colaboradores.</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Bem vindo(a)!</h1>
                                     </div>
                                     <form class="user" method="POST" action="{{ route('login_action') }}">
                                         <input type="hidden" value={{  csrf_token() }} name="_token">
@@ -31,15 +31,11 @@
                                                 <label class="custom-control-label" for="customCheck">Lembrar login</label>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
-                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block"> Login </button>
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="/register">Primeiro Acesso?</a>
-                                        <!--<br> ou <br>
-                                        <a class="small" href="/forgout">Esqueci minha senha!</a>-->
+                                        <a class="small" href="/register">Quero criar minha conta!</a>
                                     </div>
                                 </div>
                             </div>
