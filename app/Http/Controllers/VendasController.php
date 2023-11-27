@@ -179,66 +179,65 @@ class VendasController extends Controller
     }
 
     public function criaDocumento($data) {
-        return $data['cliente'];
-        // $client = new Client();
+        $client = new Client();
 
-        // $url = env('API_URL_ZAPSIGN') . 'api/v1/docs/';
+        $url = env('API_URL_ZAPSIGN') . 'api/v1/docs/';
 
-        // $currentDate = Carbon::now();
-        // $dateLimitToSign = $currentDate->addDays(3);
-        // $formattedDate = $dateLimitToSign->format('Y-m-d');
+        $currentDate = Carbon::now();
+        $dateLimitToSign = $currentDate->addDays(3);
+        $formattedDate = $dateLimitToSign->format('Y-m-d');
 
-        // try {
-        //     $response = $client->post($url, [
-        //         'headers' => [
-        //             'Content-Type' => 'application/json',
-        //             'Accept' => 'application/json',
-        //             'Authorization'  =>  'Bearer ' . env('API_TOKEN_ZAPSIGN')
-        //         ],
-        //         'json' => [
-        //             "name" => "Contrato COnsultoria Financeira",
-        //             "base64_pdf" => 'data:application/pdf;base64,' . $data['pdf'],
-        //             "external_id" => $data['cpfcnpj'],
+        try {
+            $response = $client->post($url, [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                    'Authorization'  =>  'Bearer ' . env('API_TOKEN_ZAPSIGN')
+                ],
+                'json' => [
+                    "name" => "Contrato COnsultoria Financeira",
+                    "base64_pdf" => 'data:application/pdf;base64,' . $data['pdf'],
+                    "external_id" => $data['cpfcnpj'],
 
-        //             'signers' => [
-        //                 "name"      => $data['cliente'],
-        //                 "email"     => $data['email'],
-        //                 "date_limit_to_sign" => $formattedDate,
-        //                 "lang"      => "pt-br",
-        //                 "brand_primary_color " => "#43F47A",
-        //                 "brand_logo " => "https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png",
-        //                 "folder_path" => "LimpaNome-CRM",
-        //                 "signed_file_only_finished" => "true",
-        //                 "disable_signer_emails " => "true",
-        //             ],
-        //         ],
-        //     ]);
+                    'signers' => [[
+                        "name"      => $data['cliente'],
+                        "email"     => $data['email'],
+                        "date_limit_to_sign" => $formattedDate,
+                        "lang"      => "pt-br",
+                        "brand_primary_color " => "#43F47A",
+                        "brand_logo " => "https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png",
+                        "folder_path" => "LimpaNome-CRM",
+                        "signed_file_only_finished" => "true",
+                        "disable_signer_emails " => "true",
+                    ]],
+                ],
+            ]);
 
-        //     $responseData = json_decode($response->getBody(), true);
+            $responseData = json_decode($response->getBody(), true);
 
-        //     return $data = [
-        //         "token"         => $responseData['token'],
-        //         "originalFile"  => $responseData['original_file'],
-        //         "signer"        => $responseData['signers'][0],
-        //     ];
-        // } catch (RequestException $e) {
-        //     $response = $e->getResponse();
+            return $data = [
+                "token"         => $responseData['token'],
+                "originalFile"  => $responseData['original_file'],
+                "signer"        => $responseData['signers'][0],
+            ];
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
 
-        //     if ($response) {
-        //         $statusCode = $response->getStatusCode();
-        //         $errorBody = $response->getBody()->getContents();
+            if ($response) {
+                $statusCode = $response->getStatusCode();
+                $errorBody = $response->getBody()->getContents();
 
-        //         return [
-        //             'error' => [
-        //                 'status_code' => $statusCode,
-        //                 'body' => $errorBody,
-        //             ],
-        //         ];
-        //     }
+                return [
+                    'error' => [
+                        'status_code' => $statusCode,
+                        'body' => $errorBody,
+                    ],
+                ];
+            }
 
-        //     // Se a resposta não estiver disponível, retorne um indicador de erro genérico
-        //     return false;
-        // }
+            // Se a resposta não estiver disponível, retorne um indicador de erro genérico
+            return false;
+        }
     }
 
     public function notificarSignatario($contrato, $auth, $telefone)
