@@ -35,7 +35,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="/register">Quero criar minha conta!</a>
+                                        <a class="small" href="#">V 0.0.1</a>
                                     </div>
                                 </div>
                             </div>
