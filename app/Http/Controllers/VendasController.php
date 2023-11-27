@@ -16,8 +16,7 @@ use App\Models\Vendas;
 class VendasController extends Controller
 {
 
-    public function getVendas($id)
-    {
+    public function getVendas($id) {
 
         $users = auth()->user();
         $vendas = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id)->latest()->limit(30)->get();
@@ -29,8 +28,7 @@ class VendasController extends Controller
         ]);
     }
 
-    public function vendas(Request $request)
-    {
+    public function vendas(Request $request) {
 
         $users = auth()->user();
 
@@ -53,8 +51,7 @@ class VendasController extends Controller
         ]);
     }
 
-    public function vender(Request $request, $id)
-    {
+    public function vender(Request $request, $id) {
 
         $request->validate([
             'cpfcnpj' => 'required|string|max:255',
@@ -163,7 +160,7 @@ class VendasController extends Controller
         $documento = $this->criaDocumento($data);
         if ($documento['signer']) {
             $venda->id_contrato = $documento['token'];
-            $venda->file        = $documento['originalFile'];
+            $venda->file        = $documento['sign_url'];
             $venda->save();
 
             $notificar = $this->notificarSignatario($documento['signer'], $data['auth'], $data['telefone']);
@@ -217,7 +214,7 @@ class VendasController extends Controller
 
             return $data = [
                 "token"         => $responseData['token'],
-                "originalFile"  => $responseData['original_file'],
+                "sign_url"      => $responseData['signers'][1],
                 "signer"        => $responseData['signers'][0],
             ];
         } catch (RequestException $e) {
