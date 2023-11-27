@@ -156,7 +156,7 @@ class VendasController extends Controller {
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
         $documento = $this->criaDocumento($data);
-        if ($documento['signer']) {
+        if ($documento['signer'][0]) {
             $venda->id_contrato = $documento['token'];
             $venda->file        = $documento['originalFile'];
             
