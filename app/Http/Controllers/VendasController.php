@@ -222,6 +222,21 @@ class VendasController extends Controller {
             ];
             
         } catch (RequestException $e) {
+            $response = $e->getResponse();
+        
+            if ($response) {
+                $statusCode = $response->getStatusCode();
+                $errorBody = $response->getBody()->getContents();
+
+                return [
+                    'error' => [
+                        'status_code' => $statusCode,
+                        'body' => $errorBody,
+                    ],
+                ];
+            }
+
+            // Se a resposta não estiver disponível, retorne um indicador de erro genérico
             return false;
         }
     }
