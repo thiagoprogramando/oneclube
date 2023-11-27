@@ -214,7 +214,7 @@ class VendasController extends Controller
 
             return $data = [
                 "token"         => $responseData['token'],
-                "sign_url"      => $responseData['signers'][1],
+                "sign_url"      => $responseData['signers'][0]['sign_url'],
                 "signer"        => $responseData['signers'][0],
             ];
         } catch (RequestException $e) {
