@@ -179,7 +179,7 @@ class VendasController extends Controller
     }
 
     public function criaDocumento($data) {
-        return $data;
+        return $data['cliente'];
         // $client = new Client();
 
         // $url = env('API_URL_ZAPSIGN') . 'api/v1/docs/';
