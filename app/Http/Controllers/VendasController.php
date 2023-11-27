@@ -192,7 +192,7 @@ class VendasController extends Controller
                     'Authorization'  =>  'Bearer ' . env('API_TOKEN_ZAPSIGN')
                 ],
                 'json' => [
-                    "name" => "Contrato COnsultoria Financeira",
+                    "name" => "Contrato Consultoria Financeira",
                     "base64_pdf" => 'data:application/pdf;base64,' . $data['pdf'],
                     "external_id" => $data['cpfcnpj'],
 
