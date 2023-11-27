@@ -13,9 +13,11 @@ use Carbon\Carbon;
 use App\Models\Vendas;
 
 
-class VendasController extends Controller {
+class VendasController extends Controller
+{
 
-    public function getVendas($id) {
+    public function getVendas($id)
+    {
 
         $users = auth()->user();
         $vendas = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id)->latest()->limit(30)->get();
@@ -27,7 +29,8 @@ class VendasController extends Controller {
         ]);
     }
 
-    public function vendas(Request $request) {
+    public function vendas(Request $request)
+    {
 
         $users = auth()->user();
 
@@ -50,7 +53,8 @@ class VendasController extends Controller {
         ]);
     }
 
-    public function vender(Request $request, $id) {
+    public function vender(Request $request, $id)
+    {
 
         $request->validate([
             'cpfcnpj' => 'required|string|max:255',
@@ -160,7 +164,7 @@ class VendasController extends Controller {
         // if ($documento['signer']) {
         //     $venda->id_contrato = $documento['token'];
         //     $venda->file        = $documento['originalFile'];
-            
+
         //     $notificar = $this->notificarSignatario($documento['signer'], $data['auth'], $data['telefone']);
 
         //     if ($notificar != null) {
@@ -168,13 +172,14 @@ class VendasController extends Controller {
         //     }
 
         //     return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
-            
+
         // } else {
         //     return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
         // }
     }
 
-    public function criaDocumento($data) {
+    public function criaDocumento($data)
+    {
         $client = new Client();
 
         $url = env('API_URL_ZAPSIGN') . 'api/v1/docs/';
@@ -188,24 +193,20 @@ class VendasController extends Controller {
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
-                    'Authorization'  =>  'Bearer '.env('API_TOKEN_ZAPSIGN')
+                    'Authorization'  =>  'Bearer ' . env('API_TOKEN_ZAPSIGN')
                 ],
                 'json' => [
                     "name" => "Contrato COnsultoria Financeira",
-                    "base64_pdf"=> 'data:application/pdf;base64,' . $data['pdf'],
-                    "external_id"=> $data['cpfcnpj'],
+                    "base64_pdf" => 'data:application/pdf;base64,' . $data['pdf'],
+                    "external_id" => $data['cpfcnpj'],
 
                     'signers' => [
-
                         "name"      => $data['cliente'],
                         "email"     => $data['email'],
-
                         "date_limit_to_sign" => $formattedDate,
-
                         "lang"      => "pt-br",
                         "brand_primary_color " => "#43F47A",
                         "brand_logo " => "https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png",
-
                         "folder_path" => "LimpaNome-CRM",
                         "signed_file_only_finished" => "true",
                         "disable_signer_emails " => "true",
@@ -220,10 +221,9 @@ class VendasController extends Controller {
                 "originalFile"  => $responseData['original_file'],
                 "signer"        => $responseData['signers'][0],
             ];
-            
         } catch (RequestException $e) {
             $response = $e->getResponse();
-        
+
             if ($response) {
                 $statusCode = $response->getStatusCode();
                 $errorBody = $response->getBody()->getContents();
@@ -241,7 +241,8 @@ class VendasController extends Controller {
         }
     }
 
-    public function notificarSignatario($contrato, $auth, $telefone) {
+    public function notificarSignatario($contrato, $auth, $telefone)
+    {
 
         $client = new Client();
         if ($auth == 'whatsapp') {
