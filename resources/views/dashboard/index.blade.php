@@ -87,7 +87,7 @@
                                                     </td>
                                                     <td> {{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }} </td>
                                                     <td class="text-center">
-                                                        <a class="btn btn-outline-success" href="{{ asset('contratos/' . $venda->id_produto . $venda->cpf . '.pdf') }}" download><i class="fa fa-file"></i></a>
+                                                        <a class="btn btn-outline-success" href="{{ $venda->file }}" target="_blank"><i class="fa fa-file"></i></a>
                                                         <?php $id_pay = str_replace('pay_', '', $venda->id_pay); ?>
                                                         <a class="btn btn-outline-primary" href="https://www.asaas.com/i/{{ $id_pay }}" target="_blank"> <i class="fa fa-credit-card"></i> </a>
                                                     </td>

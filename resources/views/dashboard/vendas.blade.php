@@ -73,20 +73,8 @@
                                                 <td>{{ $venda->nome }}</td>
                                                 <td>
                                                     @switch($venda->id_produto)
-                                                        @case(2)
-                                                            One Positive
-                                                            @break
-                                                        @case(12)
-                                                            One Positive
-                                                            @break
-                                                        @case(3)
-                                                            One Motos/Beauty
-                                                            @break
-                                                        @case(11)
-                                                            One Motos/Beauty
-                                                            @break
-                                                        @case(8)
-                                                            One Serviços
+                                                        @case(1)
+                                                            Limpa Nome
                                                             @break
                                                         @default
                                                             Produto Desconhecido
@@ -106,7 +94,7 @@
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }}</td>
                                                 <td class="text-center">
-                                                    <a class="btn btn-outline-success" href="{{ asset('contratos/'.$venda->id_produto.$venda->cpf.'.pdf') }}" download><i class="fa fa-file"></i></a>
+                                                    <a class="btn btn-outline-success" href="{{ $venda->file }}" target="_blank"><i class="fa fa-file"></i></a>
                                                     <?php
                                                         $id_pay = str_replace('pay_', '', $venda->id_pay);
                                                     ?>
