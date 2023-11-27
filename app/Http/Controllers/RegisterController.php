@@ -8,18 +8,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class RegisterController extends Controller
-{
-    public function register(Request $request)
-    {
+class RegisterController extends Controller {
+    
+    public function register(Request $request) {
         if (isset(auth()->user()->id)) {
             return redirect()->route('dashboard');
         }
         return view('register');
     }
 
-    public function register_action(Request $request)
-    {
+    public function register_action(Request $request) {
         $request->validate([
             'name' => 'required|string|max:255',
             'cpf' => 'required|string|max:255|unique:users',
@@ -41,31 +39,12 @@ class RegisterController extends Controller
             'cpf' => $request->cpf,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'tipo' => 1,
+            'tipo' => $request->tipo,
             'status' => 1,
         ];
 
-        if (isset($request->login)) {
-            $attributes['login'] = $request->login;
-        }
-
-        if (isset($request->id_assas)) {
-            $attributes['id_assas'] = $request->id_assas;
-        }
-
-        if (isset($request->tipo)) {
-            $attributes['tipo'] = $request->tipo;
-        }
-
         $user = User::create($attributes);
 
-        Auth::login($user);
-
-        return redirect()->route('dashboard');
-    }
-
-    public function registerAssociado(Request $request)
-    {
-        return view('registerAssociado');
+        return redirect()->back()->with('success', 'Usuário cadastrado com sucesso!');
     }
 }

@@ -16,6 +16,7 @@ use App\Models\Vendas;
 class VendasController extends Controller {
 
     public function getVendas($id) {
+
         $users = auth()->user();
         $vendas = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id)->latest()->limit(30)->get();
 
@@ -27,6 +28,7 @@ class VendasController extends Controller {
     }
 
     public function vendas(Request $request) {
+
         $users = auth()->user();
 
         $dataInicio = $request->input('data_inicio');
@@ -153,32 +155,19 @@ class VendasController extends Controller {
         $pdfContent = file_get_contents($pdfPath);
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
-        $keyDocumento = $this->criaDocumento($data);
-        if ($keyDocumento['type'] != true) {
-            return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keyDocumento['key']])->withInput();
-        }
-
-        $keySignatario = $this->criaSignatario($data);
-        if ($keySignatario['type'] != true) {
-            return redirect()->route($request->franquia, ['id' => $id])->withErrors([$keySignatario['key']])->withInput();
-        }
-
-        $addSignatarios = $this->adiconaSignatario($keyDocumento['key'], $keySignatario['key']);
-        if ($addSignatarios['type'] != null) {
-
-            $notificar = $this->notificarSignatario($addSignatarios['url'], $data['auth'], $data['telefone']);
-
-            $updateVenda = Vendas::where('cpf', $data['cpfcnpj'])->orderBy('id', 'desc')->first();
-            if ($updateVenda) {
-                $updateVenda->id_contrato = $keyDocumento['key'];
-                $updateVenda->save();
-            }
+        $documento = $this->criaDocumento($data);
+        if ($documento['signer']) {
+            $venda->id_contrato = $documento['token'];
+            $venda->file        = $documento['originalFile'];
+            
+            $notificar = $this->notificarSignatario($documento['signer'], $data['auth'], $data['telefone']);
 
             if ($notificar != null) {
                 return view('obrigado', ['success' => 'Contrato enviado com sucesso!']);
             }
 
             return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
+            
         } else {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
         }
@@ -187,183 +176,52 @@ class VendasController extends Controller {
     public function criaDocumento($data) {
         $client = new Client();
 
-        $url = env('API_URL_CLICKSIN') . 'api/v1/documents?access_token=' . env('API_TOKEN_CLICKSIN');
+        $url = env('API_URL_ZAPSIGN') . 'api/v1/docs/';
 
-        switch ($data['produto']) {
-            case 1:
-                $pasta = "/limpanome";
-                break;
-            default:
-                $pasta = "/sem-identificacao";
-                break;
-        }
+        $currentDate = Carbon::now();
+        $dateLimitToSign = $currentDate->addDays(3);
+        $formattedDate = $dateLimitToSign->format('Y-m-d');
 
         try {
             $response = $client->post($url, [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
+                    'Authorization'  =>  'Bearer '.env('API_TOKEN_ZAPSIGN')
                 ],
                 'json' => [
-                    'document' => [
-                        'path' => $pasta . '/Contrato One Motos ' . $data['cliente'] . '.pdf',
-                        'content_base64' => 'data:application/pdf;base64,' . $data['pdf'],
-                    ],
-                ],
-            ]);
+                    "name" => "Contrato COnsultoria Financeira",
+                    "base64_pdf"=> 'data:application/pdf;base64,' . $data['pdf'],
+                    "external_id"=> $data['cpfcnpj'],
 
-            $statusCode = $response->getStatusCode();
-            $responseData = json_decode($response->getBody(), true);
+                    'signers' => [
 
-            if (isset($responseData['document']['key'])) {
-                $result = [
-                    'type' => true,
-                    'key' => $responseData['document']['key']
-                ];
-                return $result;
-            } else {
-                $result = [
-                    'type' => false,
-                    'key' => "Falha na geração de Documento!"
-                ];
-                return $result;
-            }
-        } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                $errorResponse = json_decode($e->getResponse()->getBody(), true);
-                if (isset($errorResponse['errors']) && !empty($errorResponse['errors'])) {
-                    $errorMessage = $errorResponse['errors'][0];
-                    $result = [
-                        'type' => false,
-                        'key' => $errorMessage
-                    ];
-                    return $result;
-                } else {
-                    $result = [
-                        'type' => false,
-                        'key' => "Falha na operação!"
-                    ];
-                    return $result;
-                }
-            } else {
-                $result = [
-                    'type' => false,
-                    'key' => "Falha na operação!"
-                ];
-                return $result;
-            }
-        }
-    }
+                        "name"      => $data['cliente'],
+                        "email"     => $data['email'],
 
-    public function criaSignatario($data) {
-        $client = new Client();
+                        "date_limit_to_sign" => $formattedDate,
 
-        $url = env('API_URL_CLICKSIN') . 'api/v1/signers?access_token=' . env('API_TOKEN_CLICKSIN');
+                        "lang"      => "pt-br",
+                        "brand_primary_color " => "#43F47A",
+                        "brand_logo " => "https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png",
 
-        try {
-            $response = $client->post($url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'signer' => [
-                        'email'         => $data['email'],
-                        'phone_number'  => $data['telefone'],
-                        'name'  => $data['cliente'],
-                        'auths' => [
-                            $data['auth']
-                        ],
-                        'documentation'  => $data['cpfcnpj'],
-                        'birthday'  => $data['dataNascimento'],
-                        'has_documentation'  => 'true',
-                        'selfie_enabled'  => 'false',
-                        'handwritten_enabled'  => 'false',
-                        'official_document_enabled'  => 'false',
-                        'liveness_enabled'  => 'false',
-                        'facial_biometrics_enabled'  => 'false',
+                        "folder_path" => "LimpaNome-CRM",
+                        "signed_file_only_finished" => "true",
+                        "disable_signer_emails " => "true",
                     ],
                 ],
             ]);
 
             $responseData = json_decode($response->getBody(), true);
 
-            if (isset($responseData['signer']['key'])) {
-                $result = [
-                    'type' => true,
-                    'key' => $responseData['signer']['key']
-                ];
-                return $result;
-            } else {
-                $result = [
-                    'type' => false,
-                    'key' => "Falha ao gerar Signatario!"
-                ];
-                return $result;
-            }
+            return $data = [
+                "token"         => $responseData['token'],
+                "originalFile"  => $responseData['original_file'],
+                "signer"        => $responseData['signers'][0],
+            ];
+            
         } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                $errorResponse = json_decode($e->getResponse()->getBody(), true);
-                if (isset($errorResponse['errors']) && !empty($errorResponse['errors'])) {
-                    $errorMessage = $errorResponse['errors'][0];
-                    $result = [
-                        'type' => false,
-                        'key' => $errorMessage
-                    ];
-                    return $result;
-                } else {
-                    $result = [
-                        'type' => false,
-                        'key' => "Falha na operação!"
-                    ];
-                    return $result;
-                }
-            } else {
-                $result = [
-                    'type' => false,
-                    'key' => "Falha na operação!"
-                ];
-                return $result;
-            }
-        }
-    }
-
-    public function adiconaSignatario($keyDocumento, $keySignatario) {
-        $client = new Client();
-
-        $url = env('API_URL_CLICKSIN') . 'api/v1/lists?access_token=' . env('API_TOKEN_CLICKSIN');
-
-        $response = $client->post($url, [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ],
-            'json' => [
-                'list' => [
-                    'document_key'  => $keyDocumento,
-                    'signer_key'    => $keySignatario,
-                    'sign_as'       => 'contractor',
-                    'refusable'     => false,
-                    'message'       => 'Querido cliente, por favor, assine o contrato como confirmação de adesão ao nosso produto!'
-                ],
-            ],
-        ]);
-
-        $responseData = json_decode($response->getBody(), true);
-
-        if (isset($responseData['list']['key'])) {
-
-            $result = [
-                'type' => true,
-                'key'  => $responseData['list']['key'],
-                'url' => $responseData['list']['url']
-            ];
-            return $result;
-        } else {
-            $result = [
-                'type' => false,
-            ];
-            return $result;
+            return false;
         }
     }
 
@@ -380,8 +238,8 @@ class VendasController extends Controller {
                 ],
                 'json' => [
                     'phone'     => '55' . $telefone,
-                    'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da One Clube: \r\n \r\n",
-                    'image'     => 'https://oneclube.com.br/images/logo.png',
+                    'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da G7 Assessoria: \r\n \r\n",
+                    'image'     => 'https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png',
                     'linkUrl'   => $contrato,
                     'title'     => 'Assinatura de Contrato',
                     'linkDescription' => 'Link para Assinatura Digital'
@@ -394,8 +252,6 @@ class VendasController extends Controller {
             } else {
                 return false;
             }
-        } else {
-            return "Não foi whatsapp";
         }
     }
 }
