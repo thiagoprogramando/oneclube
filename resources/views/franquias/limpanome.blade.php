@@ -33,8 +33,12 @@
                                             <input type="hidden" value={{  csrf_token() }} name="_token">
                                             <div class="col-sm-12 col-lg-8 offset-lg-2 row">
 
-                                                <div class="form-group col-sm-12 col-lg-12">
+                                                <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="cliente" class="form-control form-control-user" name="cliente" value="{{ old('cliente') }}" placeholder="Nome">
+                                                </div>
+
+                                                <div class="form-group col-sm-12 col-lg-6">
+                                                    <input type="number" id="cliente" class="form-control form-control-user" name="rg" value="{{ old('rg') }}" placeholder="RG">
                                                 </div>
 
                                                 <div class="form-group col-sm-12 col-lg-6">
@@ -58,13 +62,13 @@
                                                 </div>
 
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" value="{{ old('cep') }}" class="form-control form-control-user" name="cep" placeholder="CEP" required>
+                                                    <input type="text" value="{{ old('cep') }}" class="form-control form-control-user" name="cep" placeholder="CEP" onBlur="preencherEnderecoPorCEP()" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="number" value="{{ old('numero') }}" class="form-control form-control-user" name="numero" placeholder="Número" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" value="{{ old('endereco') }}" class="form-control form-control-user" name="endereco" placeholder="Endereço" required>
+                                                    <input type="text" value="{{ old('endereco') }}" class="form-control form-control-user" name="endereco" placeholder="Rua" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" value="{{ old('bairro') }}" class="form-control form-control-user" name="bairro" placeholder="Bairro" required>
@@ -125,6 +129,28 @@
                 telefone = telefone.replace(/(\d{2})(\d)/, '($1) $2');
                 telefone = telefone.replace(/(\d{5})(\d)/, '$1-$2');
                 telefoneInput.value = telefone;
+            }
+
+            function preencherEnderecoPorCEP() {
+                // Obtém o valor do CEP do input
+                var cep = document.getElementById('cep').value;
+
+                // Verifica se o CEP possui o formato esperado (8 dígitos)
+                if (/^\d{8}$/.test(cep)) {
+                    // Faz a requisição para a API do ViaCEP
+                    fetch('https://viacep.com.br/ws/' + cep + '/json/')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Preenche os campos com os dados retornados
+                            document.getElementById('endereco').value = data.logradouro;
+                            document.getElementById('bairro').value = data.bairro;
+                            document.getElementById('cidade').value = data.localidade;
+                            document.getElementById('estado').value = data.uf;
+                        })
+                        .catch(error => console.error('Erro ao buscar o endereço:', error));
+                } else {
+                    console.error('Formato inválido de CEP');
+                }
             }
 
         </script>
