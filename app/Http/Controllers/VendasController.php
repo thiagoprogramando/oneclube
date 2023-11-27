@@ -133,6 +133,7 @@ class VendasController extends Controller
             'endereco' => $request->endereco,
             'auth'      => 'whatsapp',
             'produto'   => $request->produto,
+            'valor'     => 450,
         ];
 
         $dompdf = new Dompdf();
@@ -160,22 +161,21 @@ class VendasController extends Controller
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
         $documento = $this->criaDocumento($data);
-        var_dump($documento);
-        // if ($documento['signer']) {
-        //     $venda->id_contrato = $documento['token'];
-        //     $venda->file        = $documento['originalFile'];
+        if ($documento['signer']) {
+            $venda->id_contrato = $documento['token'];
+            $venda->file        = $documento['originalFile'];
+            $venda->save();
 
-        //     $notificar = $this->notificarSignatario($documento['signer'], $data['auth'], $data['telefone']);
+            $notificar = $this->notificarSignatario($documento['signer'], $data['auth'], $data['telefone']);
+            if ($notificar != null) {
+                return view('obrigado', ['success' => 'Obrigado! Enviaremos o contrato diretamente para o seu whatsapp.']);
+            }
 
-        //     if ($notificar != null) {
-        //         return view('obrigado', ['success' => 'Contrato enviado com sucesso!']);
-        //     }
+            return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
 
-        //     return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
-
-        // } else {
-        //     return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
-        // }
+        } else {
+            return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
+        }
     }
 
     public function criaDocumento($data) {
@@ -221,21 +221,19 @@ class VendasController extends Controller
                 "signer"        => $responseData['signers'][0],
             ];
         } catch (RequestException $e) {
-            $response = $e->getResponse();
+            // $response = $e->getResponse();
 
-            if ($response) {
-                $statusCode = $response->getStatusCode();
-                $errorBody = $response->getBody()->getContents();
+            // if ($response) {
+            //     $statusCode = $response->getStatusCode();
+            //     $errorBody = $response->getBody()->getContents();
 
-                return [
-                    'error' => [
-                        'status_code' => $statusCode,
-                        'body' => $errorBody,
-                    ],
-                ];
-            }
-
-            // Se a resposta não estiver disponível, retorne um indicador de erro genérico
+            //     return [
+            //         'error' => [
+            //             'status_code' => $statusCode,
+            //             'body' => $errorBody,
+            //         ],
+            //     ];
+            // }
             return false;
         }
     }
