@@ -2,12 +2,10 @@
     @section('conteudo')
     <div class="container-fluid">
 
-        <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Vendas</h1>
         </div>
 
-        <!-- Minhas Vendas -->
         <div class="row">
             <div class="col-xl-12 col-md-12 mb-4">
                 <div class="card border-left-dark shadow h-100 py-2">
@@ -32,12 +30,7 @@
                                                                 <div class="form-group">
                                                                     <select class="form-control"  name="produto">
                                                                         <option value="ALL">Todos os Produtos</option>
-                                                                        <option value="3">One Motos</option>
-                                                                        <option value="11">One Motos Associados</option>
-                                                                        <option value="3">One Beauty</option>
-                                                                        <option value="2">One Positive</option>
-                                                                        <option value="12">One Positive Associados</option>
-                                                                        <option value="8">One Serviços</option>
+                                                                        <option value="1">Limpa Nome</option>
                                                                     </select>
                                                                 </div>
                                                             </div>

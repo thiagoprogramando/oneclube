@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\AsaasController;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
@@ -12,15 +11,11 @@ use GuzzleHttp\Exception\RequestException;
 use Carbon\Carbon;
 
 use App\Models\Vendas;
-use App\Models\VendaLance;
-use App\Models\VendaParcela;
 
 
-class VendasController extends Controller
-{
+class VendasController extends Controller {
 
-    public function getVendas($id)
-    {
+    public function getVendas($id) {
         $users = auth()->user();
         $vendas = Vendas::where('id_produto', $id)->where('id_vendedor', $users->id)->latest()->limit(30)->get();
 
@@ -31,8 +26,7 @@ class VendasController extends Controller
         ]);
     }
 
-    public function vendas(Request $request)
-    {
+    public function vendas(Request $request) {
         $users = auth()->user();
 
         $dataInicio = $request->input('data_inicio');
@@ -42,16 +36,9 @@ class VendasController extends Controller
             $dataInicio = Carbon::parse($dataInicio);
             $dataFim = Carbon::parse($dataFim);
 
-            $vendas = Vendas::where('id_produto', $request->input('id'))
-                ->where('id_vendedor', $users->id)
-                ->whereBetween('updated_at', [$dataInicio, $dataFim])
-                ->get();
+            $vendas = Vendas::where('id_produto', $request->input('id'))->where('id_vendedor', $users->id)->whereBetween('updated_at', [$dataInicio, $dataFim])->get();
         } else {
-            $vendas = Vendas::where('id_produto', $request->input('id'))
-                ->where('id_vendedor', $users->id)
-                ->latest()
-                ->limit(30)
-                ->get();
+            $vendas = Vendas::where('id_produto', $request->input('id'))->where('id_vendedor', $users->id)->get();
         }
 
         return view('dashboard.vendas', [
@@ -61,8 +48,8 @@ class VendasController extends Controller
         ]);
     }
 
-    public function vender(Request $request, $id)
-    {
+    public function vender(Request $request, $id) {
+
         $request->validate([
             'cpfcnpj' => 'required|string|max:255',
             'cliente' => 'required|string|max:255',
@@ -72,41 +59,19 @@ class VendasController extends Controller
             'rg' => 'max:20',
         ]);
 
-        switch ($request->produto) {
-            case 3:
-                $views = ['documentos.onemotos'];
-                $valor = 500;
-                break;
-            case 2:
-                $views = ['documentos.onepositive'];
-                $valor = 970;
-                break;
-            case 8:
-                $views = ['documentos.oneservicos'];
-                $valor = 127;
-                break;
-            case 11:
-                $views = ['documentos.associadonemotos'];
-                $valor = 500;
-                break;
-            case 12:
-                $views = ['documentos.onepositive'];
-                $valor = 1500;
-                break;
-            default:
-                $views = ['documentos.contratoonepage'];
-                break;
-        }
-
         $vendaData = [
             'id_vendedor' => $id,
         ];
 
-        if ($request->entrada) {
-            $valor = $request->entrada;
+        switch ($request->produto) {
+            case 1:
+                $views = ['documentos.limpanome'];
+                $vendaData['valor'] = 1500;
+                break;
+            default:
+                $views = ['documentos.limpanome'];
+                break;
         }
-
-        $vendaData['valor'] = $valor;
 
         if (!empty($request->cpfcnpj)) {
             $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
@@ -141,7 +106,6 @@ class VendasController extends Controller
         }
 
         $venda = Vendas::create($vendaData);
-
         if (!$venda) {
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
@@ -163,7 +127,6 @@ class VendasController extends Controller
             'endereco' => $request->endereco,
             'auth'      => 'whatsapp',
             'produto'   => $request->produto,
-            'entrada'   => $request->entrada
         ];
 
         $dompdf = new Dompdf();
@@ -221,30 +184,19 @@ class VendasController extends Controller
         }
     }
 
-    public function criaDocumento($data)
-    {
+    public function criaDocumento($data) {
         $client = new Client();
 
         $url = env('API_URL_CLICKSIN') . 'api/v1/documents?access_token=' . env('API_TOKEN_CLICKSIN');
 
         switch ($data['produto']) {
-            case 2:
-                $pasta = "/onepositive";
+            case 1:
+                $pasta = "/limpanome";
                 break;
-            case 3:
-                $pasta = "/onemotos";
-                break;
-            case 8:
-                $pasta = "/oneservicos";
-                break;
-            case 11:
-                $pasta = "/associadonemotos";
-                break;
-            case 12:
-                $pasta = "/associadonepositive";
+            default:
+                $pasta = "/sem-identificacao";
                 break;
         }
-
 
         try {
             $response = $client->post($url, [
@@ -303,8 +255,7 @@ class VendasController extends Controller
         }
     }
 
-    public function criaSignatario($data)
-    {
+    public function criaSignatario($data) {
         $client = new Client();
 
         $url = env('API_URL_CLICKSIN') . 'api/v1/signers?access_token=' . env('API_TOKEN_CLICKSIN');
@@ -377,8 +328,7 @@ class VendasController extends Controller
         }
     }
 
-    public function adiconaSignatario($keyDocumento, $keySignatario)
-    {
+    public function adiconaSignatario($keyDocumento, $keySignatario) {
         $client = new Client();
 
         $url = env('API_URL_CLICKSIN') . 'api/v1/lists?access_token=' . env('API_TOKEN_CLICKSIN');
@@ -417,8 +367,8 @@ class VendasController extends Controller
         }
     }
 
-    public function notificarSignatario($contrato, $auth, $telefone)
-    {
+    public function notificarSignatario($contrato, $auth, $telefone) {
+
         $client = new Client();
         if ($auth == 'whatsapp') {
             $url = 'https://api.z-api.io/instances/3BF660F605143051CA98E2F1A4FCFFCB/token/3048386F0FE68A1828B852B1/send-link';
@@ -446,60 +396,6 @@ class VendasController extends Controller
             }
         } else {
             return "Não foi whatsapp";
-        }
-    }
-
-    public function lance(Request $request) {
-        $user = auth()->user();
-
-        $vendaId = $request->input('id');
-        $totalPago = $request->input('totalPago');
-        $oferta = $request->input('oferta');
-
-        $mesAtual = Carbon::now()->format('m');
-
-        VendaLance::where('venda_id', $vendaId)->delete();
-        VendaLance::create([
-            'venda_id' => $vendaId,
-            'user_id' => $user->id,
-            'pago' => $totalPago,
-            'oferta' => $oferta,
-            'mes' => $mesAtual
-        ]);
-
-        return redirect()->route('dashboard')->with('success', 'Oferta realizada com sucesso!');
-    }
-
-    public function geraAssasParcela(Request $request) {
-
-        $user = auth()->user();
-        $id = $request->input('id');
-
-        $dados = [
-            'id_assas'  => 'false',
-            'nome'      => $user->nome,
-            'cpf'       => $request->input('cpf'),
-            'valor'     => $request->input('valor'),
-            'parcelas'  => 1,
-        ];
-
-        $request = new Request($dados);
-
-        $assasParcela = new AsaasController();
-        $resultado = $assasParcela->geraAssasOneClube($request);
-
-        if($resultado){
-            $paymentId = $resultado['json']['paymentId'];
-
-            $parcela = VendaParcela::where('id', $id)->first();
-            $parcela->id_assas = $paymentId;
-            $parcela->save();
-
-            $paymentLink = $resultado['json']['paymentLink'];
-            return redirect()->route('relatorioParcelas')->with('link', $paymentLink);
-        } else {
-            $mensagemErro = "Houve um erro ao gerar o link de pagamento!";
-            return redirect()->route('relatorioParcelas')->with('mensagemErro', $mensagemErro);
         }
     }
 }

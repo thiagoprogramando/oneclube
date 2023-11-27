@@ -62,10 +62,10 @@
                                                         <input type="hidden" value="{{  $user->id }}" name="id_usuario">
                                                         @if($user->tipo == 1)
                                                             <input type="hidden" value="2" name="tipo">
-                                                            <button type="submit" class="btn btn-outline-primary"> One Clube </button>
+                                                            <button type="submit" class="btn btn-outline-primary"> Administrador </button>
                                                         @else
                                                             <input type="hidden" value="1" name="tipo">
-                                                            <button type="submit" class="btn btn-outline-primary"> Administrador </button>
+                                                            <button type="submit" class="btn btn-outline-primary"> Padrão </button>
                                                         @endif
                                                     </form>
                                                 </td>
