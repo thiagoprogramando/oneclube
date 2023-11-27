@@ -156,21 +156,22 @@ class VendasController extends Controller {
         $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
         $documento = $this->criaDocumento($data);
-        if ($documento['signer'][0]) {
-            $venda->id_contrato = $documento['token'];
-            $venda->file        = $documento['originalFile'];
+        var_dump($documento);
+        // if ($documento['signer']) {
+        //     $venda->id_contrato = $documento['token'];
+        //     $venda->file        = $documento['originalFile'];
             
-            $notificar = $this->notificarSignatario($documento['signer'], $data['auth'], $data['telefone']);
+        //     $notificar = $this->notificarSignatario($documento['signer'], $data['auth'], $data['telefone']);
 
-            if ($notificar != null) {
-                return view('obrigado', ['success' => 'Contrato enviado com sucesso!']);
-            }
+        //     if ($notificar != null) {
+        //         return view('obrigado', ['success' => 'Contrato enviado com sucesso!']);
+        //     }
 
-            return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
+        //     return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
             
-        } else {
-            return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
-        }
+        // } else {
+        //     return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
+        // }
     }
 
     public function criaDocumento($data) {
