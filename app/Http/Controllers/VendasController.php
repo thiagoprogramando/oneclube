@@ -235,15 +235,16 @@ class VendasController extends Controller {
 
         $response = $client->post($url, [
             'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
+                'Content-Type'  => 'application/json',
+                'Accept'        => 'application/json',
+                'Client-Token'  => 'Fabe25dbd69e54f34931e1c5f0dda8c5bS'
             ],
             'json' => [
-                'phone'     => '55' . $telefone,
-                'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da G7 Assessoria: \r\n \r\n",
-                'image'     => 'https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png',
-                'linkUrl'   => $contrato,
-                'title'     => 'Assinatura de Contrato',
+                'phone'           => '55' . $telefone,
+                'message'         => "Prezado Cliente, segue seu contrato de adesão ao produto da G7 Assessoria: \r\n \r\n",
+                'image'           => 'https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png',
+                'linkUrl'         => $contrato,
+                'title'           => 'Assinatura de Contrato',
                 'linkDescription' => 'Link para Assinatura Digital'
             ],
         ]);
