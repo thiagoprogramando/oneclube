@@ -231,7 +231,7 @@ class VendasController extends Controller {
 
         $client = new Client();
 
-        $url = env('API_URL_ZAPI') . '/send-link';
+        $url = 'https://api.z-api.io/instances/3C71DE8B199F70020C478ECF03C1E469/token/DC7D43456F83CCBA2701B78B/send-link';
 
         $response = $client->post($url, [
             'headers' => [
