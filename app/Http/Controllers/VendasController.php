@@ -229,13 +229,10 @@ class VendasController extends Controller {
 
     public function notificarSignatario($contrato, $telefone) {
         $client = new Client();
-    
+
         $url = 'https://api.z-api.io/instances/3C71DE8B199F70020C478ECF03C1E469/token/DC7D43456F83CCBA2701B78B/send-link';
-    
-        // Inicialize a variável $response fora do bloco try
-        $response = null;
-    
         try {
+
             $response = $client->post($url, [
                 'headers' => [
                     'Content-Type'  => 'application/json',
@@ -253,15 +250,8 @@ class VendasController extends Controller {
             ]);
     
             $responseData = json_decode($response->getBody(), true);
-    
-            if (isset($responseData['id'])) {
-                return true;
-            } else {
-                return false;
-            }
+            return true;
         } catch (\Exception $e) {
-            // Exibir detalhes do erro
-            dd($e->getMessage(), $e->getCode(), $response ? $response->getBody()->getContents() : null);
             return false;
         }
     }
