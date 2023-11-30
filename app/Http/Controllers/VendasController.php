@@ -232,6 +232,9 @@ class VendasController extends Controller {
     
         $url = env('API_URL_ZAPI') . '/send-link';
     
+        // Inicialize a variável $response fora do bloco try
+        $response = null;
+    
         try {
             $response = $client->post($url, [
                 'headers' => [
@@ -258,8 +261,9 @@ class VendasController extends Controller {
             }
         } catch (\Exception $e) {
             // Exibir detalhes do erro
-            dd($e->getMessage(), $e->getCode(), $response->getBody()->getContents());
+            dd($e->getMessage(), $e->getCode(), $response ? $response->getBody()->getContents() : null);
             return false;
         }
     }
+    
 }
