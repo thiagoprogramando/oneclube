@@ -258,7 +258,7 @@ class VendasController extends Controller {
             }
         } catch (\Exception $e) {
             // Exibir detalhes do erro
-            dd($e->getMessage(), $e->getCode());
+            dd($e->getMessage(), $e->getCode(), $response->getBody()->getContents());
             return false;
         }
     }
