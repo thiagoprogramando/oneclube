@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ParcelaController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\RelatorioController;
@@ -27,8 +26,8 @@ Route::view('/obrigado', 'obrigado');
 //Autenticados
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::get('/logout', [DashboardController::class, 'logout'])->name('logout');
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
     Route::get('/vendas/{id}', [VendasController::class, 'getVendas'])->name('vendas');
     Route::post('vendas', [VendasController::class, 'vendas'])->name('vendas');

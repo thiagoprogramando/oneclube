@@ -6,8 +6,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
+use App\Models\Vendas;
 
 class UserController extends Controller {
+
+    public function dashboard () {
+
+        $user = auth()->user();
+
+        $vendas = Vendas::where('id_vendedor', $user->id)->limit(15)->get();
+
+        return view('dashboard.index', [
+            'user' => $user,
+            'vendas' => $vendas,
+        ]);
+    }
+
+    public function logout() {
+
+        Auth::logout();
+        return redirect()->route('login');
+    }
 
     public function index() {   
 
