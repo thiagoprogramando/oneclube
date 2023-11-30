@@ -11,7 +11,7 @@ return new class extends Migration {
         Schema::create('vendas', function (Blueprint $table) {
             $table->id();
             $table->string('nome')->nullable();
-            $table->string('cpf');
+            $table->string('cpfcnpj');
             $table->string('rg')->nullable();
             $table->string('endereco')->nullable();
             $table->string('telefone')->nullable();

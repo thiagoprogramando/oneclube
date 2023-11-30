@@ -228,7 +228,7 @@
                 </td>
                 <td style="width:313.3pt; vertical-align:top">
                     <p class="BodyText" style="text-align:justify"><span
-                            style="font-weight:bold; letter-spacing:0.85pt"> <?php echo $data['cliente']; ?> </span><span
+                            style="font-weight:bold; letter-spacing:0.85pt"> <?php echo $data['nome']; ?> </span><span
                             style="font-weight:bold; letter-spacing:0.85pt; -aw-import:spaces">&#xa0;</span><span
                             style="letter-spacing:0.85pt">Brasileiro(a), cadastrado(a) no </span><span
                             style="font-weight:bold; letter-spacing:0.85pt">RG</span><span
@@ -310,7 +310,7 @@
                 style="letter-spacing:0.05pt"> </span><span>um</span><span style="letter-spacing:0.05pt"> </span><span
                 style="letter-spacing:0.7pt">lado</span><span style="letter-spacing:0.75pt"> </span><span
                 style="font-size:11pt; font-weight:bold; letter-spacing:0.85pt; -aw-import:spaces">&#xa0;</span><span
-                style="font-size:11pt; font-weight:bold; letter-spacing:0.85pt"><?php echo $data['cliente']; ?> </span><span
+                style="font-size:11pt; font-weight:bold; letter-spacing:0.85pt"><?php echo $data['nome']; ?> </span><span
                 style="font-size:11pt; font-weight:bold; letter-spacing:0.85pt; -aw-import:spaces">&#xa0;</span><span
                 style="letter-spacing:0.85pt">doravante denominado unicamente</span><span
                 style="letter-spacing:0.85pt; -aw-import:spaces">&#xa0; </span><span
@@ -1129,10 +1129,6 @@
         <p class="BodyText" style="font-size:10pt"><span style="-aw-import:ignore">&#xa0;</span></p>
         <p class="BodyText" style="text-align:center; font-size:10pt"><span
                 style="font-weight:bold; -aw-import:ignore">&#xa0;</span></p>
-        <p class="BodyText" style="margin-top:0.2pt; font-size:7pt"><img
-                src="images/Aspose.Words.05062145-8676-48cb-b24a-1952417db174.001.png" width="571" height="2" alt=""
-                style="-aw-left-pos:83.65pt; -aw-rel-hpos:page; -aw-rel-vpos:paragraph; -aw-top-pos:10.35pt; -aw-wrap-type:topbottom" /><br />
-        </p>
         <p style="line-height:12.75pt"><span
                 style="font-size:12pt; letter-spacing:0.85pt; -aw-import:spaces">&#xa0;&#xa0; </span><span
                 style="font-size:12pt; letter-spacing:0.85pt">Contratada</span><span
@@ -1145,16 +1141,12 @@
         <p class="BodyText" style="font-size:10pt"><span style="font-weight:bold; -aw-import:ignore">&#xa0;</span></p>
         <p class="BodyText" style="font-size:10pt"><span style="font-weight:bold; -aw-import:ignore">&#xa0;</span></p>
         <p class="BodyText" style="font-size:10pt"><span style="font-weight:bold; -aw-import:ignore">&#xa0;</span></p>
-        <p class="BodyText" style="margin-top:0.1pt; font-size:11pt"><img
-                src="images/Aspose.Words.05062145-8676-48cb-b24a-1952417db174.001.png" width="571" height="2" alt=""
-                style="-aw-left-pos:83.65pt; -aw-rel-hpos:page; -aw-rel-vpos:paragraph; -aw-top-pos:14.95pt; -aw-wrap-type:topbottom" /><br />
-        </p>
         <p style="margin-left:10.1pt; line-height:12.75pt"><span
                 style="font-size:12pt; letter-spacing:0.85pt">Contratante</span><span
                 style="font-size:12pt; letter-spacing:-1.55pt"> </span><span
                 style="font-size:12pt; font-weight:bold">:</span><span
                 style="font-size:12pt; font-weight:bold; letter-spacing:2.15pt"> </span><span
-                style="font-weight:bold; letter-spacing:0.85pt"><?php echo $data['cliente']; ?> </span><span
+                style="font-weight:bold; letter-spacing:0.85pt"><?php echo $data['nome']; ?> </span><span
                 style="font-weight:bold; letter-spacing:0.85pt; -aw-import:spaces">&#xa0;</span></p>
     </div>
 </body>

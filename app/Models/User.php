@@ -24,7 +24,6 @@ class User extends Authenticatable
         'updated_at',
         'cpf',
         'tipo',
-        'status',
     ];
 
     protected $hidden = [

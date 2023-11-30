@@ -16,7 +16,7 @@ class Vendas extends Authenticatable
 
     protected $fillable = [
         'nome',
-        'cpf',
+        'cpfcnpj',
         'telefone',
         'email',
         'endereco',

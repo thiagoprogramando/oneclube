@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Carbon\Carbon;
@@ -13,8 +14,7 @@ use Carbon\Carbon;
 use App\Models\Vendas;
 
 
-class VendasController extends Controller
-{
+class VendasController extends Controller {
 
     public function getVendas($id) {
 
@@ -69,15 +69,16 @@ class VendasController extends Controller
         switch ($request->produto) {
             case 1:
                 $views = ['documentos.limpanome'];
-                $vendaData['valor'] = 1500;
+                $vendaData['valor'] = $request->valor;
                 break;
             default:
                 $views = ['documentos.limpanome'];
+                $vendaData['valor'] = $request->valor;
                 break;
         }
 
         if (!empty($request->cpfcnpj)) {
-            $vendaData['cpf'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
+            $vendaData['cpfcnpj'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
         }
 
         if (!empty($request->cliente)) {
@@ -102,6 +103,11 @@ class VendasController extends Controller
 
         if (!empty($request->cep) && !empty($request->estado) && !empty($request->cidade) && !empty($request->bairro) && !empty($request->numero)) {
             $vendaData['endereco'] = $request->cep . ' - ' . $request->estado . '/' . $request->cidade . ' - ' . $request->bairro . ' N° ' . $request->numero;
+            $vendaData['cep'] = $request->cep;
+            $vendaData['estado'] = $request->estado;
+            $vendaData['cidade'] = $request->cidade;
+            $vendaData['bairro'] = $request->bairro;
+            $vendaData['numero'] = $request->numero;
         }
 
         if (!empty($request->produto)) {
@@ -113,32 +119,32 @@ class VendasController extends Controller
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
 
-        $data = [
-            'cpfcnpj' => preg_replace('/[^0-9]/', '', $request->cpfcnpj),
-            'cliente' => $request->cliente,
-            'dataNascimento' => Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d'),
-            'email' => $request->email,
-            'telefone' => preg_replace('/[^0-9]/', '', $request->telefone),
-            'profissao' => $request->profissao,
-            'rg' => $request->rg,
-            'civil' => $request->civil,
-            'cep' => $request->cep,
-            'numero' => $request->numero,
-            'estado' => $request->estado,
-            'cidade' => $request->cidade,
-            'bairro' => $request->bairro,
-            'endereco' => $request->endereco,
-            'auth'      => 'whatsapp',
-            'produto'   => $request->produto,
-            'valor'     => 450,
-        ];
+        // $data = [
+        //     'cpfcnpj' => preg_replace('/[^0-9]/', '', $request->cpfcnpj),
+        //     'cliente' => $request->cliente,
+        //     'dataNascimento' => Carbon::createFromFormat('d-m-Y', $request->dataNascimento)->format('Y-m-d'),
+        //     'email' => $request->email,
+        //     'telefone' => preg_replace('/[^0-9]/', '', $request->telefone),
+        //     'profissao' => $request->profissao,
+        //     'rg' => $request->rg,
+        //     'civil' => $request->civil,
+        //     'cep' => $request->cep,
+        //     'numero' => $request->numero,
+        //     'estado' => $request->estado,
+        //     'cidade' => $request->cidade,
+        //     'bairro' => $request->bairro,
+        //     'endereco' => $request->endereco,
+        //     'auth'      => 'whatsapp',
+        //     'produto'   => $request->produto,
+        //     'valor'     => 450,
+        // ];
 
         $dompdf = new Dompdf();
 
         $html = '';
         $total = 0;
         foreach ($views as $view) {
-            $html .= View::make($view, ['data' => $data])->render();
+            $html .= View::make($view, ['data' => $vendaData])->render();
             $total++;
             if ($total != 4) {
                 $html .= '<div style="page-break-before:always;"></div>';
@@ -150,32 +156,31 @@ class VendasController extends Controller
         $dompdf->render();
         $pdfContent = $dompdf->output();
 
-        $filePath = public_path('contratos/' . $request->produto . $data['cpfcnpj'] . '.pdf');
+        $filePath = public_path('contratos/' . $request->produto . $vendaData['cpfcnpj'] . '.pdf');
         file_put_contents($filePath, $pdfContent);
 
-        $pdfPath = public_path('contratos/' . $request->produto . $data['cpfcnpj'] . '.pdf');
+        $pdfPath = public_path('contratos/' . $request->produto . $vendaData['cpfcnpj'] . '.pdf');
         $pdfContent = file_get_contents($pdfPath);
-        $data['pdf'] = $pdfBase64 = base64_encode($pdfContent);
+        $vendaData['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
-        $documento = $this->criaDocumento($data);
+        $documento = $this->criaDocumento($vendaData);
         if ($documento['signer']) {
             $venda->id_contrato = $documento['token'];
             $venda->file        = $documento['sign_url'];
             $venda->save();
 
-            $notificar = $this->notificarSignatario($documento['signer'], $data['auth'], $data['telefone']);
+            $notificar = $this->notificarSignatario($documento['signer'], $vendaData['telefone']);
             if ($notificar != null) {
                 return view('obrigado', ['success' => 'Obrigado! Enviaremos o contrato diretamente para o seu whatsapp.']);
             }
 
             return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
-
         } else {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
         }
     }
 
-    public function criaDocumento($data) {
+    private function criaDocumento($data) {
         $client = new Client();
 
         $url = env('API_URL_ZAPSIGN') . 'api/v1/docs/';
@@ -197,7 +202,7 @@ class VendasController extends Controller
                     "external_id" => $data['cpfcnpj'],
 
                     'signers' => [[
-                        "name"      => $data['cliente'],
+                        "name"      => $data['nome'],
                         "email"     => $data['email'],
                         "date_limit_to_sign" => $formattedDate,
                         "lang"      => "pt-br",
@@ -218,51 +223,36 @@ class VendasController extends Controller
                 "signer"        => $responseData['signers'][0],
             ];
         } catch (RequestException $e) {
-            // $response = $e->getResponse();
-
-            // if ($response) {
-            //     $statusCode = $response->getStatusCode();
-            //     $errorBody = $response->getBody()->getContents();
-
-            //     return [
-            //         'error' => [
-            //             'status_code' => $statusCode,
-            //             'body' => $errorBody,
-            //         ],
-            //     ];
-            // }
             return false;
         }
     }
 
-    public function notificarSignatario($contrato, $auth, $telefone)
-    {
+    public function notificarSignatario($contrato, $telefone) {
 
         $client = new Client();
-        if ($auth == 'whatsapp') {
-            $url = 'https://api.z-api.io/instances/3BF660F605143051CA98E2F1A4FCFFCB/token/3048386F0FE68A1828B852B1/send-link';
 
-            $response = $client->post($url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'phone'     => '55' . $telefone,
-                    'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da G7 Assessoria: \r\n \r\n",
-                    'image'     => 'https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png',
-                    'linkUrl'   => $contrato,
-                    'title'     => 'Assinatura de Contrato',
-                    'linkDescription' => 'Link para Assinatura Digital'
-                ],
-            ]);
+        $url = env('API_URL_ZAPI') . '/send-link';
 
-            $responseData = json_decode($response->getBody(), true);
-            if (isset($responseData['id'])) {
-                return true;
-            } else {
-                return false;
-            }
+        $response = $client->post($url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'phone'     => '55' . $telefone,
+                'message'   => "Prezado Cliente, segue seu contrato de adesão ao produto da G7 Assessoria: \r\n \r\n",
+                'image'     => 'https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png',
+                'linkUrl'   => $contrato,
+                'title'     => 'Assinatura de Contrato',
+                'linkDescription' => 'Link para Assinatura Digital'
+            ],
+        ]);
+
+        $responseData = json_decode($response->getBody(), true);
+        if (isset($responseData['id'])) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

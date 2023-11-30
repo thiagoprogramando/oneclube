@@ -34,17 +34,14 @@
                                             <div class="col-sm-12 col-lg-8 offset-lg-2 row">
 
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="cliente" class="form-control form-control-user" name="cliente" value="{{ old('cliente') }}" placeholder="Nome">
+                                                    <input type="text" class="form-control form-control-user" name="cliente" value="{{ old('cliente') }}" placeholder="Nome">
                                                 </div>
-
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="number" id="cliente" class="form-control form-control-user" name="rg" value="{{ old('rg') }}" placeholder="RG">
+                                                    <input type="number" class="form-control form-control-user" name="rg" value="{{ old('rg') }}" placeholder="RG">
                                                 </div>
-
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="email" id="email" class="form-control form-control-user" name="email" value="{{ old('email') }}" placeholder="Email">
+                                                    <input type="email" class="form-control form-control-user" name="email" value="{{ old('email') }}" placeholder="Email">
                                                 </div>
-
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="cpfInput" oninput="mascaraCpf(this)" maxlength="14" value="{{ old('cpfcnpj') }}" class="form-control form-control-user" name="cpfcnpj" placeholder="CPF/CNPJ">
                                                 </div>
@@ -52,15 +49,14 @@
                                                 <input type="hidden" name="id_user" value="{{ $id }}">
                                                 <input type="hidden" name="produto" value="1">
                                                 <input type="hidden" name="franquia" value="limpanome">
+                                                <input type="hidden" value="1500" name="valor">
                                             
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="dataInput" class="form-control form-control-user" name="dataNascimento" value="{{ old('dataNascimento') }}" oninput="mascaraData(this)" maxlength="10" placeholder="Data de Nascimento" required>
                                                 </div>
-            
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" id="telefoneInput" oninput="mascaraTelefone(this)" maxlength="15" value="{{ old('telefone') }}" class="form-control form-control-user" name="telefone" placeholder="WhatsApp" required>
                                                 </div>
-
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" value="{{ old('cep') }}" class="form-control form-control-user" name="cep" placeholder="CEP" onBlur="preencherEnderecoPorCEP()" required>
                                                 </div>
@@ -81,11 +77,8 @@
                                                 </div>
             
                                                 <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
-                                                    <div class="form-group">
                                                         <button type="submit" class="btn btn-primary btn-user btn-block"> Contratar </button>
-                                                    </div>
                                                 </div>
-
                                             </div>
                                         </form>
                                     </div>
@@ -132,16 +125,12 @@
             }
 
             function preencherEnderecoPorCEP() {
-                // Obtém o valor do CEP do input
                 var cep = document.getElementById('cep').value;
 
-                // Verifica se o CEP possui o formato esperado (8 dígitos)
                 if (/^\d{8}$/.test(cep)) {
-                    // Faz a requisição para a API do ViaCEP
                     fetch('https://viacep.com.br/ws/' + cep + '/json/')
                         .then(response => response.json())
                         .then(data => {
-                            // Preenche os campos com os dados retornados
                             document.getElementById('endereco').value = data.logradouro;
                             document.getElementById('bairro').value = data.bairro;
                             document.getElementById('cidade').value = data.localidade;
@@ -152,7 +141,6 @@
                     console.error('Formato inválido de CEP');
                 }
             }
-
         </script>
 
     @endsection
