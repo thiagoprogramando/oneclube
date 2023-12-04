@@ -22,27 +22,20 @@
     <div id="wrapper">
 
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
-
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">G7 - Negócios</div>
+                <div class="sidebar-brand-icon rotate-n-15"> <i class="fas fa-user-tie"></i> </div>
+                <div class="sidebar-brand-text mx-3"> G7 - Negócios </div>
             </a>
 
             <hr class="sidebar-divider my-0">
 
             <li class="nav-item active">
-                <a class="nav-link" href="/dashboard"> <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Painel Principal</span>
-                </a>
+                <a class="nav-link" href="/dashboard"> <i class="fas fa-fw fa-chart-area"></i> <span>Painel Principal</span> </a>
             </li>
 
             <hr class="sidebar-divider">
 
-            <div class="sidebar-heading">
-                Negócios
-            </div>
+            <div class="sidebar-heading"> Negócios </div>
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePositive" aria-expanded="true" aria-controls="collapsePositive">
@@ -52,13 +45,13 @@
                 <div id="collapsePositive" class="collapse" aria-labelledby="headingPositive"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/vendas/1">Minhas Vendas</a>
+                        <a class="collapse-item" href="{{ route('sales', ['produto' => 1]) }}">Minhas Vendas</a>
                         <a class="collapse-item" href="{{ url('/limpanome/' . auth()->id()) }}" target="_BLANK">Vender</a>
                     </div>
                 </div>
             </li>
 
-            @if (Auth::user()->tipo == 2)
+            @if (Auth::user()->type == 1)
                 <hr class="sidebar-divider">
 
                 <div class="sidebar-heading">
@@ -66,16 +59,14 @@
                 </div>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGestao"
-                        aria-expanded="true" aria-controls="collapseGestao">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGestao" aria-expanded="true" aria-controls="collapseGestao">
                         <i class="fa fa-clipboard-list"></i>
                         <span>Relatórios</span>
                     </a>
-                    <div id="collapseGestao" class="collapse" aria-labelledby="headingGestao"
-                        data-parent="#accordionSidebar">
+                    <div id="collapseGestao" class="collapse" aria-labelledby="headingGestao" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="/relatorioVendas">Vendas</a>
-                            <a class="collapse-item" href="/relatorioUsuarios">Usuários</a>
+                            <a class="collapse-item" href="{{ route('saleManager') }}">Vendas</a>
+                            <a class="collapse-item" href="{{ route('listUsers') }}">Usuários</a>
                         </div>
                     </div>
                 </li>
@@ -83,49 +74,32 @@
 
             <hr class="sidebar-divider d-none d-md-block">
 
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
+            <div class="text-center d-none d-md-inline"> <button class="rounded-circle border-0" id="sidebarToggle"></button> </div>
         </ul>
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
 
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"> <i class="fa fa-bars"></i> </button>
 
                     <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <p>Olá, {{ Auth::user()->nome }}. Bem-vindo(a)! </p>
+                        <p>Olá, {{ Auth::user()->name }}. Bem-vindo(a)!</p>
                     </div>
 
                     <ul class="navbar-nav ml-auto">
                         <div class="topbar-divider d-none d-sm-block"></div>
-
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="img-profile rounded-circle"
-                                    src="{{ asset('admin/assets/perfil_padrao.svg') }}">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="{{ asset('admin/assets/perfil_padrao.svg') }}">
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('perfil') }}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Perfil
-                                </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{{ route('profile') }}"> <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Perfil </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('logout') }}">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Sair
-                                </a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"> <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Sair </a>
                             </div>
                         </li>
                     </ul>
-
                 </nav>
 
                 @yield('conteudo')
@@ -139,7 +113,6 @@
             </footer>
 
         </div>
-
     </div>
 
     <a class="scroll-to-top rounded" href="#page-top">
@@ -169,6 +142,7 @@
     <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
+    <script src="{{ asset('admin/js/consulta.js') }}"></script>
     <script>
         $('#gerarExcel').click(function() {
 

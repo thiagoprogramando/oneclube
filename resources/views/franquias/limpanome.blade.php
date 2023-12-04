@@ -7,7 +7,6 @@
 
                     <div class="card o-hidden border-0 shadow-lg my-5">
                         <div class="card-body p-0">
-                            
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="p-5">
@@ -24,41 +23,34 @@
                                                 </ul>
                                             </div>
                                         @endif
-                                        @if(!empty($success))
-                                            <div class="alert alert-success">
-                                                {{ $success }}
-                                            </div>
-                                        @endif
-                                        <form id="registrer" class="user" method="POST" action="{{ route('vender', ['id' => $id]) }}">
-                                            <input type="hidden" value={{  csrf_token() }} name="_token">
+                                        <form id="registrer" class="user" method="POST" action="{{ route('sell', ['id' => $id]) }}">
+                                            @csrf
                                             <div class="col-sm-12 col-lg-8 offset-lg-2 row">
-
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" class="form-control form-control-user" name="cliente" value="{{ old('cliente') }}" placeholder="Nome">
-                                                </div>
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="number" class="form-control form-control-user" name="rg" value="{{ old('rg') }}" placeholder="RG">
-                                                </div>
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="email" class="form-control form-control-user" name="email" value="{{ old('email') }}" placeholder="Email">
-                                                </div>
-                                                <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="cpfInput" oninput="mascaraCpf(this)" maxlength="14" value="{{ old('cpfcnpj') }}" class="form-control form-control-user" name="cpfcnpj" placeholder="CPF/CNPJ">
-                                                </div>
-                                                
                                                 <input type="hidden" name="id_user" value="{{ $id }}">
                                                 <input type="hidden" name="produto" value="1">
                                                 <input type="hidden" name="franquia" value="limpanome">
                                                 <input type="hidden" value="1500" name="valor">
-                                            
+
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="dataInput" class="form-control form-control-user" name="dataNascimento" value="{{ old('dataNascimento') }}" oninput="mascaraData(this)" maxlength="10" placeholder="Data de Nascimento" required>
+                                                    <input type="text" class="form-control form-control-user" name="name" value="{{ old('name') }}" placeholder="Nome" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" id="telefoneInput" oninput="mascaraTelefone(this)" maxlength="15" value="{{ old('telefone') }}" class="form-control form-control-user" name="telefone" placeholder="WhatsApp" required>
+                                                    <input type="number" class="form-control form-control-user" name="rg" value="{{ old('rg') }}" placeholder="RG" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" value="{{ old('cep') }}" class="form-control form-control-user" name="cep" placeholder="CEP" onBlur="preencherEnderecoPorCEP()" required>
+                                                    <input type="email" class="form-control form-control-user" name="email" value="{{ old('email') }}" placeholder="Email" required>
+                                                </div>
+                                                <div class="form-group col-sm-12 col-lg-6">
+                                                    <input type="text" class="form-control form-control-user" name="cpfcnpj" value="{{ old('cpfcnpj') }}" oninput="mascaraCpf(this)" maxlength="14" placeholder="CPF/CNPJ" required>
+                                                </div>
+                                                <div class="form-group col-sm-12 col-lg-6">
+                                                    <input type="text" class="form-control form-control-user" name="birthDate" value="{{ old('birthDate') }}" oninput="mascaraData(this)" maxlength="10" placeholder="Data de Nascimento" required>
+                                                </div>
+                                                <div class="form-group col-sm-12 col-lg-6">
+                                                    <input type="text" class="form-control form-control-user" name="mobilePhone" oninput="mascaraTelefone(this)" maxlength="15" value="{{ old('mobilePhone') }}" placeholder="WhatsApp" required>
+                                                </div>
+                                                <div class="form-group col-sm-12 col-lg-6">
+                                                    <input type="number" class="form-control form-control-user" name="cep" placeholder="CEP" onBlur="preencherEnderecoPorCEP()" value="{{ old('cep') }}" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="number" value="{{ old('numero') }}" class="form-control form-control-user" name="numero" placeholder="Número" required>
@@ -77,14 +69,13 @@
                                                 </div>
             
                                                 <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
-                                                        <button type="submit" class="btn btn-primary btn-user btn-block"> Contratar </button>
+                                                    <button type="submit" class="btn btn-primary btn-user btn-block"> Contratar </button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -125,16 +116,16 @@
             }
 
             function preencherEnderecoPorCEP() {
-                var cep = document.getElementById('cep').value;
+                var cep = $('input[name=cep]').val();
 
                 if (/^\d{8}$/.test(cep)) {
                     fetch('https://viacep.com.br/ws/' + cep + '/json/')
                         .then(response => response.json())
                         .then(data => {
-                            document.getElementById('endereco').value = data.logradouro;
-                            document.getElementById('bairro').value = data.bairro;
-                            document.getElementById('cidade').value = data.localidade;
-                            document.getElementById('estado').value = data.uf;
+                            $('input[name=endereco]').val(data.logradouro);
+                            $('input[name=bairro]').val(data.bairro);
+                            $('input[name=cidade]').val(data.localidade);
+                            $('input[name=estado]').val(data.uf);
                         })
                         .catch(error => console.error('Erro ao buscar o endereço:', error));
                 } else {

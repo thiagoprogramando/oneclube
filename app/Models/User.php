@@ -6,7 +6,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Schema;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -17,13 +16,18 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'nome',
+        'name',
         'email',
+        'mobilePhone',
+        'address',
         'password',
-        'created_at',
-        'updated_at',
-        'cpf',
-        'tipo',
+        'cpfcnpj',
+        'birthDate',
+        'companyType',
+        'type',
+        'status',
+        'walletId',
+        'apiKey'
     ];
 
     protected $hidden = [
@@ -43,6 +47,30 @@ class User extends Authenticatable
 
     public function getUpdatedAt(){
         return $this->updatedAt;
+    }
+
+    protected $appends = ['status_user', 'type_user'];
+
+    public function getStatusUserAttribute() {
+
+        $statusMapping = [
+            1 => 'Conta Ativa',
+            2 => 'Conta Pendente de Aprovação',
+            3 => 'Pendente de Pagamento',
+        ];
+
+        return $statusMapping[$this->attributes['status']];
+    }
+
+    public function getTypeUserAttribute() {
+
+        $typeMapping = [
+            1 => 'Administrador',
+            2 => 'Assinante',
+            3 => 'Outros',
+        ];
+
+        return $typeMapping[$this->attributes['type']];
     }
 
 }

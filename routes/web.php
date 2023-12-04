@@ -1,47 +1,49 @@
 <?php
 
-use App\Http\Controllers\ParcelaController;
+use App\Http\Controllers\Gatway\AssasController;
+use App\Http\Controllers\Manager\ManagerController;
 use App\Http\Controllers\ProdutoController;
-use App\Http\Controllers\RelatorioController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\VendasController;
+use App\Http\Controllers\Sale\SaleController;
+use App\Http\Controllers\Users\UserController as UsersUserController;
 use Illuminate\Support\Facades\Route;
 
 //Login
-Route::get('/', [UserController::class, 'index'])->name('login');
-Route::post('/', [UserController::class, 'login_action'])->name('login_action');
-
-//Cadastro
-Route::get('/register', [UserController::class, 'register'])->name('register');
-Route::post('/register', [UserController::class, 'register_action'])->name('register_action');
+Route::get('/', [UsersUserController::class, 'index'])->name('login');
+Route::post('/', [UsersUserController::class, 'login'])->name('login');
 
 //Vendas
 Route::get('/limpanome/{id}', [ProdutoController::class, 'limpanome'])->name('onepositive');
-
-Route::post('/venda/{id}', [VendasController::class, 'vender'])->name('vender');
+Route::post('/sell/{id}', [SaleController::class, 'sell'])->name('sell');
 
 //Extras
 Route::view('/obrigado', 'obrigado');
 
 //Autenticados
 Route::middleware(['auth'])->group(function () {
+    
+    //Sales
+    Route::get('/sales/{produto}', [SaleController::class, 'getSales'])->name('sales');
+    Route::post('filterSales', [SaleController::class, 'filterSales'])->name('filterSales');
 
-    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
-    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+    //Manager
+    Route::get('/dashboard', [ManagerController::class, 'dashboard'])->name('dashboard');
+    Route::get('/validation', [ManagerController::class, 'validation'])->name('validation');
 
-    Route::get('/vendas/{id}', [VendasController::class, 'getVendas'])->name('vendas');
-    Route::post('vendas', [VendasController::class, 'vendas'])->name('vendas');
+    Route::get('/saleManager', [SaleController::class, 'saleManager'])->name('saleManager');
+    Route::post('filterSaleManager', [SaleController::class, 'filterSaleManager'])->name('filterSaleManager');
 
-    Route::get('/relatorioVendas', [RelatorioController::class, 'index'])->name('relatorioVendas');
-    Route::post('relatorioVendas', [RelatorioController::class, 'filtro'])->name('relatorioVendas');
+    Route::get('/listUsers', [ManagerController::class, 'listUsers'])->name('listUsers');
 
-    Route::get('/relatorioUsuarios', [RelatorioController::class, 'usuarios'])->name('relatorioUsuarios');
-    Route::post('relatorioUsuarios', [RelatorioController::class, 'upusuarios'])->name('relatorioUsuarios');
+    //Users
+    Route::get('/profile',[UsersUserController::class, 'profile'])->name('profile');
+    Route::post('profileUpdate', [UsersUserController::class, 'profileUpdate'])->name('profileUpdate');
 
-    Route::get('/perfil',[UserController::class, 'perfil'])->name('perfil');
-    Route::post('/user/update', [UserController::class, 'update'])->name('update');
+    Route::post('/createUser', [ManagerController::class, 'createUser'])->name('createUser');
 
-    Route::get('/relatorio', [ParcelaController::class, 'index'])->name('relatorio');
-    Route::post('/relatorio', [ParcelaController::class, 'relatorioAction'])->name('relatorioAction');
+    //Invoices
+    Route::get('/invoices', [ManagerController::class, 'invoices'])->name('invoices');
+    Route::post('invoiceCreate', [AssasController::class, 'invoiceCreate'])->name('invoiceCreate');
 
+    //Actions
+    Route::get('/logout', [UsersUserController::class, 'logout'])->name('logout');
 });

@@ -9,11 +9,19 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->string('cpf')->unique();
+            $table->string('name');
             $table->string('email')->unique();
+            $table->string('mobilePhone');
+            $table->string('address');
             $table->string('password');
-            $table->integer('tipo');
+            $table->string('cpfcnpj')->unique();
+            $table->date('birthDate');
+            $table->string('companyType');
+            $table->integer('type');
+            $table->integer('status');
+            $table->string('walletId')->nullable();
+            $table->string('apiKey')->nullable();
+            $table->string('customer')->nullable();
             $table->timestamps();
         });
     }

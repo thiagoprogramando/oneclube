@@ -15,22 +15,24 @@
                     </div>
 
                     <div class="card-body">
-
-                        <form id="cadastro" class="user" method="POST" action="{{ route('update') }}">
-                            <input type="hidden" value={{  csrf_token() }} name="_token">
+                        <form id="cadastro" class="user" method="POST" action="{{ route('profileUpdate') }}">
+                            @csrf
                             <div class="row">
                                 <div class="col-sm-12 col-lg-8 offset-lg-2 row">
 
-                                    <div class="form-group col-sm-12 col-lg-12">
-                                        <input type="text" class="form-control form-control-user" name="nome" value="{{$dados->nome}}">
+                                    <div class="form-group col-sm-12 col-lg-6">
+                                        <input type="text" class="form-control form-control-user" name="name" value="{{$dados->name}}">
+                                    </div>
+                                    <div class="form-group col-sm-12 col-lg-6">
+                                        <input type="text" class="form-control form-control-user" name="mobilePhone" oninput="mascaraTelefone(this)" value="{{ $dados->mobilePhone }}">
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-6">
                                         <input type="text" class="form-control form-control-user" name="email" value="{{ $dados->email }}">
                                     </div>
                                     <div class="form-group col-sm-12 col-lg-6">
-                                        <input type="password" class="form-control form-control-user" name="password" placeholder="*************">
-
+                                        <input type="password" class="form-control form-control-user" name="password" placeholder="Alterar senha: (Opcional)">
                                     </div>
+
                                     <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary btn-user btn-block"> Atualizar </button>
@@ -40,7 +42,6 @@
                                 </div>
                             </div>
                         </form>
-
                     </div>
 
                 </div>
