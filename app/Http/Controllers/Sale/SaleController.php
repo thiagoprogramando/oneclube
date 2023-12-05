@@ -219,7 +219,7 @@ class SaleController extends Controller {
             $venda->file        = $documento['sign_url'];
             $venda->save();
 
-            $notificar = $this->notificarSignatario($documento['sign_url'], $saleData['telefone']);
+            $notificar = $this->notificarSignatario($documento['sign_url'], $saleData['mobilePhone']);
             if ($notificar != null) {
                 return view('obrigado', ['success' => 'Obrigado! Enviaremos o contrato diretamente para o seu whatsapp.']);
             }
