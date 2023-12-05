@@ -27,6 +27,8 @@ return new class extends Migration {
 
             $table->decimal('value', 10, 2);
             $table->integer('comission');
+            $table->string('billingType');
+            $table->string('installmentCount');
 
             $table->string('status_pay')->nullable();
             $table->string('status_produto')->nullable();

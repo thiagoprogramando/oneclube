@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class ProdutoController extends Controller {
     
-    public function limpanome($id) {
-        return view('franquias.limpanome', ['id' => $id]);
+    public function limpanome($id, $valor) {
+        return view('franquias.limpanome', ['id' => $id, 'valor' => $valor]);
     }
 }

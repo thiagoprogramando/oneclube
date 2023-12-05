@@ -15,11 +15,9 @@ use App\Models\User;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 
-class SaleController extends Controller
-{
+class SaleController extends Controller {
 
-    public function getSales($id)
-    {
+    public function getSales($id) {
 
         $users = auth()->user();
         $sales = Sale::where('id_produto', $id)->where('id_vendedor', $users->id)->latest()->limit(30)->get();
@@ -30,8 +28,7 @@ class SaleController extends Controller
         ]);
     }
 
-    public function filterSales(Request $request)
-    {
+    public function filterSales(Request $request) {
 
         $user = auth()->user();
 
@@ -143,7 +140,7 @@ class SaleController extends Controller
                 break;
         }
 
-        if (!empty($request->cliente)) {
+        if (!empty($request->name)) {
             $saleData['name'] = $request->name;
         }
 
@@ -151,7 +148,7 @@ class SaleController extends Controller
             $saleData['cpfcnpj'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
         }
 
-        if (!empty($request->dataNascimento)) {
+        if (!empty($request->birthDate)) {
             $saleData['birthDate'] = Carbon::createFromFormat('d-m-Y', $request->birthDate)->format('Y-m-d');
         }
 
@@ -159,8 +156,8 @@ class SaleController extends Controller
             $saleData['email'] = $request->email;
         }
 
-        if (!empty($request->telefone)) {
-            $saleData['telefone'] = preg_replace('/[^0-9]/', '', $request->telefone);
+        if (!empty($request->mobilePhone)) {
+            $saleData['mobilePhone'] = preg_replace('/[^0-9]/', '', $request->mobilePhone);
         }
 
         if (!empty($request->rg)) {
@@ -169,6 +166,14 @@ class SaleController extends Controller
 
         if (!empty($request->cep) && !empty($request->estado) && !empty($request->cidade) && !empty($request->bairro) && !empty($request->numero)) {
             $saleData['address'] = $request->cep . ' - ' . $request->estado . '/' . $request->cidade . ' - ' . $request->bairro . ' N° ' . $request->numero;
+        }
+
+        if (!empty($request->billingType)) {
+            $saleData['billingType'] = $request->billingType;
+        }
+
+        if (!empty($request->installmentCount)) {
+            $saleData['installmentCount'] = $request->installmentCount;
         }
 
         $venda = Sale::create($saleData);

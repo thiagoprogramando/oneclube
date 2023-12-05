@@ -29,7 +29,7 @@
                                                 <input type="hidden" name="id_user" value="{{ $id }}">
                                                 <input type="hidden" name="produto" value="1">
                                                 <input type="hidden" name="franquia" value="limpanome">
-                                                <input type="hidden" value="1500" name="valor">
+                                                <input type="hidden" value="{{ $valor }}" name="valor">
 
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" class="form-control form-control-user" name="name" value="{{ old('name') }}" placeholder="Nome" required>
@@ -66,6 +66,30 @@
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" value="{{ old('estado') }}" class="form-control form-control-user" name="estado" placeholder="Estado" required>
+                                                </div>
+
+                                                <div class="form-group col-sm-12 col-lg-6">
+                                                    <select name="billingType" class="form-control" id="billingType">
+                                                        <option value="PIX">Forma Pagamento</option>
+                                                        <option value="CREDIT_CARD">Cartão de Crédito</option>
+                                                        <option value="BOLETO">Boleto</option>
+                                                        <option value="PIX">PIX</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-sm-12 col-lg-6">
+                                                    <select name="installmentCount" class="form-control" id="installmentCount">
+                                                        <option value="1">Parcelas</option>
+                                                        <option value="1">1X (Valor fixo de R$ 300)</option>
+                                                        <option value="2">2X</option>
+                                                        <option value="3">3X</option>
+                                                        <option value="4">4X</option>
+                                                        <option value="4">5X</option>
+                                                        <option value="6">6X</option>
+                                                        <option value="7">7X</option>
+                                                        <option value="8">8X</option>
+                                                        <option value="9">9X</option>
+                                                        <option value="10">10X</option>
+                                                    </select>
                                                 </div>
             
                                                 <div class="form-group col-sm-12 col-lg-4 offset-lg-4">
@@ -132,6 +156,26 @@
                     console.error('Formato inválido de CEP');
                 }
             }
+
+            $(document).ready(function() {
+                $("#billingType").change(function() {
+                    var selectedBillingType = $(this).val();
+                    $("#installmentCount").find('option').remove();
+                    if (selectedBillingType === "CREDIT_CARD") {
+                        $("#installmentCount").append('<option value="1">1X (Valor fixo de R$ 300)</option>');
+                        for (var i = 2; i <= 12; i++) {
+                            $("#installmentCount").append('<option value="' + i + '">' + i + 'X</option>');
+                        }
+                    } else if (selectedBillingType === "BOLETO") {
+                        $("#installmentCount").append('<option value="1">1X (Valor fixo de R$ 300)</option>');
+                        for (var i = 2; i <= 3; i++) {
+                            $("#installmentCount").append('<option value="' + i + '">' + i + 'X</option>');
+                        }
+                    } else if (selectedBillingType === "PIX") {
+                        $("#installmentCount").append('<option value="1">1X</option>');
+                    }
+                });
+            });
         </script>
 
     @endsection

@@ -12,7 +12,7 @@ Route::get('/', [UsersUserController::class, 'index'])->name('login');
 Route::post('/', [UsersUserController::class, 'login'])->name('login');
 
 //Vendas
-Route::get('/limpanome/{id}', [ProdutoController::class, 'limpanome'])->name('onepositive');
+Route::get('/limpanome/{id}/{valor}', [ProdutoController::class, 'limpanome'])->name('onepositive');
 Route::post('/sell/{id}', [SaleController::class, 'sell'])->name('sell');
 
 //Extras
