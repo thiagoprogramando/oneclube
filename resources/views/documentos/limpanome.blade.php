@@ -309,7 +309,7 @@
                 style="letter-spacing:0.05pt"> </span><span>um</span><span style="letter-spacing:0.05pt"> </span><span
                 style="letter-spacing:0.7pt">lado</span><span style="letter-spacing:0.75pt"> </span><span
                 style="font-size:11pt; font-weight:bold; letter-spacing:0.85pt; -aw-import:spaces">&#xa0;</span><span
-                style="font-size:11pt; font-weight:bold; letter-spacing:0.85pt"><?php echo $data['nome']; ?> </span><span
+                style="font-size:11pt; font-weight:bold; letter-spacing:0.85pt"><?php echo $data['name']; ?> </span><span
                 style="font-size:11pt; font-weight:bold; letter-spacing:0.85pt; -aw-import:spaces">&#xa0;</span><span
                 style="letter-spacing:0.85pt">doravante denominado unicamente</span><span
                 style="letter-spacing:0.85pt; -aw-import:spaces">&#xa0; </span><span
