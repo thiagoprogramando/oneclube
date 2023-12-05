@@ -236,8 +236,7 @@
                             style="font-weight:bold; letter-spacing:0.85pt">CPF</span><span
                             style="letter-spacing:0.85pt"> sob nº <?php echo $data['cpfcnpj']; ?>, Data de Nascimento: <?php echo date('d/m/Y', strtotime($data['birthDate'])); ?> -
                         </span><span style="letter-spacing:0.85pt; -aw-import:spaces">&#xa0;</span><span
-                            style="letter-spacing:0.85pt">Endereço: <?php echo $data['address'].' ,'.$data['numero'].' | '.$data['bairro'].' - '.$data['cidade'].'/'.$data['estado'] ; ?>
-                            CEP: <?php echo $data['cep']; ?></span></p>
+                            style="letter-spacing:0.85pt">Endereço: <?php echo $data['address']; ?> </span></p>
                 </td>
             </tr>
             <tr style="height:100.45pt">
