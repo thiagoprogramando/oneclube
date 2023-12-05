@@ -28,6 +28,8 @@ class Sale extends Model
 
         'value',
         'comission',
+        'billingType',
+        'installmentCount',
 
         'status_pay',
         'status_produto',
