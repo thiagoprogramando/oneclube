@@ -228,13 +228,13 @@
                 </td>
                 <td style="width:313.3pt; vertical-align:top">
                     <p class="BodyText" style="text-align:justify"><span
-                            style="font-weight:bold; letter-spacing:0.85pt"> <?php echo $data['nome']; ?> </span><span
+                            style="font-weight:bold; letter-spacing:0.85pt"> <?php echo $data['name']; ?> </span><span
                             style="font-weight:bold; letter-spacing:0.85pt; -aw-import:spaces">&#xa0;</span><span
                             style="letter-spacing:0.85pt">Brasileiro(a), cadastrado(a) no </span><span
                             style="font-weight:bold; letter-spacing:0.85pt">RG</span><span
                             style="letter-spacing:0.85pt"> n <?php echo $data['rg']; ?> e no </span><span
                             style="font-weight:bold; letter-spacing:0.85pt">CPF</span><span
-                            style="letter-spacing:0.85pt"> sob nº <?php echo $data['cpfcnpj']; ?>, Data de Nascimento: <?php echo date('d/m/Y', strtotime($data['dataNascimento'])); ?> -
+                            style="letter-spacing:0.85pt"> sob nº <?php echo $data['cpfcnpj']; ?>, Data de Nascimento: <?php echo date('d/m/Y', strtotime($data['birthDate'])); ?> -
                         </span><span style="letter-spacing:0.85pt; -aw-import:spaces">&#xa0;</span><span
                             style="letter-spacing:0.85pt">Endereço: <?php echo $data['endereco'].' ,'.$data['numero'].' | '.$data['bairro'].' - '.$data['cidade'].'/'.$data['estado'] ; ?>
                             CEP: <?php echo $data['cep']; ?></span></p>
@@ -1146,7 +1146,7 @@
                 style="font-size:12pt; letter-spacing:-1.55pt"> </span><span
                 style="font-size:12pt; font-weight:bold">:</span><span
                 style="font-size:12pt; font-weight:bold; letter-spacing:2.15pt"> </span><span
-                style="font-weight:bold; letter-spacing:0.85pt"><?php echo $data['nome']; ?> </span><span
+                style="font-weight:bold; letter-spacing:0.85pt"><?php echo $data['name']; ?> </span><span
                 style="font-weight:bold; letter-spacing:0.85pt; -aw-import:spaces">&#xa0;</span></p>
     </div>
 </body>
