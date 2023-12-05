@@ -253,14 +253,14 @@ class SaleController extends Controller {
                     "external_id" => $data['cpfcnpj'],
 
                     'signers' => [[
-                        "name"                      => $data['nome'],
+                        "name"                      => $data['name'],
                         "email"                     => $data['email'],
                         "auth_mode"                 => "tokenEmail",
                         "date_limit_to_sign"        => $formattedDate,
                         "lang"                      => "pt-br",
                         "brand_primary_color "      => "#43F47A",
                         "brand_logo "               => "https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png",
-                        "folder_path"               => "LimpaNome-CRM",
+                        "folder_path"               => "LimpaNomeCRM",
                         "signed_file_only_finished" => "true",
                         "disable_signer_emails "    => "true",
                     ]],
