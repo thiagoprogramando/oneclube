@@ -250,6 +250,7 @@ class SaleController extends Controller {
         $saleData = [
             'name'      => $sale->name,
             'cpfcnpj'   => $sale->cpfcnpj,
+            'name_doc'   => "Ficha Associativa",
         ];
         foreach ($views as $view) {
             $html .= View::make($view, ['data' => $saleData])->render();
@@ -306,7 +307,7 @@ class SaleController extends Controller {
                     'Authorization'  =>  'Bearer ' . env('API_TOKEN_ZAPSIGN')
                 ],
                 'json' => [
-                    "name" => "Contrato Consultoria Financeira",
+                    "name" => isset($data['name_doc']) ? $data['name_doc'] : "Contrato Consultoria Financeira",
                     "base64_pdf" => 'data:application/pdf;base64,' . $data['pdf'],
                     "external_id" => $data['cpfcnpj'],
 
