@@ -183,12 +183,12 @@
                                                             @break
 
                                                             @default
-                                                                Status Desconhecido
+                                                                Aguardando Pagamento
                                                         @endswitch
                                                     </td>
                                                     <td> {{ \Carbon\Carbon::parse($sale->created_at)->format('d/m/Y') }} </td>
                                                     <td class="text-center">
-                                                        <a class="btn btn-outline-primary" href="{{ route('invoices', ["id" => $sale->id]) }}" target="_blank"> <i class="fa fa-credit-card"></i> </a>
+                                                        <a class="btn btn-outline-primary" href="{{ route('invoices', ["id"=> $sale->id]) }}" target="_blank"> <i class="fa fa-credit-card"></i> </a>
                                                     </td>
                                                 </tr>
                                             @endforeach
