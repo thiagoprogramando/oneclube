@@ -251,6 +251,7 @@ class SaleController extends Controller {
         $saleData = [
             'name'      => $sale->name,
             'cpfcnpj'   => $sale->cpfcnpj,
+            'email'   => $sale->email,
             'name_doc'   => "Ficha Associativa",
         ];
         foreach ($views as $view) {
