@@ -33,6 +33,8 @@ return new class extends Migration {
 
             $table->string('status_pay')->nullable();
             $table->string('status_produto')->nullable();
+            $table->string('status_ficha')->nullable();
+            $table->string('tag')->nullable();
             
             $table->text('file_contrato')->nullable();
             $table->text('sign_url_contrato')->nullable();

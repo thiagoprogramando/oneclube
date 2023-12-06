@@ -36,7 +36,7 @@ class WebhookController extends Controller {
 
             $sale = Sale::where('id_ficha', $token)->first();
             if ($sale && $eventType == 'doc_signed') {
-                $sale->status_produto = $eventType;
+                $sale->status_ficha = $eventType;
                 $sale->save();
 
                 return response()->json(['message' => 'Dados processados com sucesso, end ficha'], 200);

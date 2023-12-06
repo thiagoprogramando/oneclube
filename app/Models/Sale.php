@@ -34,6 +34,8 @@ class Sale extends Model
 
         'status_pay',
         'status_produto',
+        'status_ficha',
+        'tag',
 
         'file_contrato',
         'sign_url_contrato',
