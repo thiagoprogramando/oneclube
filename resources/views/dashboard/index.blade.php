@@ -124,9 +124,9 @@
                                                 <th>ID</th>
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
-                                                <th>Situação Contrato</th>
-                                                <th>Situação Ficha</th>
-                                                <th>1° Parcela Paga</th>
+                                                <th class="text-center">Situação Contrato</th>
+                                                <th class="text-center">Situação Ficha</th>
+                                                <th class="text-center">1° Parcela Paga</th>
                                                 <th>Data</th>
                                                 <th class="text-center">Opções</th>
                                             </tr>
@@ -146,7 +146,7 @@
                                                                 @break
                                                         @endswitch
                                                     </td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         @switch($sale->status_produto)
                                                             @case('doc_signed')
                                                                 Assinado
@@ -159,7 +159,7 @@
                                                                 @break
                                                         @endswitch
                                                     </td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         @switch($sale->status_ficha)
                                                             @case('doc_signed')
                                                                 Assinado
@@ -172,7 +172,7 @@
                                                                 @break
                                                         @endswitch
                                                     </td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         @switch($sale->status_pay)
                                                             @case('PAYMENT_CONFIRMED')
                                                                 Aprovado
