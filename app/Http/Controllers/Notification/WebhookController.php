@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Notification;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Gatway\AssasController;
 use App\Http\Controllers\Sale\SaleController;
 use App\Models\Sale;
 
@@ -28,10 +29,10 @@ class WebhookController extends Controller {
                 $fichaAssociativa =  new SaleController();
                 $ficha = $fichaAssociativa->fichaAssociativa($sale->id);
                 if($ficha) {
-                    return response()->json(['message' => 'Dados processados com sucesso'], 200);
+                    return response()->json(['message' => 'Contrato Finalizado Com Ficha Enviada!'], 200);
                 }
 
-                return response()->json(['message' => 'Não conseguimos enviar: Ficha Associativa'], 200);
+                return response()->json(['message' => 'Contrato Finalizado Sem Ficha Enviada!'], 200);
             }
 
             $sale = Sale::where('id_ficha', $token)->first();
@@ -39,12 +40,16 @@ class WebhookController extends Controller {
                 $sale->status_ficha = $eventType;
                 $sale->save();
 
-                //Gera Links Pagamentos
+                $createInvoices = new AssasController;
+                $createInvoices = $createInvoices->invoiceSale($sale->id);
+                if($createInvoices) {
+                    return response()->json(['message' => 'Ficha Finalizada Com Invoices Criadas.'], 200);
+                }
 
-                return response()->json(['message' => 'Dados processados com sucesso, end ficha'], 200);
+                return response()->json(['message' => 'Ficha Finalizada Sem Invoices Criadas.'], 200);
             }
 
-            return response()->json(['message' => 'Nada feito!'], 200);
+            return response()->json(['message' => 'Nenhuma operação finalizada!'], 200);
         } else {
             
             return response()->json(['error' => 'Webhook não utilizado.'], 200);
