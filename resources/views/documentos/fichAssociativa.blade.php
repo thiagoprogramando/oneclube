@@ -40,7 +40,7 @@
         <p style="line-height:108%; font-size:12pt"><span style="-aw-import:ignore">&#xa0;</span></p>
         <p style="line-height:108%; font-size:12pt"><span style="-aw-import:ignore">&#xa0;</span></p>
         <p style="line-height:108%; font-size:12pt"><span style="-aw-import:ignore">&#xa0;</span></p>
-        <p style="text-align:right; line-height:108%; font-size:12pt"><span>São Paulo, <?php echo date('d-m-Y'); ?></span></p>
+        <p style="text-align:right; line-height:108%; font-size:12pt"><span>São Paulo, <?php echo date('d/m/Y'); ?></span></p>
         <p style="text-align:right; line-height:108%; font-size:12pt"><span style="-aw-import:ignore">&#xa0;</span></p>
         <p style="text-align:right; line-height:108%; font-size:12pt"><span style="-aw-import:ignore">&#xa0;</span></p>
         <p style="line-height:108%; font-size:12pt"><span style="-aw-import:ignore">&#xa0;</span></p>
