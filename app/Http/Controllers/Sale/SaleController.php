@@ -218,8 +218,9 @@ class SaleController extends Controller {
             $venda->id_contrato         = $documento['token'];
             $venda->sign_url_contrato   = $documento['sign_url'];
             $venda->save();
-
-            $notificar = $this->notificarSignatario($documento['sign_url'], $saleData['mobilePhone']);
+            
+            $message = "Prezado Cliente, segue seu contrato de adesão ao produto da G7 Assessoria: \r\n \r\n";
+            $notificar = $this->notificarSignatario($documento['sign_url'], $saleData['mobilePhone'], $message);
             if ($notificar != null) {
                 return view('obrigado', ['success' => 'Obrigado! Enviaremos o contrato diretamente para o seu whatsapp.']);
             }
@@ -266,9 +267,8 @@ class SaleController extends Controller {
         $filePath = public_path('contratos/fichas/' . $sale->id_produto . $saleData['cpfcnpj'] . '.pdf');
         file_put_contents($filePath, $pdfContent);
 
-        $pdfPath = public_path('contratos/fichas/' . $sale->id_produto . $saleData['cpfcnpj'] . '.pdf');
-        $pdfContent = file_get_contents($pdfPath);
-        $saleData['pdf'] = $pdfBase64 = base64_encode($pdfContent);
+        $pdfContent = file_get_contents($filePath);
+        $saleData['pdf'] = base64_encode($pdfContent);
         
         $documento = $this->criaDocumento($sale);
         if ($documento['signer']) {
@@ -276,7 +276,8 @@ class SaleController extends Controller {
             $sale->sign_url_ficha   = $documento['sign_url'];
             $sale->save();
 
-            $notificar = $this->notificarSignatario($documento['sign_url'], $sale->mobilePhone);
+            $message = "Olá, clienten G7. Agora que você concordou com os termos, precisamos que preencha sua ficha Associativa: \r\n \r\n";
+            $notificar = $this->notificarSignatario($documento['sign_url'], $sale->mobilePhone, $message);
             if ($notificar != null) {
                 return true;
             }
@@ -336,7 +337,7 @@ class SaleController extends Controller {
         }
     }
 
-    private function notificarSignatario($contrato, $telefone) {
+    private function notificarSignatario($contrato, $telefone, $message) {
 
         $client = new Client();
 
@@ -351,7 +352,7 @@ class SaleController extends Controller {
                 ],
                 'json' => [
                     'phone'           => '55' . $telefone,
-                    'message'         => "Prezado Cliente, segue seu contrato de adesão ao produto da G7 Assessoria: \r\n \r\n",
+                    'message'         => $message,
                     'image'           => 'https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png',
                     'linkUrl'         => $contrato,
                     'title'           => 'Assinatura de Contrato',
