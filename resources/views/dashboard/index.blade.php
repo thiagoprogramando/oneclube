@@ -1,4 +1,4 @@
-@extends('dashboard/layout')
+@extends('dashboard.layout')
 @section('conteudo')
     <div class="container-fluid">
 
@@ -114,10 +114,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Últimas Vendas
-                                    <hr>
-                                </div>
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1"> Últimas Vendas </div>
                             </div>
                             <div class="col-12">
                                 <div class="table-responsive">
@@ -127,27 +124,56 @@
                                                 <th>ID</th>
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
-                                                <th>Status</th>
-                                                <th>Data venda</th>
+                                                <th>Situação Contrato</th>
+                                                <th>Situação Ficha</th>
+                                                <th>1° Parcela Paga</th>
+                                                <th>Data</th>
                                                 <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($vendas as $key => $venda)
+                                            @foreach ($sales as $key => $sale)
                                                 <tr>
-                                                    <td>{{ $venda->id }}</td>
-                                                    <td>{{ $venda->nome }}</td>
+                                                    <td>{{ $sale->id }}</td>
+                                                    <td>{{ $sale->name }}</td>
                                                     <td>
-                                                        @switch($venda->id_produto)
+                                                        @switch($sale->id_produto)
                                                             @case(1)
                                                                 Limpa Nome
-                                                            @break
+                                                                @break
                                                             @default
                                                                 Produto Desconhecido
+                                                                @break
                                                         @endswitch
                                                     </td>
                                                     <td>
-                                                        @switch($venda->status_pay)
+                                                        @switch($sale->status_produto)
+                                                            @case('doc_signed')
+                                                                Assinado
+                                                                @break
+                                                            @case('null')
+                                                                Aguardando Assinatura
+                                                                @break
+                                                            @default
+                                                                Aguardando Assinatura
+                                                                @break
+                                                        @endswitch
+                                                    </td>
+                                                    <td>
+                                                        @switch($sale->status_ficha)
+                                                            @case('doc_signed')
+                                                                Assinado
+                                                                @break
+                                                            @case('null')
+                                                                Aguardando Assinatura
+                                                                @break
+                                                            @default
+                                                                Aguardando Assinatura
+                                                                @break
+                                                        @endswitch
+                                                    </td>
+                                                    <td>
+                                                        @switch($sale->status_pay)
                                                             @case('PAYMENT_CONFIRMED')
                                                                 Aprovado
                                                             @break
@@ -160,11 +186,9 @@
                                                                 Status Desconhecido
                                                         @endswitch
                                                     </td>
-                                                    <td> {{ \Carbon\Carbon::parse($venda->created_at)->format('d/m/Y') }} </td>
+                                                    <td> {{ \Carbon\Carbon::parse($sale->created_at)->format('d/m/Y') }} </td>
                                                     <td class="text-center">
-                                                        <a class="btn btn-outline-success" href="{{ $venda->file }}" target="_blank"><i class="fa fa-file"></i></a>
-                                                        <?php $id_pay = str_replace('pay_', '', $venda->id_pay); ?>
-                                                        <a class="btn btn-outline-primary" href="https://www.asaas.com/i/{{ $id_pay }}" target="_blank"> <i class="fa fa-credit-card"></i> </a>
+                                                        <a class="btn btn-outline-primary" href="{{ route('invoices', [id => $sale->id]) }}" target="_blank"> <i class="fa fa-credit-card"></i> </a>
                                                     </td>
                                                 </tr>
                                             @endforeach

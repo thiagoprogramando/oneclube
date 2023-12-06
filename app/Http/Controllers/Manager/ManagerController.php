@@ -24,7 +24,7 @@ class ManagerController extends Controller {
 
         return view('dashboard.index', [
             'user' => $user,
-            'vendas' => $sales,
+            'sales' => $sales,
         ]);
     }
 
@@ -93,8 +93,14 @@ class ManagerController extends Controller {
         return view('dashboard.manager.users', ['users' => User::all()]);
     }
 
-    public function invoices() {
+    public function invoices($id = null) {
 
+        if($id) {
+
+            $invoices = Invoice::where('idUser', $id)->get();
+            return view('dashboard.payments.invoice', ['invoices' => $invoices]);
+        }
+        
         $invoices = Invoice::where('idUser', Auth::id())->where('status', 'PENDING_PAY')->get();
         return view('dashboard.payments.invoice', ['invoices' => $invoices]);
     }

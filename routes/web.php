@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/createUser', [ManagerController::class, 'createUser'])->name('createUser');
 
     //Invoices
-    Route::get('/invoices', [ManagerController::class, 'invoices'])->name('invoices');
+    Route::get('/invoices/{id?}', [ManagerController::class, 'invoices'])->name('invoices');
     Route::post('invoiceCreate', [AssasController::class, 'invoiceCreate'])->name('invoiceCreate');
 
     //Actions
