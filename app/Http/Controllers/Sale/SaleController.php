@@ -114,7 +114,8 @@ class SaleController extends Controller {
 
         $saleData = [
             'id_vendedor' => $id,
-            'id_produto'  => $request->produto
+            'id_produto'  => $request->produto,
+            'name_doc'    => "Contrato Consultoria Financeira"
         ];
 
         switch ($request->valor) {
@@ -271,7 +272,7 @@ class SaleController extends Controller {
         $pdfContent = file_get_contents($filePath);
         $saleData['pdf'] = base64_encode($pdfContent);
         
-        $documento = $this->criaDocumento($sale);
+        $documento = $this->criaDocumento($saleData);
         if ($documento['signer']) {
             $sale->id_ficha         = $documento['token'];
             $sale->sign_url_ficha   = $documento['sign_url'];
@@ -307,7 +308,7 @@ class SaleController extends Controller {
                     'Authorization'  =>  'Bearer ' . env('API_TOKEN_ZAPSIGN')
                 ],
                 'json' => [
-                    "name" => isset($data['name_doc']) ? $data['name_doc'] : "Contrato Consultoria Financeira",
+                    "name" => $data['name_doc'],
                     "base64_pdf" => 'data:application/pdf;base64,' . $data['pdf'],
                     "external_id" => $data['cpfcnpj'],
 
