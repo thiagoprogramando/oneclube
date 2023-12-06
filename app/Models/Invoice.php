@@ -18,8 +18,9 @@ class Invoice extends Model {
         'value',
         'url',
         'qrcode',
-        'type',
+        'type', // 1 - Entrada 2 - Mensalidade 3 - Serviços Extras
         'token',
         'status',
+        'dueDate'
     ];
 }

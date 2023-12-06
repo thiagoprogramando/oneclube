@@ -39,8 +39,9 @@ class WebhookController extends Controller {
                 $sale->status_ficha = $eventType;
                 $sale->save();
 
-                return response()->json(['message' => 'Dados processados com sucesso, end ficha'], 200);
                 //Gera Links Pagamentos
+
+                return response()->json(['message' => 'Dados processados com sucesso, end ficha'], 200);
             }
 
             return response()->json(['message' => 'Nada feito!'], 200);

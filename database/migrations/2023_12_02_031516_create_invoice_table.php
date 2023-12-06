@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->decimal('value', 10, 2);
             $table->integer('type'); // 1 - Entrada 2 - Mensalidade 3 - Serviços Extras
             $table->string('status');
+            $table->string('dueDate')->nullable();
             $table->timestamps();
         });
 
