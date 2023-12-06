@@ -31,13 +31,15 @@ class AssasController extends Controller {
                 if ($invoiceCount > 0) {
                     $dueDate->addMonth();
                 }
-                $charge = $this->createCharge($customer, $sale->billingType, $sale->installmentCount, $sale->value, $dueDate);
+
+                $description = "Serviços & Consultoria G7";
+                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate);
                 if ($charge) {
 
                     $invoice                = new Invoice();
                     $invoice->idUser        = $sale->id;
                     $invoice->name          = "Parcela N°" . ($invoiceCount + 1);
-                    $invoice->description   = "Serviços & Consultoria G7";
+                    $invoice->description   = $description;
                     $invoice->token         = $charge['id'];
                     $invoice->url           = $charge['invoiceUrl'];
                     $invoice->value         = ($invoiceCount == 0) ? $initialPayment : $valuePerInstallment;
