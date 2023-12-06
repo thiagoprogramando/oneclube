@@ -217,6 +217,12 @@ class AssasController extends Controller {
                 }
                 $invoice->status = 'PAYMENT_CONFIRMED';
                 $invoice->save();
+
+                $sale = Sale::where('id', $invoice->idUser)->first();
+                if($sale) {
+                    $sale->status_pay = "PAYMENT_CONFIRMED";
+                    $sale->save();
+                }
             }
 
             return response()->json(['status' => 'success', 'message' => 'Requisição tratada!']);
