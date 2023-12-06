@@ -215,8 +215,8 @@ class SaleController extends Controller {
 
         $documento = $this->criaDocumento($saleData);
         if ($documento['signer']) {
-            $venda->id_contrato = $documento['token'];
-            $venda->file        = $documento['sign_url'];
+            $venda->id_contrato         = $documento['token'];
+            $venda->sign_url_contrato   = $documento['sign_url'];
             $venda->save();
 
             $notificar = $this->notificarSignatario($documento['sign_url'], $saleData['mobilePhone']);
@@ -228,6 +228,63 @@ class SaleController extends Controller {
         } else {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
         }
+    }
+
+    public function fichaAssociativa($id) {
+
+        $sale = Sale::find($id);
+
+        $dompdf = new Dompdf();
+
+        $html = '';
+        $total = 0;
+        switch ($sale->id_produto) {
+            case 1:
+                $views = ['documentos.fichAssociativa'];
+                break;
+            default:
+                $views = ['documentos.fichAssociativa'];
+                break;
+        }
+        $saleData = [
+            'name'      => $sale->name,
+            'cpfcnpj'   => $sale->cpfcnpj,
+        ];
+        foreach ($views as $view) {
+            $html .= View::make($view, ['data' => $saleData])->render();
+            $total++;
+            if ($total != 4) {
+                $html .= '<div style="page-break-before:always;"></div>';
+            }
+        }
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
+
+        $filePath = public_path('contratos/fichas/' . $sale->id_produto . $saleData['cpfcnpj'] . '.pdf');
+        file_put_contents($filePath, $pdfContent);
+
+        $pdfPath = public_path('contratos/fichas/' . $sale->id_produto . $saleData['cpfcnpj'] . '.pdf');
+        $pdfContent = file_get_contents($pdfPath);
+        $saleData['pdf'] = $pdfBase64 = base64_encode($pdfContent);
+        
+        $documento = $this->criaDocumento($sale);
+        if ($documento['signer']) {
+            $sale->id_ficha         = $documento['token'];
+            $sale->sign_url_ficha   = $documento['sign_url'];
+            $sale->save();
+
+            $notificar = $this->notificarSignatario($documento['sign_url'], $sale->mobilePhone);
+            if ($notificar != null) {
+                return true;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     private function criaDocumento($data) {

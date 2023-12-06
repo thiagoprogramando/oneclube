@@ -22,6 +22,7 @@ class Sale extends Model
         'email',
         
         'id_contrato',
+        'id_ficha',
         'id_pay',
         'id_produto',
         'id_vendedor',
@@ -33,7 +34,10 @@ class Sale extends Model
 
         'status_pay',
         'status_produto',
-        'file',
-        'sign_url'
+
+        'file_contrato',
+        'sign_url_contrato',
+        'file_ficha',
+        'sign_url_ficha'
     ];
 }

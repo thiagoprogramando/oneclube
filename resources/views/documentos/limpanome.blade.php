@@ -817,7 +817,7 @@
                 </span><span>da</span><span style="letter-spacing:0.05pt"> </span><span
                     style="letter-spacing:0.8pt">seguinte</span><span style="letter-spacing:0.85pt"> </span><span
                     style="letter-spacing:0.8pt">forma:</span><span style="letter-spacing:0.85pt"> ATO no valor de
-                </span><span>R$ <? if($data['billingType'] != 'PIX'){ echo "300"; }else{ echo $data['value'] } endif; no dia <?php echo date("Y-m-d"); ?> e o restante depois de 30 dias</span></li>
+                </span><span>R$ <? if($data['billingType'] != 'PIX'){ echo "300"; }else{ echo $data['value'] } endif; ?> no dia <?php echo date("d-m-Y"); ?> e o restante depois de 30 dias</span></li>
         </ol>
         <p style="margin-right:85.7pt; text-align:justify"><span style="-aw-import:ignore">&#xa0;</span></p>
         <ol type="1" class="awlist4" style="margin:0pt; padding-left:0pt">
