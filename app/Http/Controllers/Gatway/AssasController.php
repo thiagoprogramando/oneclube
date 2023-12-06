@@ -181,32 +181,6 @@ class AssasController extends Controller {
                 'addressNumber' => $address->addressNumber,
                 'province'      => $address->province,
                 'postalCode'    => $address->postalCode,
-                // 'webhooks'      => [
-                //     [
-                //         'url'      => 'afd76f74-6dd8-487b-b251-28205161e1e6',
-                //         'email'    => 5,
-                //         'apiVersion'    => 5,
-                //         'enabled'    => 5,
-                //         'interrupted'    => 5,
-                //         'email'    => 5,
-                //     ],
-                //     [
-                //         'url'      => 'afd76f74-6dd8-487b-b251-28205161e1e6',
-                //         'email'    => 5,
-                //         'apiVersion'    => 5,
-                //         'enabled'    => 5,
-                //         'interrupted'    => 5,
-                //         'email'    => 5,
-                //     ],
-                //     [
-                //         'url'      => 'afd76f74-6dd8-487b-b251-28205161e1e6',
-                //         'email'    => 5,
-                //         'apiVersion'    => 5,
-                //         'enabled'    => 5,
-                //         'interrupted'    => 5,
-                //         'email'    => 5,
-                //     ]
-                // ],
             ],
             'verify' => false
         ];
@@ -235,7 +209,11 @@ class AssasController extends Controller {
             foreach ($invoices as $invoice) {
 
                 if($invoice->type == 1) {
-                    $this->createApiKey($invoice->idUser);
+                    $createApiKey = $this->createApiKey($invoice->idUser);
+                    $user = User::where('id', $invoice->idUser)->first();
+                    $user->walletId = $createApiKey['walletId'];
+                    $user->apiKey   = $createApiKey['apiKey'];
+                    $user->save();
                 }
                 $invoice->status = 'PAYMENT_CONFIRMED';
                 $invoice->save();
