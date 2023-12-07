@@ -279,7 +279,7 @@ class SaleController extends Controller {
             $sale->sign_url_ficha   = $documento['sign_url'];
             $sale->save();
 
-            $message = "Olá, clienten G7. Agora que você concordou com os termos, precisamos que preencha sua ficha Associativa: \r\n \r\n";
+            $message = "Olá, Cliente G7. Agora que você concordou com os termos, precisamos que preencha sua ficha Associativa: \r\n \r\n";
             $notificar = $this->notificarSignatario($documento['sign_url'], $sale->mobilePhone, $message);
             if ($notificar != null) {
                 return true;

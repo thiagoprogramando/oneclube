@@ -8,11 +8,9 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Carbon\Carbon;
 
-class WhatsAppController extends Controller
-{
+class WhatsAppController extends Controller {
 
-    public function sendLink($phone, $link, $message)
-    {
+    public function sendLink($phone, $link, $message) {
         $client = new Client();
 
         $url = 'https://api.z-api.io/instances/3C71DE8B199F70020C478ECF03C1E469/token/DC7D43456F83CCBA2701B78B/send-link';

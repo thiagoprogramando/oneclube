@@ -810,14 +810,12 @@
                 </span><span style="letter-spacing:0.85pt">CONTRATANTE </span><span style="letter-spacing:0.8pt">pagará
                 </span><span>à </span><span style="letter-spacing:0.85pt">CONTRATADA, </span><span>o </span><span
                     style="letter-spacing:0.75pt">valor total </span><span style="letter-spacing:0.6pt">de:
-                </span><span>R$</span><span style="letter-spacing:0.05pt"> <?php echo $data['value']; ?> </span><span
-                    style="letter-spacing:0.75pt">(QUATROCENTOS REAIS</span><span
-                    style="letter-spacing:0.8pt">)</span><span style="letter-spacing:0.85pt"> </span><span
+                </span><span>R$</span><span style="letter-spacing:0.05pt"> <?php echo $data['value']; ?> </span><span style="letter-spacing:0.85pt"> </span><span
                     style="letter-spacing:0.75pt">pagos</span><span style="letter-spacing:0.8pt">
                 </span><span>da</span><span style="letter-spacing:0.05pt"> </span><span
                     style="letter-spacing:0.8pt">seguinte</span><span style="letter-spacing:0.85pt"> </span><span
                     style="letter-spacing:0.8pt">forma:</span><span style="letter-spacing:0.85pt"> ATO no valor de
-                </span><span>R$ <? if($data['billingType'] != 'PIX'){ echo "300"; }else{ echo $data['value'] } endif; ?> no dia <?php echo date("d/m/Y"); ?> e o restante depois de 30 dias</span></li>
+                </span><span>R$ <? if($data['billingType'] != 'PIX' && $data['installmentCount'] > 1){ echo "300"; } else{ echo $data['value'] } endif; ?> no dia <?php echo date("d/m/Y"); ?> e o restante depois de 30 dias.</span></li>
         </ol>
         <p style="margin-right:85.7pt; text-align:justify"><span style="-aw-import:ignore">&#xa0;</span></p>
         <ol type="1" class="awlist4" style="margin:0pt; padding-left:0pt">
@@ -1115,11 +1113,7 @@
                 style="letter-spacing:2.05pt"> </span><span style="letter-spacing:0.85pt">indicadas.</span></p>
         <p class="BodyText"><span style="-aw-import:ignore">&#xa0;</span></p>
         <p class="BodyText" style="margin-left:187.1pt"><span style="letter-spacing:0.6pt">São Paulo</span><span
-                style="letter-spacing:0.8pt">,</span><span style="letter-spacing:2.5pt"> </span><span>13</span><span
-                style="letter-spacing:2.3pt"> </span><span style="letter-spacing:0.5pt">de</span><span
-                style="letter-spacing:2.35pt"> </span><span style="letter-spacing:0.8pt">Novembro</span><span
-                style="letter-spacing:2.4pt"> </span><span>de</span><span style="letter-spacing:2.3pt"> </span><span
-                style="letter-spacing:0.75pt">2023.</span></p>
+                style="letter-spacing:0.8pt">,</span><span style="letter-spacing:2.5pt"> </span><span> <?php echo date('d/m/Y'); ?> </span></p>
         <p class="BodyText" style="font-size:10pt"><span style="-aw-import:ignore">&#xa0;</span></p>
         <p class="BodyText" style="font-size:10pt"><span style="-aw-import:ignore">&#xa0;</span></p>
         <p class="BodyText" style="font-size:10pt"><span style="-aw-import:ignore">&#xa0;</span></p>
