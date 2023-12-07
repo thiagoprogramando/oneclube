@@ -33,7 +33,7 @@ class AssasController extends Controller {
                 }
 
                 $description = "Serviços & Consultoria G7";
-                if ($invoiceCount == 0) {
+                if ($invoiceCount == 0 || $invoiceCount == 1) {
                     $charge = $this->createCharge($customer, $sale->billingType, 300, $description, $dueDate);
                 } else {
                     $charge = $this->createCharge($customer, $sale->billingType, $valuePerInstallment, $description, $dueDate);
