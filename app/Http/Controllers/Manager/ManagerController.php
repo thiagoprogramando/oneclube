@@ -73,7 +73,6 @@ class ManagerController extends Controller {
             $invoice->status = 'PENDING_PAY';
             $invoice->save();
 
-            //Notifica Usuário
             $link = "https://grupo7assessoria.com.br/";
             $message = "Prezado Cliente, bem-vindo(a) G7 - Assessoria. Estamos enviando um link para acesso ao nosso Sistema de Parceiros! \r\n \r\n \r\n Para acessar, utilize seu Email: ".$user->email."\r\n E como senha: SEU CPF \r\n \r\n";
             $notification = new WhatsAppController();

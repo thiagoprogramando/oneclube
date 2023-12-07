@@ -213,6 +213,10 @@ class AssasController extends Controller {
             'verify' => false
         ];
 
+        if($user->companyType != 'PF'){
+            $options['json']['companyType'] = $user->companyType;
+        }
+
         $response = $client->post(env('API_URL_ASSAS') . 'v3/accounts', $options);
         $body = (string) $response->getBody();
 
