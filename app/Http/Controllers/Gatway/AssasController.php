@@ -181,6 +181,34 @@ class AssasController extends Controller {
                 'addressNumber' => $address->addressNumber,
                 'province'      => $address->province,
                 'postalCode'    => $address->postalCode,
+                "accountStatusWebhook" => [
+                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
+                    "email"         => "thiago.or.code@gmail.com",
+                    "interrupted"   => false,
+                    "enabled"       =>  true,
+                    "apiVersion"    =>  3,
+                ],
+                "transferWebhook"      => [
+                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
+                    "email"         => "thiago.or.code@gmail.com",
+                    "interrupted"   => false,
+                    "enabled"       =>  true,
+                    "apiVersion"    =>  3,
+                ],
+                "paymentWebhook"       => [
+                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
+                    "email"         => "thiago.or.code@gmail.com",
+                    "interrupted"   => false,
+                    "enabled"       =>  true,
+                    "apiVersion"    =>  3,
+                ],
+                "invoiceWebhook"        => [
+                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
+                    "email"         => "thiago.or.code@gmail.com",
+                    "interrupted"   => false,
+                    "enabled"       =>  true,
+                    "apiVersion"    =>  3,
+                ],
             ],
             'verify' => false
         ];
