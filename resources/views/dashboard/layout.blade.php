@@ -46,7 +46,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('sales', ['produto' => 1]) }}">Minhas Vendas</a>
-                        <a class="collapse-item" href="{{ url('/limpanome/' . auth()->id()) }}" target="_BLANK">Vender</a>
+                        {{-- <a class="collapse-item" href="{{ url('/limpanome/' . auth()->id()) }}" target="_BLANK">Vender</a> --}}
                     </div>
                 </div>
             </li>

@@ -69,7 +69,7 @@ class ManagerController extends Controller {
             $invoice->name = 'Liberação de Acesso';
             $invoice->description = 'Voucher para liberação e cadastro no Sistema';
             $invoice->type = 1;
-            $invoice->value = 20;
+            $invoice->value = 59;
             $invoice->status = 'PENDING_PAY';
             $invoice->save();
 
