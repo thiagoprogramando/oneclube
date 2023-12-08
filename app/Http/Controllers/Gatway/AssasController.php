@@ -23,7 +23,6 @@ class AssasController extends Controller {
 
             $invoiceCount = 0;
             $initialPayment = 300;
-            $valuePerInstallment = ($sale->value - $initialPayment) / ($sale->installmentCount - 1);
             $installmentCount = $sale->installmentCount;
             $dueDate = now()->addDay();
             while ($invoiceCount < $installmentCount) {
@@ -36,6 +35,7 @@ class AssasController extends Controller {
                 if ($invoiceCount == 0 || $invoiceCount == 1) {
                     $charge = $this->createCharge($customer, $sale->billingType, 300, $description, $dueDate);
                 } else {
+                    $valuePerInstallment = ($sale->value - $initialPayment) / ($sale->installmentCount - 1);
                     $charge = $this->createCharge($customer, $sale->billingType, $valuePerInstallment, $description, $dueDate);
                 }
                 
