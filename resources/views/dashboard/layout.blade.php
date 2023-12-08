@@ -42,11 +42,24 @@
                     <i class="fa fa-check"></i>
                     <span>Limpa Nome</span>
                 </a>
-                <div id="collapsePositive" class="collapse" aria-labelledby="headingPositive"
-                    data-parent="#accordionSidebar">
+                <div id="collapsePositive" class="collapse" aria-labelledby="headingPositive" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('sales', ['produto' => 1]) }}">Minhas Vendas</a>
-                        {{-- <a class="collapse-item" href="{{ url('/limpanome/' . auth()->id()) }}" target="_BLANK">Vender</a> --}}
+                    </div>
+                </div>
+            </li>
+
+            <div class="sidebar-heading"> Financeiro </div>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseWallet" aria-expanded="true" aria-controls="collapseWallet">
+                    <i class="fas fa-wallet"></i>
+                    <span>Carteira</span>
+                </a>
+                <div id="collapseWallet" class="collapse" aria-labelledby="headingWallet" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('sales', ['produto' => 1]) }}">Carteira Digital</a>
+                        <a class="collapse-item" href="{{ route('sales', ['produto' => 1]) }}">Extrato</a>
                     </div>
                 </div>
             </li>

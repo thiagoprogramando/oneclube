@@ -5,6 +5,7 @@ use App\Http\Controllers\Manager\ManagerController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\Sale\SaleController;
 use App\Http\Controllers\Users\UserController as UsersUserController;
+use App\Http\Controllers\USers\WalletController;
 use Illuminate\Support\Facades\Route;
 
 //Login
@@ -37,6 +38,9 @@ Route::middleware(['auth'])->group(function () {
     //Users
     Route::get('/profile',[UsersUserController::class, 'profile'])->name('profile');
     Route::post('profileUpdate', [UsersUserController::class, 'profileUpdate'])->name('profileUpdate');
+
+    //Wallet
+    Route::get('/wallet', [WalletController::class, 'wallet'])->name('wallet');
 
     Route::post('/createUser', [ManagerController::class, 'createUser'])->name('createUser');
 

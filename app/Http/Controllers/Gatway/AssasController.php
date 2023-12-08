@@ -264,4 +264,50 @@ class AssasController extends Controller {
 
         return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado!']);
     }
+
+    public function balance() {
+
+        $client = new Client();
+        $user = auth()->user();
+
+        $response = $client->request('GET',  env('API_URL_ASSAS') . 'v3/finance/balance', [
+            'headers' => [
+                'accept' => 'application/json',
+                'access_token' => $user->apiKey,
+            ],
+        ]);
+
+        $body = (string) $response->getBody();
+        if ($response->getStatusCode() === 200) {
+
+            $data = json_decode($body, true);
+            return $data['balance'];
+        } else {
+
+            return false;
+        }
+    }
+
+    public function statistics() {
+
+        $client = new Client();
+        $user = auth()->user();
+
+        $response = $client->request('GET',  env('API_URL_ASSAS') . 'v3/finance/payment/statistics?status=PENDING', [
+            'headers' => [
+                'accept' => 'application/json',
+                'access_token' => $user->apiKey,
+            ],
+        ]);
+
+        $body = (string) $response->getBody();
+        if ($response->getStatusCode() === 200) {
+
+            $data = json_decode($body, true);
+            return $data['netValue'];
+        } else {
+
+            return false;
+        }
+    }
 }
