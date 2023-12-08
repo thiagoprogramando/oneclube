@@ -5,7 +5,7 @@ use App\Http\Controllers\Manager\ManagerController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\Sale\SaleController;
 use App\Http\Controllers\Users\UserController as UsersUserController;
-use App\Http\Controllers\USers\WalletController;
+use App\Http\Controllers\Users\WalletController;
 use Illuminate\Support\Facades\Route;
 
 //Login
