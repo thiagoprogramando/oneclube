@@ -23,7 +23,7 @@ class WalletController extends Controller {
         return view('dashboard.wallet.wallet', ['balance' => 'Falha!', 'statistics' => 'Falha!']);
     }
 
-    public function saque(Request $request) {
+    public function withdraw(Request $request) {
 
         $request->validate([
             'key_pix'   => 'required',
@@ -36,7 +36,7 @@ class WalletController extends Controller {
             
             $assas = new AssasController();
             $key_pix = $request->key_pix != 'EMAIL' ? str_replace(['.', '-', '_', ','], '', $request->key_pix) : $request->key_pix;
-            $realizaSaque = $assas->saque($key_pix, $request->value, $request->type);
+            $realizaSaque = $assas->withdraw($key_pix, $request->value, $request->type);
             
             if ($realizaSaque['success']) {
                 return redirect()->back()->with('success', $realizaSaque['message']);

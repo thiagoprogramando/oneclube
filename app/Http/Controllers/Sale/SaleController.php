@@ -316,7 +316,7 @@ class SaleController extends Controller {
                     'signers' => [[
                         "name"                      => $data['name'],
                         "email"                     => $data['email'],
-                        "auth_mode"                 => "tokenEmail",
+                        "auth_mode"                 => "default",
                         "date_limit_to_sign"        => $formattedDate,
                         "lang"                      => "pt-br",
                         "brand_primary_color "      => "#43F47A",

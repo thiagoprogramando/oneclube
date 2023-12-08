@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Wallet
     Route::get('/wallet', [WalletController::class, 'wallet'])->name('wallet');
+    Route::post('withdraw', [WalletController::class, 'withdraw'])->name('withdraw');
 
     Route::post('/createUser', [ManagerController::class, 'createUser'])->name('createUser');
 

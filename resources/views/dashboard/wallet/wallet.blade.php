@@ -143,7 +143,7 @@
     <div class="modal fade" id="modalSaque" tabindex="-1" role="dialog" aria-labelledby="modalSaque" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="" method="POST">
+                <form action="{{ route('withdraw') }}" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalSaque">Deseja realizar um Saque?</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">

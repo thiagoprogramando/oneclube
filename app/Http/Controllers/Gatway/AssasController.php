@@ -63,7 +63,6 @@ class AssasController extends Controller {
         return false;
     }
     
-    
     public function invoiceCreate(Request $request) {
 
         $user = auth()->user();
@@ -312,7 +311,7 @@ class AssasController extends Controller {
         }
     }
 
-    public function saque($chave, $valor, $type) {
+    public function withdraw($chave, $valor, $type) {
         $client = new Client();
         $user = auth()->user();
 

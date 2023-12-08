@@ -58,8 +58,7 @@
                 </a>
                 <div id="collapseWallet" class="collapse" aria-labelledby="headingWallet" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('sales', ['produto' => 1]) }}">Carteira Digital</a>
-                        <a class="collapse-item" href="{{ route('sales', ['produto' => 1]) }}">Extrato</a>
+                        <a class="collapse-item" href="{{ route('wallet') }}">Carteira Digital</a>
                     </div>
                 </div>
             </li>
