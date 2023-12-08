@@ -12,12 +12,12 @@ class WalletController extends Controller {
 
         $assas = new AssasController();
         $balance = $assas->balance();
-        // if($balance) {
-            return $statistics = $assas->statistics();
-        //     return view('dashboard.wallet.wallet', ['balance' => $balance, 'statistics' => $statistics]);
-        // }
+        if($balance == 0 || $balance > 0) {
+            $statistics = $assas->statistics();
+            return view('dashboard.wallet.wallet', ['balance' => $balance, 'statistics' => $statistics]);
+        }
         
-        // return view('dashboard.wallet.wallet', ['balance' => 'Erro!', 'statistics' => 'Erro!']);
+        return view('dashboard.wallet.wallet', ['balance' => 'Erro!', 'statistics' => 'Erro!']);
     }
 
 }
