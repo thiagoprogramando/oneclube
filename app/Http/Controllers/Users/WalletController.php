@@ -11,13 +11,13 @@ class WalletController extends Controller {
     public function wallet() {
 
         $assas = new AssasController();
-        $balance = $assas->balance();
-        if($balance) {
+        return $balance = $assas->balance();
+        // if($balance) {
             $statistics = $assas->statistics();
-            return view('dashboard.wallet.wallet', ['balance' => $balance, 'statistics' => $statistics]);
-        }
+        //     return view('dashboard.wallet.wallet', ['balance' => $balance, 'statistics' => $statistics]);
+        // }
         
-        return view('dashboard.wallet.wallet', ['balance' => 'Erro!', 'statistics' => 'Erro!']);
+        // return view('dashboard.wallet.wallet', ['balance' => 'Erro!', 'statistics' => 'Erro!']);
     }
 
 }
