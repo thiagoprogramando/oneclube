@@ -95,8 +95,7 @@ class ManagerController extends Controller {
     public function invoices($id = null) {
 
         if($id) {
-
-            $invoices = Invoice::where('idUser', $id)->get();
+            $invoices = Invoice::where('idUser', $id)->where('type', 3)->get();
             return view('dashboard.payments.invoice', ['invoices' => $invoices]);
         }
         

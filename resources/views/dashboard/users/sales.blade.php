@@ -61,48 +61,73 @@
                                                 <th>ID</th>
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
-                                                <th>Status</th>
+                                                <th class="text-center">Situação Contrato</th>
+                                                <th class="text-center">Situação Ficha</th>
+                                                <th class="text-center">1° Parcela Paga</th>
                                                 <th>Data</th>
                                                 <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($sales as $key =>$sale)
-                                            <tr>
-                                                <td>{{ $sale->id }}</td>
-                                                <td>{{ $sale->nome }}</td>
-                                                <td>
-                                                    @switch($sale->id_produto)
-                                                        @case(1)
-                                                            Limpa Nome
+                                            @foreach ($sales as $key => $sale)
+                                                <tr>
+                                                    <td>{{ $sale->id }}</td>
+                                                    <td>{{ $sale->name }}</td>
+                                                    <td>
+                                                        @switch($sale->id_produto)
+                                                            @case(1)
+                                                                Limpa Nome
+                                                                @break
+                                                            @default
+                                                                Produto Desconhecido
+                                                                @break
+                                                        @endswitch
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @switch($sale->status_produto)
+                                                            @case('doc_signed')
+                                                                Assinado
+                                                                @break
+                                                            @case('null')
+                                                                Aguardando Assinatura
+                                                                @break
+                                                            @default
+                                                                Aguardando Assinatura
+                                                                @break
+                                                        @endswitch
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @switch($sale->status_ficha)
+                                                            @case('doc_signed')
+                                                                Assinado
+                                                                @break
+                                                            @case('null')
+                                                                Aguardando Assinatura
+                                                                @break
+                                                            @default
+                                                                Aguardando Assinatura
+                                                                @break
+                                                        @endswitch
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @switch($sale->status_pay)
+                                                            @case('PAYMENT_CONFIRMED')
+                                                                Aprovado
                                                             @break
-                                                        @default
-                                                            Produto Desconhecido
-                                                    @endswitch
-                                                </td>
-                                                <td>
-                                                    @switch($sale->status_pay)
-                                                        @case('PAYMENT_CONFIRMED')
-                                                            Aprovado
+
+                                                            @case('PENDING_PAY')
+                                                                Aguardando Pagamento
                                                             @break
-                                                        @case('PENDING_PAY')
-                                                            Aguardando Pagamento
-                                                            @break
-                                                        @default
-                                                            Status Desconhecido
-                                                    @endswitch
-                                                </td>
-                                                <td>{{ \Carbon\Carbon::parse($sale->created_at)->format('d/m/Y') }}</td>
-                                                <td class="text-center">
-                                                    <a class="btn btn-outline-success" href="{{ $sale->file }}" target="_blank"><i class="fa fa-file"></i></a>
-                                                    <?php
-                                                        $id_pay = str_replace('pay_', '', $sale->id_pay);
-                                                    ?>
-                                                    <a class="btn btn-outline-primary" href="https://www.asaas.com/i/{{ $id_pay }}" target="_blank">
-                                                        <i class="fa fa-credit-card"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+
+                                                            @default
+                                                                Aguardando Pagamento
+                                                        @endswitch
+                                                    </td>
+                                                    <td> {{ \Carbon\Carbon::parse($sale->created_at)->format('d/m/Y') }} </td>
+                                                    <td class="text-center">
+                                                        <a class="btn btn-outline-primary" href="{{ route('invoices', ["id"=> $sale->id]) }}" target="_blank"> <i class="fa fa-credit-card"></i> </a>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
