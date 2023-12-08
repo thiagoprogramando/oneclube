@@ -11,9 +11,9 @@ class WalletController extends Controller {
     public function wallet() {
 
         $assas = new AssasController();
-        return $balance = $assas->balance();
+        $balance = $assas->balance();
         // if($balance) {
-            $statistics = $assas->statistics();
+            return $statistics = $assas->statistics();
         //     return view('dashboard.wallet.wallet', ['balance' => $balance, 'statistics' => $statistics]);
         // }
         

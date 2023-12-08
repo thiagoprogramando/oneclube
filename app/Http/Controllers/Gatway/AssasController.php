@@ -307,7 +307,7 @@ class AssasController extends Controller {
             return $data['netValue'];
         } else {
 
-            return false;
+            return "Nada aqui!";
         }
     }
 }
