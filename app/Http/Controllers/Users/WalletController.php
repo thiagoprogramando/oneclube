@@ -17,7 +17,7 @@ class WalletController extends Controller {
             return view('dashboard.wallet.wallet', ['balance' => $balance, 'statistics' => $statistics]);
         }
         
-        return view('dashboard.wallet.wallet', ['balance' => 0, 'statistics' => 0]);
+        return view('dashboard.wallet.wallet', ['balance' => 'Erro!', 'statistics' => 'Erro!']);
     }
 
 }
