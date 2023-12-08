@@ -45,7 +45,7 @@ class WebhookController extends Controller {
                 $createInvoices = $createInvoices->invoiceSale($sale->id);
                 if($createInvoices) {
 
-                    $invoice = Invoice::where('idUser', $sale->id)->first();
+                    $invoice = Invoice::where('idUser', $sale->id)->where('status', 'PENDING_PAY')->where('type', 3)->first();
                     if($invoice) {
 
                         $sendLink = new WhatsAppController();
