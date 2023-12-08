@@ -21,24 +21,33 @@ class AssasController extends Controller {
         $customer = $this->createCustomer($sale->name, $sale->cpfcnpj);
         if($customer) {
 
-            $invoiceCount = 0;
-            $initialPayment = 300;
-            $installmentCount = $sale->installmentCount;
-            $dueDate = now()->addDay();
+            $invoiceCount = 0; //FATURA 0
+            $installmentCount = $sale->installmentCount; //PARCELAMENTO
+
+            $initialPayment = 300; //VALOR FATURA INICIAL CASO PARCELAMENTO
+            
+            $dueDate = now()->addDay(); //PRIMEIRO VENCIMENTO
+            $description = "Serviços & Consultoria G7"; //DESCRIÇÃO FATURA
+
             while ($invoiceCount < $installmentCount) {
                 
+                //CASO ESTEJA NA SEGUNDA FATURA, ACRESCENTAR UM MÊS
                 if ($invoiceCount > 0) {
                     $dueDate->addMonth();
                 }
 
-                $description = "Serviços & Consultoria G7";
+                //CASO NÃO TENHA PARCELAMENTO, ENVIAR O VALOR TOTAL
                 if ($installmentCount == 0 || $installmentCount == 1) {
                     $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate);
-                } elseif ($invoiceCount == 0 || $invoiceCount == 1) {
+                }
+
+                //CASO TENHA PARCELAMENTO
+                if($installmentCount > 1) {
+                    if($invoiceCount > 1) {
+                        $valuePerInstallment = ($sale->value - $initialPayment) / ($sale->installmentCount - 1);
+                        $charge = $this->createCharge($customer, $sale->billingType, $valuePerInstallment, $description, $dueDate);
+                    }
                     $charge = $this->createCharge($customer, $sale->billingType, 300, $description, $dueDate);
-                } else {
-                    $valuePerInstallment = ($sale->value - $initialPayment) / ($sale->installmentCount - 1);
-                    $charge = $this->createCharge($customer, $sale->billingType, $valuePerInstallment, $description, $dueDate);
                 }
                 
                 if ($charge) {
@@ -49,7 +58,11 @@ class AssasController extends Controller {
                     $invoice->description   = $description;
                     $invoice->token         = $charge['id'];
                     $invoice->url           = $charge['invoiceUrl'];
-                    $invoice->value         = ($invoiceCount == 0 || $invoiceCount == 1) ? $initialPayment : $valuePerInstallment;
+                    if($installmentCount == 0 || $installmentCount == 1) {
+                        $invoice->value         = $sale->value;
+                    } else {
+                        $invoice->value         = ($invoiceCount == 0 || $invoiceCount == 1) ? $initialPayment : $valuePerInstallment;
+                    }
                     $invoice->status        = "PENDING_PAY";
                     $invoice->type          = 3;
                     $invoice->dueDate       = $dueDate;
