@@ -815,13 +815,15 @@
                 </span><span>da</span><span style="letter-spacing:0.05pt"> </span><span
                     style="letter-spacing:0.8pt">seguinte</span><span style="letter-spacing:0.85pt"> </span><span
                     style="letter-spacing:0.8pt">forma:</span><span style="letter-spacing:0.85pt"> ATO no valor de
-                </span><span>R$ 
+                </span><span>
+                    R$ 
                     <?php 
                     if($data['billingType'] != 'PIX' && $data['installmentCount'] > 1) { 
-                        echo "300"." no dia ".date("d/m/Y")." e o restante depois de 30 dias."; 
+                        echo number_format(300, 2, ',', '.')." no dia ".date("d/m/Y")." e o restante das parcelas com vencimentos para ".date('d')." dos meses seguintes."; 
                     } else { 
-                        echo $data['value']; 
-                    } ?> </span></li>
+                        echo number_format($data['value'], 2, ',', '.');
+                    } 
+                    ?> </span></li>
         </ol>
         <p style="margin-right:85.7pt; text-align:justify"><span style="-aw-import:ignore">&#xa0;</span></p>
         <ol type="1" class="awlist4" style="margin:0pt; padding-left:0pt">
