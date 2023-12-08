@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Notification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Gatway\AssasController;
 use App\Http\Controllers\Sale\SaleController;
+
 use App\Models\Invoice;
 use App\Models\Sale;
 
@@ -49,7 +50,7 @@ class WebhookController extends Controller {
                     if($invoice) {
 
                         $sendLink = new WhatsAppController();
-                        $message = "Prezado Cliente G7, estamos enviando o link para pagamento referente ao seu Produto: \r\n \r\n";
+                        $message = "Prezado Cliente G7, estamos enviando o link para pagamento referente ao serviço de Limpa Nome: \r\n \r\n";
                         $sendLink = $sendLink->sendLink($sale->mobilePhone, $invoice->url, $message);
                         return response()->json(['message' => 'Ficha Finalizada Com Invoices Criadas e enviadas ao cliente!'], 200);
                     }
