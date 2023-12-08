@@ -4,6 +4,9 @@
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Carteira Digital</h1>
+            <a href="#" data-toggle="modal" data-target="#modalSaque" class="d-sm-inline-block btn btn-primary shadow-sm">
+                <i class="fas fa-comment-dollar text-white-50"></i> Saque
+            </a>
         </div>
 
         <div class="row">
@@ -133,6 +136,46 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalSaque" tabindex="-1" role="dialog" aria-labelledby="modalSaque" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalSaque">Deseja realizar um Saque?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <div class="mb-3">
+                            <select name="type" class="form-control">
+                                <option value="" selected>Tipo Chave</option>
+                                <option value="CPF">CPF</option>
+                                <option value="CNPJ">CNPJ</option>
+                                <option value="EMAIL">EMAIL</option>
+                                <option value="PHONE">TELEFONE</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="key_pix" placeholder="Chave Pix:" autofocus required/>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="value" placeholder="Valor:" required/>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" name="password" placeholder="Confirme sua senha:" required/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" type="submit">Realizar Saque</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

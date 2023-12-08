@@ -49,7 +49,7 @@ class AssasController extends Controller {
                     $invoice->description   = $description;
                     $invoice->token         = $charge['id'];
                     $invoice->url           = $charge['invoiceUrl'];
-                    $invoice->value         = ($invoiceCount == 0) ? $initialPayment : $valuePerInstallment;
+                    $invoice->value         = ($invoiceCount == 0 || $invoiceCount == 1) ? $initialPayment : $valuePerInstallment;
                     $invoice->status        = "PENDING_PAY";
                     $invoice->type          = 3;
                     $invoice->dueDate       = $dueDate;
@@ -275,6 +275,7 @@ class AssasController extends Controller {
                 'accept' => 'application/json',
                 'access_token' => $user->apiKey,
             ],
+            'verify' => false,
         ]);
 
         $body = (string) $response->getBody();
@@ -298,6 +299,7 @@ class AssasController extends Controller {
                 'accept' => 'application/json',
                 'access_token' => $user->apiKey,
             ],
+            'verify' => false,
         ]);
 
         $body = (string) $response->getBody();
@@ -308,6 +310,44 @@ class AssasController extends Controller {
         } else {
 
             return false;
+        }
+    }
+
+    public function saque($chave, $valor, $type) {
+        $client = new Client();
+        $user = auth()->user();
+
+        try {
+            $response = $client->request('POST', env('API_URL_ASSAS').'v3/transfers', [
+                'headers' => [
+                    'accept'       => 'application/json',
+                    'Content-Type' => 'application/json',
+                    'access_token' => $user->apiKey,
+                ],
+                'json' => [
+                    'value' => $valor,
+                    'operationType' => 'PIX',
+                    'pixAddressKey' => $chave,
+                    'pixAddressKeyType' => $type,
+                    'description' => 'Saque G7',
+                ],
+                'verify'  => false,
+            ]);
+    
+            $body = $response->getBody()->getContents();
+            $decodedBody = json_decode($body, true);
+    
+            if ($decodedBody['status'] === 'PENDING') {
+                return ['success' => true, 'message' => 'Saque agendado com sucesso'];
+            } else {
+                return ['success' => false, 'message' => 'Situação do Saque: ' . $decodedBody['status']];
+            }
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            $response = $e->getResponse();
+            $body = $response->getBody()->getContents();
+            $decodedBody = json_decode($body, true);
+    
+            return ['success' => false, 'error' => $decodedBody['errors'][0]['description']];
         }
     }
 }
