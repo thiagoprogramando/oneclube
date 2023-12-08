@@ -43,7 +43,7 @@ class AssasController extends Controller {
 
                 //CASO TENHA PARCELAMENTO
                 if($installmentCount > 1) {
-                    if($invoiceCount > 1) {
+                    if($invoiceCount >= 1) {
                         $valuePerInstallment = ($sale->value - $initialPayment) / ($sale->installmentCount - 1);
                         $charge = $this->createCharge($customer, $sale->billingType, $valuePerInstallment, $description, $dueDate);
                     }
