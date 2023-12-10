@@ -17,7 +17,8 @@ class WalletController extends Controller {
         $balance = $assas->balance();
         if($balance == 0 || $balance > 0) {
             $statistics = $assas->statistics();
-            return view('dashboard.wallet.wallet', ['balance' => $balance, 'statistics' => $statistics]);
+            $extracts    = $assas->extract();
+            return view('dashboard.wallet.wallet', ['balance' => $balance, 'statistics' => $statistics, 'extracts' => $extracts]);
         }
         
         return view('dashboard.wallet.wallet', ['balance' => 'Falha!', 'statistics' => 'Falha!']);

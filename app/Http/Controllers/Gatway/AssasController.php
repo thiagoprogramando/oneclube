@@ -300,7 +300,7 @@ class AssasController extends Controller {
         $client = new Client();
         $user = auth()->user();
 
-        $response = $client->request('GET',  env('API_URL_ASSAS') . 'v3/finance/payment/statistics?status=PENDING', [
+        $response = $client->request('GET',  env('API_URL_ASSAS') . 'v3/finance/split/statistics', [
             'headers' => [
                 'accept' => 'application/json',
                 'access_token' => $user->apiKey,
@@ -312,10 +312,35 @@ class AssasController extends Controller {
         if ($response->getStatusCode() === 200) {
 
             $data = json_decode($body, true);
-            return $data['netValue'];
+            return $data['income'];
         } else {
 
             return false;
+        }
+    }
+
+    public function extract() {
+
+        $client = new Client();
+        $user = auth()->user();
+        $startDate = $user->created_at->toDateString();
+        $finishDate = now()->toDateString();
+
+        $response = $client->request('GET',  env('API_URL_ASSAS') . "v3/financialTransactions?startDate={$startDate}&finishDate={$finishDate}&order=desc", [
+            'headers' => [
+                'accept' => 'application/json',
+                'access_token' => $user->apiKey,
+            ],
+            'verify' => false,
+        ]);
+
+        $body = (string) $response->getBody();
+        if ($response->getStatusCode() === 200) {
+
+            $data = json_decode($body, true);
+            return $data['data'];
+        } else {
+            return [];
         }
     }
 
