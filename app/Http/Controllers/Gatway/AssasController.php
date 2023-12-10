@@ -144,11 +144,15 @@ class AssasController extends Controller {
         ];
 
         if ($walletId !== null) {
-            $options['json']['split'] = [
+            if (!isset($options['json']['split'])) {
+                $options['json']['split'] = [];
+            }
+        
+            $options['json']['split'][] = [
                 'walletId'          => $walletId,
-                'percentualValue'   => $percentualValue.'.00',
+                'percentualValue'   => number_format($percentualValue, 2, '.', ''),
             ];
-        }
+        }        
 
         $response = $client->post(env('API_URL_ASSAS') . 'v3/payments', $options);
         $body = (string) $response->getBody();
