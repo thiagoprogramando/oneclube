@@ -54,7 +54,7 @@ class ManagerController extends Controller {
         $user = User::create($attributes);
         if($user) {
             $address = new Address();
-            $address->idUser        = Auth::id();
+            $address->idUser        = $user->id;
             $address->postalCode    = $request->postalCode;
             $address->address       = $request->address;
             $address->addressNumber = $request->addressNumber;
