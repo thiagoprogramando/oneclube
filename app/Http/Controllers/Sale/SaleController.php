@@ -98,7 +98,6 @@ class SaleController extends Controller {
 
     public function sell(Request $request, $id) {
 
-
         $validator = Validator::make($request->all(), [
             'name'          => 'required|string|max:255',
             'cpfcnpj'       => 'required|string|max:255',

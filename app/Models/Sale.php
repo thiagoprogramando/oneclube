@@ -5,9 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sale extends Model
-{
+class Sale extends Model {
+
     use HasFactory;
+
+    protected static function boot() {
+        parent::boot();
+
+        static::saving(function ($sale) {
+            $vendedor = User::find($sale->id_vendedor);
+
+            if ($vendedor && $vendedor->walletId) {
+                $sale->wallet = $vendedor->walletId;
+            }
+        });
+    }
 
     protected $table = 'sale';
 
@@ -29,6 +41,7 @@ class Sale extends Model
 
         'value',
         'comission',
+        'wallet',
         'billingType',
         'installmentCount',
 
@@ -42,4 +55,8 @@ class Sale extends Model
         'file_ficha',
         'sign_url_ficha'
     ];
+
+    public function vendedor() {
+        return $this->belongsTo(User::class, 'id_vendedor');
+    }
 }

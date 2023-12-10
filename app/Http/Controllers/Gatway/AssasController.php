@@ -16,6 +16,7 @@ use Carbon\Carbon;
 class AssasController extends Controller {
 
     public function invoiceSale($id) {
+
         $sale = Sale::find($id);
         $customer = $this->createCustomer($sale->name, $sale->cpfcnpj);
     
@@ -38,7 +39,7 @@ class AssasController extends Controller {
                     $chargeValue = ($invoiceCount == 0) ? $initialPayment : (($sale->value - $initialPayment) / ($installmentCount - 1));
                 }
     
-                $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate);
+                $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->walletId, $sale->comission);
     
                 if ($charge) {
                     $invoice = new Invoice();
@@ -121,7 +122,7 @@ class AssasController extends Controller {
         }
     }
 
-    private function createCharge($customer, $billingType, $value, $description, $dueDate = null) {
+    private function createCharge($customer, $billingType, $value, $description, $dueDate = null, $walletId = null, $fixedValue = null) {
 
         $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
 
@@ -138,13 +139,16 @@ class AssasController extends Controller {
                 'value'             => $value,
                 'dueDate'           => $dueDate != null ? $dueDate : $tomorrow,
                 'description'       => 'G7 - '.$description,
-                // 'split'             => [
-                //     'walletId'      => 'afd76f74-6dd8-487b-b251-28205161e1e6',
-                //     'fixedValue'    => 5
-                // ]
             ],
             'verify' => false
         ];
+
+        if ($walletId !== null) {
+            $options['json']['split'] = [
+                'walletId'   => $walletId,
+                'fixedValue' => $fixedValue,
+            ];
+        }
 
         $response = $client->post(env('API_URL_ASSAS') . 'v3/payments', $options);
         $body = (string) $response->getBody();

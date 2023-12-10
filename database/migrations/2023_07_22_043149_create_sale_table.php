@@ -28,6 +28,7 @@ return new class extends Migration {
 
             $table->decimal('value', 10, 2);
             $table->integer('comission');
+            $table->longText('wallet');
             $table->string('billingType');
             $table->string('installmentCount');
 
