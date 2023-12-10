@@ -39,7 +39,7 @@ class AssasController extends Controller {
                     $chargeValue = ($invoiceCount == 0) ? $initialPayment : (($sale->value - $initialPayment) / ($installmentCount - 1));
                 }
     
-                $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->walletId, $sale->comission);
+                $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $sale->comission);
     
                 if ($charge) {
                     $invoice = new Invoice();
@@ -122,7 +122,7 @@ class AssasController extends Controller {
         }
     }
 
-    private function createCharge($customer, $billingType, $value, $description, $dueDate = null, $walletId = null, $fixedValue = null) {
+    private function createCharge($customer, $billingType, $value, $description, $dueDate = null, $walletId = null, $percentualValue = null) {
 
         $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
 
@@ -146,7 +146,7 @@ class AssasController extends Controller {
         if ($walletId !== null) {
             $options['json']['split'] = [
                 'walletId'   => $walletId,
-                'fixedValue' => $fixedValue,
+                'percentualValue' => $percentualValue,
             ];
         }
 
