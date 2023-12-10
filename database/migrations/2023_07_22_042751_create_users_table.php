@@ -19,8 +19,8 @@ return new class extends Migration {
             $table->string('companyType');
             $table->integer('type');
             $table->integer('status');
-            $table->string('walletId')->nullable();
-            $table->string('apiKey')->nullable();
+            $table->longText('walletId')->nullable();
+            $table->longText('apiKey')->nullable();
             $table->string('customer')->nullable();
             $table->timestamps();
         });

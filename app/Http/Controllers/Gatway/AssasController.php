@@ -145,8 +145,8 @@ class AssasController extends Controller {
 
         if ($walletId !== null) {
             $options['json']['split'] = [
-                'walletId'   => $walletId,
-                'percentualValue' => $percentualValue,
+                'walletId'          => $walletId,
+                'percentualValue'   => $percentualValue.'.00',
             ];
         }
 
