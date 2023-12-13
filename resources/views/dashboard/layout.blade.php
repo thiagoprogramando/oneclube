@@ -82,6 +82,18 @@
                         </div>
                     </div>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVenda" aria-expanded="true" aria-controls="collapseVenda">
+                        <i class="fa fa-check"></i>
+                        <span>Vendas Dinâmicas</span>
+                    </a>
+                    <div id="collapseVenda" class="collapse" aria-labelledby="headingGestao" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item dinamic-sale" href="" data-produto="1">Limpa Nome</a>
+                        </div>
+                    </div>
+                </li>
             @endif
 
             <hr class="sidebar-divider d-none d-md-block">
@@ -189,6 +201,43 @@
             setTimeout(function() {
                 URL.revokeObjectURL(url);
             }, 100);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var vendaLink = document.querySelector('.dinamic-sale');
+
+            vendaLink.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Informe o valor',
+                    input: 'text',
+                    showCancelButton: true,
+                    confirmButtonText: 'Próximo',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var valorInserido = result.value;
+                        var novaURL = '{{ url("/limpanome/") }}/{{ auth()->id() }}/' + valorInserido;
+
+                        Swal.fire({
+                            title: 'Nova URL gerada:',
+                            input: 'text',
+                            inputValue: novaURL,
+                            showCancelButton: true,
+                            confirmButtonText: 'Copiar URL',
+                            cancelButtonText: 'Cancelar',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var inputElement = document.querySelector('.swal2-input');
+                                inputElement.select();
+                                document.execCommand('copy');
+                                Swal.fire('Link copiado com sucesso!', '', 'success');
+                            }
+                        });
+                    }
+                });
+            });
         });
     </script>
 

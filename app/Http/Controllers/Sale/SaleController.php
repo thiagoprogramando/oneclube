@@ -136,7 +136,7 @@ class SaleController extends Controller {
                 break;
             default:
                 $saleData['value'] = $request->valor;
-                $saleData['comission'] = 20;
+                $saleData['comission'] = 0;
                 break;
         }
 
