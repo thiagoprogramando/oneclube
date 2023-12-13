@@ -27,8 +27,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('id_vendedor');
 
             $table->decimal('value', 10, 2);
-            $table->integer('comission');
-            $table->longText('wallet');
+            $table->integer('comission')->nullable();
+            $table->longText('wallet')->nullable();
             $table->string('billingType');
             $table->string('installmentCount');
 
