@@ -4,6 +4,7 @@ use App\Http\Controllers\Gatway\AssasController;
 use App\Http\Controllers\Manager\ManagerController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\Sale\SaleController;
+use App\Http\Controllers\Users\ClientController;
 use App\Http\Controllers\Users\UserController as UsersUserController;
 use App\Http\Controllers\Users\WalletController;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,14 @@ Route::get('/limpanome/{id}/{valor}', [ProdutoController::class, 'limpanome'])->
 Route::post('/sell/{id}', [SaleController::class, 'sell'])->name('sell');
 
 //Extras
-Route::view('/obrigado', 'obrigado');
+Route::view('/obrigado', 'obrigado')->name('obrigado');
+
+//Cliente
+Route::view('/cliente', 'cliente.index')->name('cliente');
+Route::post('/logarClient', [ClientController::class, 'logarClient'])->name('logarClient');
+Route::get('/vendasCliente', [ClientController::class, 'vendasCliente'])->name('vendasCliente');
+Route::get('/faturasCliente/{id}', [ClientController::class, 'faturasCliente'])->name('faturasCliente');
+Route::get('/logoutClient', [ClientController::class, 'logoutClient'])->name('logoutClient');
 
 //Autenticados
 Route::middleware(['auth'])->group(function () {
@@ -25,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     //Sales
     Route::get('/sales/{produto}', [SaleController::class, 'getSales'])->name('sales');
     Route::post('filterSales', [SaleController::class, 'filterSales'])->name('filterSales');
+    Route::post('updateSale', [SaleController::class, 'updateSale'])->name('updateSale');
 
     //Manager
     Route::get('/dashboard', [ManagerController::class, 'dashboard'])->name('dashboard');

@@ -11299,3 +11299,7 @@ button:hover {
   background-color: #1A5AFF !important;
   border-color: #1A5AFF !important;
 }
+
+.min-h-100 {
+  min-height: 70vh;
+}

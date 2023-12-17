@@ -13,13 +13,10 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Bem vindo(a)!</h1>
                                     </div>
-                                    <form class="user" method="POST" action="{{ route('login') }}">
+                                    <form class="user" method="POST" action="{{ route('logarClient') }}">
                                         @csrf
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" name="email" placeholder="Email">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="password" class="form-control form-control-user" name="password" placeholder="Senha">
+                                            <input type="number" class="form-control form-control-user" name="cpfcnpj" placeholder="CPF ou CNPJ">
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block"> Acessar </button>
                                     </form>
@@ -38,3 +35,4 @@
     </div>
 @endsection
 
+ 

@@ -50,6 +50,19 @@ class SaleController extends Controller {
         ]);
     }
 
+    public function updateSale(Request $request) {
+
+        $sale = Sale::where('id',  $request->id)->first();
+        if($sale) {
+            $sale->tag = $request->tag;
+            $sale->save();
+
+            return redirect()->back()->with('success', 'Venda atualizada com sucesso!');
+        }
+
+        return redirect()->back()->with('error', 'Venda não encontrada!');
+    }
+
     public function saleManager() {
 
         return view('dashboard.manager.sales', [
@@ -219,13 +232,13 @@ class SaleController extends Controller {
             $venda->sign_url_contrato   = $documento['sign_url'];
             $venda->save();
             
-            $message = "Prezado Cliente, segue seu contrato de adesão ao produto da G7 Assessoria: \r\n \r\n";
+            $message = "Prezado Cliente, segue seu *contrato de adesão* ao produto da G7 Assessoria: \r\n \r\n";
             $notificar = $this->notificarSignatario($documento['sign_url'], $saleData['mobilePhone'], $message);
             if ($notificar != null) {
-                return view('obrigado', ['success' => 'Obrigado! Enviaremos o contrato diretamente para o seu whatsapp.']);
+                return redirect()->route('obrigado')->with('success', 'Obrigado! Enviaremos o contrato diretamente para o seu WhatsApp.');
             }
 
-            return view('obrigado', ['success' => 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.']);
+            return redirect()->route('obrigado')->with('success', 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.');
         } else {
             return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
         }
@@ -278,7 +291,7 @@ class SaleController extends Controller {
             $sale->sign_url_ficha   = $documento['sign_url'];
             $sale->save();
 
-            $message = "Olá, Cliente G7. Agora que você concordou com os termos, precisamos que preencha sua ficha Associativa: \r\n \r\n";
+            $message = "Olá, Cliente G7. Agora que você concordou com os termos, precisamos que preencha sua *Ficha Associativa*: \r\n \r\n";
             $notificar = $this->notificarSignatario($documento['sign_url'], $sale->mobilePhone, $message);
             if ($notificar != null) {
                 return true;
@@ -357,7 +370,7 @@ class SaleController extends Controller {
                     'message'         => $message,
                     'image'           => 'https://grupo7assessoria.com.br/wp-content/uploads/2023/07/Copia-de-MULTISERVICOS-250-%C3%97-250-px-2.png',
                     'linkUrl'         => $contrato,
-                    'title'           => 'Assinatura de Contrato',
+                    'title'           => 'Assinatura de Documento',
                     'linkDescription' => 'Link para Assinatura Digital',
                 ],
             ]);
