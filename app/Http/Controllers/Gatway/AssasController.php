@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Gatway;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Notification\WhatsAppController;
 use App\Models\Address;
 use Illuminate\Http\Request;
 
@@ -262,6 +263,11 @@ class AssasController extends Controller {
                 if($sale) {
                     $sale->status_pay = "PAYMENT_CONFIRMED";
                     $sale->save();
+
+                    $link    = 'https://grupo7assessoria.com/cliente';
+                    $message = 'Olá, cliente G7. Recebemos o seu pagamento, segue link para acessar Faturas, consultar processos e demais informações sobre seus contratos';
+                    $whatsapp = new WhatsAppController();
+                    $sendLink = $whatsapp->sendLink($sale->mobilePhone, $link, $message);
                 }
             }
 
