@@ -24,7 +24,7 @@ class WebhookController extends Controller {
             $eventType = $data['event_type'];
 
             $sale = Sale::where('id_contrato', $token)->first();
-            if ($sale->status_produto != null && $eventType == 'doc_signed') {
+            if ($sale->status_produto !== null && $eventType == 'doc_signed') {
                 $sale->status_produto = $eventType;
                 $sale->save();
 
@@ -38,7 +38,7 @@ class WebhookController extends Controller {
             }
 
             $sale = Sale::where('id_ficha', $token)->first();
-            if ($sale->status_ficha != null && $eventType == 'doc_signed') {
+            if ($sale->status_ficha !== null && $eventType == 'doc_signed') {
                 $sale->status_ficha = $eventType;
                 $sale->save();
 
