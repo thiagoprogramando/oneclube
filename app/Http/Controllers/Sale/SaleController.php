@@ -348,7 +348,10 @@ class SaleController extends Controller {
                 "signer"        => $responseData['signers'][0],
             ];
         } catch (RequestException $e) {
-            return false;
+            return [
+                'error' => $e->getMessage(),
+                'code'  => $e->getCode(),
+            ];
         }
     }
 
