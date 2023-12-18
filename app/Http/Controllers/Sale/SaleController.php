@@ -226,8 +226,7 @@ class SaleController extends Controller {
         $pdfContent = file_get_contents($pdfPath);
         $saleData['pdf'] = $pdfBase64 = base64_encode($pdfContent);
 
-        $documento = $this->criaDocumento($saleData);
-        var_dump($documento);
+        return $documento = $this->criaDocumento($saleData);
         if ($documento['signer']) {
             $venda->id_contrato         = $documento['token'];
             $venda->sign_url_contrato   = $documento['sign_url'];
