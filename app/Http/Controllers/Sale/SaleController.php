@@ -355,7 +355,11 @@ class SaleController extends Controller {
                 return false;
             }
         } catch (RequestException $e) {
-            return false;
+            return [
+                'error' => 'Erro ao criar o signatário',
+                'message' => $e->getMessage(),
+                'response' => $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null,
+            ];
         }
     }
 
