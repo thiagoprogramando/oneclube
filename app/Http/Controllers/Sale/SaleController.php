@@ -205,16 +205,17 @@ class SaleController extends Controller {
             if($keySignatario) {
                 
                 $addSignatarios = $this->adiconaSignatario($keyDocumento, $keySignatario);
-                if ($addSignatarios['type'] != null) {
-                    $venda->sign_url_contrato = $addSignatarios['url'];
-                    $venda->save();
+                var_dump($addSignatarios);
+                // if ($addSignatarios['type'] != null) {
+                //     $venda->sign_url_contrato = $addSignatarios['url'];
+                //     $venda->save();
 
-                    $message = "Prezado Cliente, segue seu *contrato de adesão* ao produto da G7 Assessoria: \r\n \r\n";
-                    return $notificar = $this->notificarSignatario($addSignatarios['url'], $saleData['mobilePhone'], $message);
-                    // if ($notificar != null) {
-                    //     return redirect()->route('obrigado')->with('success', 'Obrigado! Enviaremos o contrato diretamente para o seu WhatsApp.');
-                    // }
-                }
+                //     $message = "Prezado Cliente, segue seu *contrato de adesão* ao produto da G7 Assessoria: \r\n \r\n";
+                //     return $notificar = $this->notificarSignatario($addSignatarios['url'], $saleData['mobilePhone'], $message);
+                //     // if ($notificar != null) {
+                //     //     return redirect()->route('obrigado')->with('success', 'Obrigado! Enviaremos o contrato diretamente para o seu WhatsApp.');
+                //     // }
+                // }
 
                 return redirect()->route('obrigado')->with('error', 'Tivemos um pequeno problema, tente novamente mais tarde!');
             }
