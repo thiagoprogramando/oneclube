@@ -248,22 +248,24 @@ class SaleController extends Controller {
                     "document"          => [
                         "path"              => '/G7 Limpa Nome '.$formattedDate.'/'.$data['name'].'.docx',
                         "template"          => [
-                            "NOME"              => $data['name'],
-                            "RG"                => $data['rg'],
-                            "CPFCNPJ"           => $data['cpfcnpj'],
-                            "DATANASCIMENTO"    => $data['birthDate'],
-                            "ENDERECO"          => $data['address'],
-                            "ATO"               => $data['ato'],
-                            "DIA"               => $day,
-                            "MES"               => $month,
-                            "ANO"               => $year,
+                            "data"          => [
+                                "NOME"              => $data['name'],
+                                "RG"                => $data['rg'],
+                                "CPFCNPJ"           => $data['cpfcnpj'],
+                                "DATANASCIMENTO"    => $data['birthDate'],
+                                "ENDERECO"          => $data['address'],
+                                "ATO"               => $data['ato'],
+                                "DIA"               => $day,
+                                "MES"               => $month,
+                                "ANO"               => $year,
+                            ]
                         ]
                     ]
                 ],
             ]);
 
             $responseData = json_decode($response->getBody(), true);
-            return $responseData['key'];
+            return $responseData['document']['key'];
         } catch (RequestException $e) {
             return [
                 'error' => 'Erro ao criar o documento',
