@@ -227,6 +227,8 @@ class SaleController extends Controller {
 
     private function criaDocumento($data) {
 
+        return $data;
+
         $client = new Client();
 
         $url = env('API_URL_CLICKSING') . 'api/v1/templates/F6C08860-AE25-44B0-B3EC-971C8E6DBF84/documents?access_token=' . env('TOKEN_CLICKSING');
