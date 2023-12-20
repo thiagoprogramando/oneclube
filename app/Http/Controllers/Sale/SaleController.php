@@ -235,6 +235,48 @@ class SaleController extends Controller {
         $formattedDate = $currentDate->format('Y-m-d');
         $day = $currentDate->format('d');
         $month = $currentDate->format('m');
+        switch ($month) {
+            case '01':
+                $monthName = 'Janeiro';
+                break;
+            case '02':
+                $monthName = 'Fevereiro';
+                break;
+            case '03':
+                $monthName = 'Março';
+                break;
+            case '04':
+                $monthName = 'Abril';
+                break;
+            case '05':
+                $monthName = 'Maio';
+                break;
+            case '06':
+                $monthName = 'Junho';
+                break;
+            case '07':
+                $monthName = 'Julho';
+                break;
+            case '08':
+                $monthName = 'Agosto';
+                break;
+            case '09':
+                $monthName = 'Setembro';
+                break;
+            case '10':
+                $monthName = 'Outubro';
+                break;
+            case '11':
+                $monthName = 'Novembro';
+                break;
+            case '12':
+                $monthName = 'Dezembro';
+                break;
+            default:
+                $monthName = 'Mês Desconhecido';
+                break;
+        }
+
         $year = $currentDate->format('Y');
 
         try {
@@ -251,11 +293,11 @@ class SaleController extends Controller {
                                 "NOME"              => $data['name'],
                                 "RG"                => $data['rg'],
                                 "CPFCNPJ"           => $data['cpfcnpj'],
-                                "DATANASCIMENTO"    => $data['birthDate'],
+                                "DATANASCIMENTO"    => $data['birthDate']->format('d/m/Y'),
                                 "ENDERECO"          => $data['address'],
                                 "ATO"               => $data['ato'],
                                 "DIA"               => $day,
-                                "MES"               => $month,
+                                "MES"               => $monthName,
                                 "ANO"               => $year,
                             ]
                         ]
