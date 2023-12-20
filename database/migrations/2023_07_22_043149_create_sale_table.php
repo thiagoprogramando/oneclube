@@ -21,7 +21,6 @@ return new class extends Migration {
             $table->string('email')->nullable();
 
             $table->string('id_contrato')->nullable();
-            $table->string('id_ficha')->nullable();
             $table->string('id_pay')->nullable();
             $table->unsignedBigInteger('id_produto');
             $table->unsignedBigInteger('id_vendedor');
@@ -37,10 +36,7 @@ return new class extends Migration {
             $table->string('status_ficha')->nullable();
             $table->string('tag')->nullable();
             
-            $table->text('file_contrato')->nullable();
             $table->text('sign_url_contrato')->nullable();
-            $table->text('file_ficha')->nullable();
-            $table->text('sign_url_ficha')->nullable();
             $table->timestamps();
 
         });
