@@ -191,8 +191,6 @@ class SaleController extends Controller {
 
         $saleData['ato'] = $request->installmentCount > 1 ? 200 : $request->valor;
 
-        return $saleData;
-
         $venda = Sale::create($saleData);
         if (!$venda) {
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
@@ -338,7 +336,7 @@ class SaleController extends Controller {
                         'name'                       => $data['name'],
                         'auths'                      => [ 'whatsapp' ],
                         'documentation'              => $data['cpfcnpj'],
-                        'birthday'                   => Carbon::createFromFormat('d-m-Y', $data['birthDate'])->format('Y-m-d'),
+                        'birthday'                   => $data['birthDate'],
                         'has_documentation'          => 'false',
                         'selfie_enabled'             => 'false',
                         'handwritten_enabled'        => 'false',
