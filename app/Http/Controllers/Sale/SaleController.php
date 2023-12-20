@@ -336,7 +336,7 @@ class SaleController extends Controller {
                         'name'                       => $data['name'],
                         'auths'                      => [ 'whatsapp' ],
                         'documentation'              => $data['cpfcnpj'],
-                        'birthday'                   => $data['birthDate'],
+                        'birthday'                   => Carbon::createFromFormat('d-m-Y', $data['birthDate'])->format('Y-m-d'),
                         'has_documentation'          => 'false',
                         'selfie_enabled'             => 'false',
                         'handwritten_enabled'        => 'false',
