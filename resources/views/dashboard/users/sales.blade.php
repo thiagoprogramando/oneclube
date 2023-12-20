@@ -62,9 +62,8 @@
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
                                                 <th class="text-center">Situação Contrato</th>
-                                                <th class="text-center">Situação Ficha</th>
                                                 <th class="text-center">1° Parcela Paga</th>
-                                                <th>Data</th>
+                                                <th class="text-center">Data</th>
                                                 <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
@@ -85,19 +84,6 @@
                                                     </td>
                                                     <td class="text-center">
                                                         @switch($sale->status_produto)
-                                                            @case('doc_signed')
-                                                                Assinado
-                                                                @break
-                                                            @case('null')
-                                                                Aguardando Assinatura
-                                                                @break
-                                                            @default
-                                                                Aguardando Assinatura
-                                                                @break
-                                                        @endswitch
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @switch($sale->status_ficha)
                                                             @case('doc_signed')
                                                                 Assinado
                                                                 @break
