@@ -288,7 +288,7 @@ class SaleController extends Controller {
                 'json' => [
                     'signer' => [
                         'email'                      => $data['email'],
-                        'phone_number'               => $data['phone'],
+                        'phone_number'               => $data['mobilePhone'],
                         'name'                       => $data['name'],
                         'auths'                      => [ 'whatsapp' ],
                         'documentation'              => $data['cpfcnpj'],
