@@ -197,33 +197,32 @@ class SaleController extends Controller {
         }
 
         $keyDocumento = $this->criaDocumento($saleData);
-        var_dump($keyDocumento);
-        // if ($keyDocumento) {
-        //     $venda->id_contrato = $keyDocumento;
-        //     $venda->save();
+        if ($keyDocumento) {
+            $venda->id_contrato = $keyDocumento;
+            $venda->save();
 
-        //     $keySignatario = $this->criaSignatario($saleData);
-        //     if($keySignatario) {
+            $keySignatario = $this->criaSignatario($saleData);
+            if($keySignatario) {
                 
-        //         $addSignatarios = $this->adiconaSignatario($keyDocumento, $keySignatario);
-        //         if ($addSignatarios['type'] != null) {
-        //             $venda->sign_url_contrato = $addSignatarios['url'];
-        //             $venda->save();
+                $addSignatarios = $this->adiconaSignatario($keyDocumento, $keySignatario);
+                if ($addSignatarios['type'] != null) {
+                    $venda->sign_url_contrato = $addSignatarios['url'];
+                    $venda->save();
 
-        //             $message = "Prezado Cliente, segue seu *contrato de adesão* ao produto da G7 Assessoria: \r\n \r\n";
-        //             $notificar = $this->notificarSignatario($addSignatarios['url'], $saleData['mobilePhone'], $message);
-        //             if ($notificar != null) {
-        //                 return redirect()->route('obrigado')->with('success', 'Obrigado! Enviaremos o contrato diretamente para o seu WhatsApp.');
-        //             }
-        //         }
+                    $message = "Prezado Cliente, segue seu *contrato de adesão* ao produto da G7 Assessoria: \r\n \r\n";
+                    $notificar = $this->notificarSignatario($addSignatarios['url'], $saleData['mobilePhone'], $message);
+                    if ($notificar != null) {
+                        return redirect()->route('obrigado')->with('success', 'Obrigado! Enviaremos o contrato diretamente para o seu WhatsApp.');
+                    }
+                }
 
-        //         return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Tivemos um pequeno problema, tente novamente mais tarde!'])->withInput();
-        //     }
+                return redirect()->route('obrigado')->with('error', 'Tivemos um pequeno problema, tente novamente mais tarde!');
+            }
             
-        //     return redirect()->route('obrigado')->with('success', 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.');
-        // } else {
-        //     return redirect()->route($request->franquia, ['id' => $id])->withErrors(['Erro ao gerar assinatura!'])->withInput();
-        // }
+            return redirect()->route('obrigado')->with('success', 'Cadastro realizado com sucesso, mas não foi possivel enviar o contrato! Consulte seu atendente.');
+        } else {
+            return redirect()->route('obrigado')->with('error', 'Erro ao gerar assinatura!');
+        }
     }
 
     private function criaDocumento($data) {
