@@ -245,17 +245,19 @@ class SaleController extends Controller {
                     'Accept' => 'application/json',
                 ],
                 'json' => [
-                    "path"              => '/G7 Limpa Nome '.$formattedDate.'/'.$data['name'].'.docx',
-                    "template"          => [
-                        "NOME"              => $data['name'],
-                        "RG"                => $data['rg'],
-                        "CPFCNPJ"           => $data['cpfcnpj'],
-                        "DATANASCIMENTO"    => $data['birthDate'],
-                        "ENDERECO"          => $data['address'],
-                        "ATO"               => $data['ato'],
-                        "DIA"               => $day,
-                        "MES"               => $month,
-                        "ANO"               => $year,
+                    "document"          => [
+                        "path"              => '/G7 Limpa Nome '.$formattedDate.'/'.$data['name'].'.docx',
+                        "template"          => [
+                            "NOME"              => $data['name'],
+                            "RG"                => $data['rg'],
+                            "CPFCNPJ"           => $data['cpfcnpj'],
+                            "DATANASCIMENTO"    => $data['birthDate'],
+                            "ENDERECO"          => $data['address'],
+                            "ATO"               => $data['ato'],
+                            "DIA"               => $day,
+                            "MES"               => $month,
+                            "ANO"               => $year,
+                        ]
                     ]
                 ],
             ]);
