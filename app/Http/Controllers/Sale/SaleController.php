@@ -196,7 +196,7 @@ class SaleController extends Controller {
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
 
-        $keyDocumento = $this->criaDocumento($saleData);
+        return $keyDocumento = $this->criaDocumento($saleData);
         if ($keyDocumento) {
             $venda->id_contrato = $keyDocumento;
             $venda->save();
@@ -226,8 +226,6 @@ class SaleController extends Controller {
     }
 
     private function criaDocumento($data) {
-
-        return $data;
 
         $client = new Client();
 
