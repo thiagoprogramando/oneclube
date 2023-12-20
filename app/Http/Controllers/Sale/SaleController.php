@@ -293,7 +293,7 @@ class SaleController extends Controller {
                                 "NOME"              => $data['name'],
                                 "RG"                => $data['rg'],
                                 "CPFCNPJ"           => $data['cpfcnpj'],
-                                "DATANASCIMENTO"    => $data['birthDate']->format('d/m/Y'),
+                                "DATANASCIMENTO"    => Carbon::createFromFormat('Y-m-d', $data['birthDate'])->format('d/m/Y'),
                                 "ENDERECO"          => $data['address'],
                                 "ATO"               => $data['ato'],
                                 "DIA"               => $day,
