@@ -189,14 +189,14 @@ class SaleController extends Controller {
             $saleData['installmentCount'] = $request->installmentCount;
         }
 
-        $saleDate['ato'] = $request->installmentCount > 1 ? 300 : $request->valor;
+        $saleData['ato'] = $request->installmentCount > 1 ? 300 : $request->valor;
 
         $venda = Sale::create($saleData);
         if (!$venda) {
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
 
-        return $saleData;
+        $saleData;
         $keyDocumento = $this->criaDocumento($saleData);
         if ($keyDocumento) {
             $venda->id_contrato = $keyDocumento;
