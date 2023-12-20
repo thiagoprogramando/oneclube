@@ -260,7 +260,8 @@ class SaleController extends Controller {
             ]);
 
             $responseData = json_decode($response->getBody(), true);
-            return $responseData['key'];
+            var_dump($responseData);
+            // return $responseData['key'];
         } catch (RequestException $e) {
             return false;
         }
