@@ -210,10 +210,10 @@ class SaleController extends Controller {
                     $venda->save();
 
                     $message = "Prezado Cliente, segue seu *contrato de adesão* ao produto da G7 Assessoria: \r\n \r\n";
-                    $notificar = $this->notificarSignatario($addSignatarios['url'], $saleData['mobilePhone'], $message);
-                    if ($notificar != null) {
-                        return redirect()->route('obrigado')->with('success', 'Obrigado! Enviaremos o contrato diretamente para o seu WhatsApp.');
-                    }
+                    return $notificar = $this->notificarSignatario($addSignatarios['url'], $saleData['mobilePhone'], $message);
+                    // if ($notificar != null) {
+                    //     return redirect()->route('obrigado')->with('success', 'Obrigado! Enviaremos o contrato diretamente para o seu WhatsApp.');
+                    // }
                 }
 
                 return redirect()->route('obrigado')->with('error', 'Tivemos um pequeno problema, tente novamente mais tarde!');
