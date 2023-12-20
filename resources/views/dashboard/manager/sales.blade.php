@@ -13,22 +13,16 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    <button class="btn btn-outline-success w-25" type="button" data-toggle="modal" data-target="#exampleModal">Filtros</button>
+                                    <button class="btn btn-outline-primary w-25" type="button" id="exportar">Excel</button>
 
-                                    <button class="btn btn-outline-success w-25" type="button" data-toggle="modal"
-                                        data-target="#exampleModal">Filtros</button>
-                                    <button class="btn btn-outline-primary w-25" type="button"
-                                        id="exportar">Excel</button>
-
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form method="POST" action="{{ route('filterSaleManager') }}">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel">Filtros:</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close"> <span aria-hidden="true">&times;</span>
-                                                        </button>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                                                     </div>
                                                     <div class="modal-body">
                                                         @csrf
@@ -85,7 +79,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                             <div class="col-12 mt-3">
@@ -128,7 +121,7 @@
                                                             @break
 
                                                             @default
-                                                                Status Desconhecido
+                                                                Aguardando Pagamento
                                                         @endswitch
                                                     </td>
                                                     <td>
@@ -164,59 +157,40 @@
                                                     </td>
                                                     <td>{{ \Carbon\Carbon::parse($sale->created_at)->format('d/m/Y') }}</td>
                                                     <td class="text-center">
-                                                        <a class="btn btn-outline-success" href="{{ $sale->file }}"
-                                                            target="_blank"><i class="fa fa-file"></i></a>
-                                                        <a class="btn btn-outline-primary"
-                                                            href="{{ route('invoices', ['id' => $sale->id]) }}"
-                                                            target="_blank"> <i class="fa fa-credit-card"></i> </a>
-                                                        <a class="btn btn-outline-dark" href="#" data-toggle="modal"
-                                                            data-target="#modalSale{{ $sale->id }}"><i
-                                                                class="far fa-edit"></i></a>
+                                                        <a class="btn btn-outline-success" href="{{ $sale->sign_url_contrato }}" target="_blank"><i class="fa fa-file"></i></a>
+                                                        <a class="btn btn-outline-primary" href="{{ route('invoices', ['id' => $sale->id]) }}" target="_blank"> <i class="fa fa-credit-card"></i> </a>
+                                                        <a class="btn btn-outline-dark" href="#" data-toggle="modal" data-target="#modalSale{{ $sale->id }}"><i class="far fa-edit"></i></a>
                                                     </td>
                                                 </tr>
 
-                                                <div class="modal fade" id="modalSale{{ $sale->id }}" tabindex="-1"
-                                                    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal fade" id="modalSale{{ $sale->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <form action="{{ route('updateSale') }}" method="POST">
                                                             @csrf
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">
-                                                                        Atribuições da venda</h5>
-                                                                    <button class="close" type="button"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">×</span>
-                                                                    </button>
+                                                                    <h5 class="modal-title" id="exampleModalLabel"> Atribuições da venda</h5>
+                                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="row">
-                                                                        <input type="hidden" name="id"
-                                                                            value="{{ $sale->id }}">
+                                                                        <input type="hidden" name="id" value="{{ $sale->id }}">
                                                                         <div class="form-group col-sm-12 col-lg-12">
                                                                             <select name="tag" class="form-control">
                                                                                 <option value="1">Tags</option>
-                                                                                <option value="1">Aguardando Conclusão
-                                                                                    de Documentos</option>
-                                                                                <option value="2">Aguardando Conclusão
-                                                                                    de Honorários</option>
-                                                                                <option value="3">Processo em fila
-                                                                                </option>
-                                                                                <option value="4">Processo iniciado
-                                                                                </option>
-                                                                                <option value="5">Processo em
-                                                                                    andamento</option>
-                                                                                <option value="6">Processo concluído
-                                                                                </option>
+                                                                                <option value="1">Aguardando Conclusão de Documentos</option>
+                                                                                <option value="2">Aguardando Conclusão de Honorários</option>
+                                                                                <option value="3">Processo em fila </option>
+                                                                                <option value="4">Processo iniciado </option>
+                                                                                <option value="5">Processo em andamento</option>
+                                                                                <option value="6">Processo concluído </option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button class="btn btn-danger" type="button"
-                                                                        data-dismiss="modal">Cancelar</button>
-                                                                    <button class="btn btn-success"
-                                                                        type="submit">Atualizar</button>
+                                                                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+                                                                    <button class="btn btn-success" type="submit">Atualizar</button>
                                                                 </div>
                                                             </div>
                                                         </form>

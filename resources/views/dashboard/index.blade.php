@@ -125,9 +125,8 @@
                                                 <th>Cliente</th>
                                                 <th>Produto</th>
                                                 <th class="text-center">Situação Contrato</th>
-                                                <th class="text-center">Situação Ficha</th>
                                                 <th class="text-center">1° Parcela Paga</th>
-                                                <th>Data</th>
+                                                <th class="text-center">Data</th>
                                                 <th class="text-center">Opções</th>
                                             </tr>
                                         </thead>
@@ -160,19 +159,6 @@
                                                         @endswitch
                                                     </td>
                                                     <td class="text-center">
-                                                        @switch($sale->status_ficha)
-                                                            @case('doc_signed')
-                                                                Assinado
-                                                                @break
-                                                            @case('null')
-                                                                Aguardando Assinatura
-                                                                @break
-                                                            @default
-                                                                Aguardando Assinatura
-                                                                @break
-                                                        @endswitch
-                                                    </td>
-                                                    <td class="text-center">
                                                         @switch($sale->status_pay)
                                                             @case('PAYMENT_CONFIRMED')
                                                                 Aprovado
@@ -186,7 +172,7 @@
                                                                 Aguardando Pagamento
                                                         @endswitch
                                                     </td>
-                                                    <td> {{ \Carbon\Carbon::parse($sale->created_at)->format('d/m/Y') }} </td>
+                                                    <td class="text-center"> {{ \Carbon\Carbon::parse($sale->created_at)->format('d/m/Y') }} </td>
                                                     <td class="text-center">
                                                         <a class="btn btn-outline-primary" href="{{ route('invoices', ["id"=> $sale->id]) }}" target="_blank"> <i class="fa fa-credit-card"></i> </a>
                                                     </td>
