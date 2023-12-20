@@ -189,7 +189,7 @@ class SaleController extends Controller {
             $saleData['installmentCount'] = $request->installmentCount;
         }
 
-        $saleData['ato'] = $request->installmentCount > 1 ? 300 : $request->valor;
+        $saleData['ato'] = $request->installmentCount > 1 ? 200 : $request->valor;
 
         $venda = Sale::create($saleData);
         if (!$venda) {
@@ -335,7 +335,7 @@ class SaleController extends Controller {
                         'auths'                      => [ 'whatsapp' ],
                         'documentation'              => $data['cpfcnpj'],
                         'birthday'                   => $data['birthDate'],
-                        'has_documentation'          => 'true',
+                        'has_documentation'          => 'false',
                         'selfie_enabled'             => 'false',
                         'handwritten_enabled'        => 'false',
                         'official_document_enabled'  => 'true',
