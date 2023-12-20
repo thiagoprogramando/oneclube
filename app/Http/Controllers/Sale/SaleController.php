@@ -162,7 +162,7 @@ class SaleController extends Controller {
         }
 
         if (!empty($request->birthDate)) {
-            $saleData['birthDate'] = $request->birthDate;
+            $saleData['birthDate'] = Carbon::createFromFormat('d-m-Y', $request->birthDate)->format('Y-m-d');
         }
 
         if (!empty($request->email)) {
@@ -190,6 +190,8 @@ class SaleController extends Controller {
         }
 
         $saleData['ato'] = $request->installmentCount > 1 ? 200 : $request->valor;
+
+        return $saleData;
 
         $venda = Sale::create($saleData);
         if (!$venda) {
@@ -336,7 +338,7 @@ class SaleController extends Controller {
                         'name'                       => $data['name'],
                         'auths'                      => [ 'whatsapp' ],
                         'documentation'              => $data['cpfcnpj'],
-                        'birthday'                   => $data['birthDate'],
+                        'birthday'                   => Carbon::createFromFormat('d-m-Y', $data['birthDate'])->format('Y-m-d'),
                         'has_documentation'          => 'false',
                         'selfie_enabled'             => 'false',
                         'handwritten_enabled'        => 'false',
