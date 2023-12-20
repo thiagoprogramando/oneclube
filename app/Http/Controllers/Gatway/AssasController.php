@@ -24,7 +24,7 @@ class AssasController extends Controller {
         if($customer) {
             $invoiceCount = 0;
             $installmentCount = $sale->installmentCount;
-            $initialPayment = 300;
+            $initialPayment = 200;
     
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
