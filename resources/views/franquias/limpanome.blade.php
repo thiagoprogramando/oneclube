@@ -162,12 +162,12 @@
                     var selectedBillingType = $(this).val();
                     $("#installmentCount").find('option').remove();
                     if (selectedBillingType === "CREDIT_CARD") {
-                        $("#installmentCount").append('<option value="1">1X (Valor fixo de R$ 300)</option>');
+                        $("#installmentCount").append('<option value="1">1X (Valor fixo de R$ 200)</option>');
                         for (var i = 2; i <= 12; i++) {
                             $("#installmentCount").append('<option value="' + i + '">' + i + 'X</option>');
                         }
                     } else if (selectedBillingType === "BOLETO") {
-                        $("#installmentCount").append('<option value="1">1X (Valor fixo de R$ 300)</option>');
+                        $("#installmentCount").append('<option value="1">1X (Valor fixo de R$ 200)</option>');
                         for (var i = 2; i <= 3; i++) {
                             $("#installmentCount").append('<option value="' + i + '">' + i + 'X</option>');
                         }
