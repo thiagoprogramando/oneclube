@@ -229,7 +229,7 @@ class SaleController extends Controller {
 
         $client = new Client();
 
-        $url = env('API_URL_CLICKSING') . 'api/v1/templates/F6C08860-AE25-44B0-B3EC-971C8E6DBF84/documents?access_token=' . env('TOKEN_CLICKSING');
+        $url = env('API_URL_CLICKSING') . 'api/v1/templates/EBA9766D-1FA1-43A7-97CD-9D6FBD3DFF40/documents?access_token=' . env('TOKEN_CLICKSING');
 
         $currentDate = Carbon::now();
         $formattedDate = $currentDate->format('Y-m-d');
