@@ -332,7 +332,7 @@ class SaleController extends Controller {
                         'email'                      => $data['email'],
                         'phone_number'               => $data['mobilePhone'],
                         'name'                       => $data['name'],
-                        'auths'                      => [ 'whatsapp' ],
+                        'auths'                      => [ 'email' ],
                         // 'documentation'              => $data['cpfcnpj'],
                         // 'birthday'                   => $data['birthDate'],
                         'has_documentation'          => 'false',
