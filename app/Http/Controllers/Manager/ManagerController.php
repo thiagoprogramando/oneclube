@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Gatway\AssasController;
 use App\Http\Controllers\Notification\WhatsAppController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,9 +23,17 @@ class ManagerController extends Controller {
 
         $sales = Sale::where('id_vendedor', $user->id)->limit(15)->get();
 
+        $assas = new AssasController();
+        $balance = $assas->balance();
+        if($balance == 0 || $balance > 0) {
+            $statistics = $assas->statistics();
+        }
+
         return view('dashboard.index', [
-            'user' => $user,
-            'sales' => $sales,
+            'user'          => $user,
+            'sales'         => $sales,
+            'balance'       => $balance,
+            'statistics'    => $statistics
         ]);
     }
 

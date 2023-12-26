@@ -150,6 +150,14 @@
                                                                 Processo concluído
                                                             @break
 
+                                                            @case(7)
+                                                                Duplicado
+                                                            @break
+
+                                                            @case(8)
+                                                                Lixeira
+                                                            @break
+
                                                             @default
                                                                 Pendente de Dados
                                                             @break
@@ -184,6 +192,8 @@
                                                                                 <option value="4">Processo iniciado </option>
                                                                                 <option value="5">Processo em andamento</option>
                                                                                 <option value="6">Processo concluído </option>
+                                                                                <option value="7">Duplicado </option>
+                                                                                <option value="8">Lixeira </option>
                                                                             </select>
                                                                         </div>
                                                                     </div>

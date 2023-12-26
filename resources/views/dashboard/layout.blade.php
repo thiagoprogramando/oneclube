@@ -46,6 +46,7 @@
                 </a>
                 <div id="collapsePositive" class="collapse" aria-labelledby="headingPositive" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item dinamic-sale" href="" data-produto="1" data-trava="450">Limpa Nome</a>
                         <a class="collapse-item" href="{{ route('sales', ['produto' => 1]) }}">Minhas Vendas</a>
                     </div>
                 </div>
@@ -92,7 +93,7 @@
                     </a>
                     <div id="collapseVenda" class="collapse" aria-labelledby="headingGestao" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item dinamic-sale" href="" data-produto="1">Limpa Nome</a>
+                            <a class="collapse-item dinamic-open" href="" data-produto="1">Limpa Nome</a>
                         </div>
                     </div>
                 </li>
@@ -211,6 +212,8 @@
             vendaLink.addEventListener('click', function(e) {
                 e.preventDefault();
 
+                var dataTrava = parseFloat(vendaLink.getAttribute('data-trava'));
+
                 Swal.fire({
                     title: 'Informe o valor',
                     input: 'text',
@@ -219,28 +222,75 @@
                     cancelButtonText: 'Cancelar',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        var valorInserido = result.value;
-                        var novaURL = '{{ url("/limpanome/") }}/{{ auth()->id() }}/' + valorInserido;
+                        var valorInserido = parseFloat(result.value);
 
-                        Swal.fire({
-                            title: 'Nova URL gerada:',
-                            input: 'text',
-                            inputValue: novaURL,
-                            showCancelButton: true,
-                            confirmButtonText: 'Copiar URL',
-                            cancelButtonText: 'Cancelar',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                var inputElement = document.querySelector('.swal2-input');
-                                inputElement.select();
-                                document.execCommand('copy');
-                                Swal.fire('Link copiado com sucesso!', '', 'success');
-                            }
-                        });
+                        // Verifica se data-trava existe e se o valor é maior ou igual
+                        if (!isNaN(valorInserido) && (!dataTrava || valorInserido >= dataTrava)) {
+                            var novaURL = '{{ url("/limpanome/") }}/{{ auth()->id() }}/' + valorInserido;
+
+                            Swal.fire({
+                                title: 'Nova URL gerada:',
+                                input: 'text',
+                                inputValue: novaURL,
+                                showCancelButton: true,
+                                confirmButtonText: 'Copiar URL',
+                                cancelButtonText: 'Cancelar',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    var inputElement = document.querySelector('.swal2-input');
+                                    inputElement.select();
+                                    document.execCommand('copy');
+                                    Swal.fire('Link copiado com sucesso!', '', 'success');
+                                }
+                            });
+                        } else {
+                            Swal.fire('Valor inserido inválido.', '', 'error');
+                        }
+                    }
+                });
+            });
+
+            var vendaLivre = document.querySelector('.dinamic-open');
+
+            vendaLivre.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Informe o valor',
+                    input: 'text',
+                    showCancelButton: true,
+                    confirmButtonText: 'Próximo',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var valorInserido = parseFloat(result.value);
+
+                        if (!isNaN(valorInserido)) {
+                            var novaURL = '{{ url("/limpanome/") }}/{{ auth()->id() }}/' + valorInserido;
+
+                            Swal.fire({
+                                title: 'Nova URL gerada:',
+                                input: 'text',
+                                inputValue: novaURL,
+                                showCancelButton: true,
+                                confirmButtonText: 'Copiar URL',
+                                cancelButtonText: 'Cancelar',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    var inputElement = document.querySelector('.swal2-input');
+                                    inputElement.select();
+                                    document.execCommand('copy');
+                                    Swal.fire('Link copiado com sucesso!', '', 'success');
+                                }
+                            });
+                        } else {
+                            Swal.fire('Valor inserido inválido.', '', 'error');
+                        }
                     }
                 });
             });
         });
+
     </script>
 
 </body>

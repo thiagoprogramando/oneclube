@@ -19,12 +19,12 @@ class AssasController extends Controller {
     public function invoiceSale($id) {
 
         $sale = Sale::find($id);
-        $customer = $this->createCustomer($sale->name, $sale->cpfcnpj);
+        $customer = $this->createCustomer($sale->name, $sale->cpfcnpj, $sale->mobilePhone, $sale->email);
     
         if($customer) {
             $invoiceCount = 0;
             $installmentCount = $sale->installmentCount;
-            $initialPayment = 200;
+            $initialPayment = 300;
     
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
@@ -69,11 +69,9 @@ class AssasController extends Controller {
 
         $user = auth()->user();
         if($user->customer) {
-
             $customer = $user->customer;
         } else {
-
-            $customer = $this->createCustomer($user->name, $user->cpfcnpj);
+            $customer = $this->createCustomer($user->name, $user->cpfcnpj, $user->mobilePhone, $user->email);
             $user = User::where('id', $user->id)->first();
             $user->customer = $customer;
             $user->save();
@@ -96,7 +94,7 @@ class AssasController extends Controller {
         return redirect()->back()->with('error', 'Tivemos um pequeno problema, tente novamente mais tarde!');
     }
 
-    private function createCustomer($name, $cpfcnpj) {
+    private function createCustomer($name, $cpfcnpj, $mobilePhone, $email) {
         
         $client = new Client();
 
@@ -106,8 +104,10 @@ class AssasController extends Controller {
                 'access_token' => env('API_TOKEN_ASSAS'),
             ],
             'json' => [
-                'name'      => $name,
-                'cpfCnpj'   => $cpfcnpj,
+                'name'          => $name,
+                'cpfCnpj'       => $cpfcnpj,
+                'mobilePhone'   => $mobilePhone,
+                'email'         => $email,
             ],
             'verify' => false
         ];
@@ -265,7 +265,7 @@ class AssasController extends Controller {
                     $sale->save();
 
                     $link    = 'https://grupo7assessoria.com/cliente';
-                    $message = 'Olá, cliente G7. Recebemos o seu pagamento, segue link para acessar Faturas, consultar processos e demais informações sobre seus contratos';
+                    $message = 'Olá, cliente G7. Recebemos o seu pagamento, *segue link para acessar Faturas, consultar processos* e demais informações sobre seus contratos';
                     $whatsapp = new WhatsAppController();
                     $sendLink = $whatsapp->sendLink($sale->mobilePhone, $link, $message);
                 }

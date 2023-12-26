@@ -79,7 +79,7 @@
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <select name="installmentCount" class="form-control" id="installmentCount">
                                                         <option value="1">Parcelas</option>
-                                                        <option value="1">1X (Valor fixo de R$ 200)</option>
+                                                        <option value="1">1X (Valor fixo de R$ 300)</option>
                                                         <option value="2">2X</option>
                                                         <option value="3">3X</option>
                                                         <option value="4">4X</option>

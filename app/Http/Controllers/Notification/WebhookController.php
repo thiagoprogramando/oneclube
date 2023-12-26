@@ -31,7 +31,7 @@ class WebhookController extends Controller {
                     if($invoice) {
 
                         $sendLink = new WhatsAppController();
-                        $message = "Prezado Cliente G7, estamos enviando o link para pagamento referente ao serviço de Limpa Nome: \r\n \r\n";
+                        $message = "Prezado Cliente G7, *estamos enviando o link para pagamento* referente ao serviço de Limpa Nome: \r\n \r\n";
                         $sendLink = $sendLink->sendLink($sale->mobilePhone, $invoice->url, $message);
                         return response()->json(['message' => 'Ficha Finalizada Com Invoices Criadas e enviadas ao cliente!'], 200);
                     }

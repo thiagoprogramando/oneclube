@@ -23,7 +23,6 @@
                                                 <th>Documento</th>
                                                 <th>Produto</th>
                                                 <th>Situação Contrato</th>
-                                                <th>Situação Ficha</th>
                                                 <th class="text-center">Situação Produto</th>
                                                 <th class="text-center">Opções</th>
                                             </tr>
@@ -56,42 +55,43 @@
                                                                 @break
                                                         @endswitch
                                                     </td>
-                                                    <td>
-                                                        @switch($sale->status_ficha)
-                                                            @case('doc_signed')
-                                                                Assinado
-                                                                @break
-                                                            @case('null')
-                                                                <a target="_blank" href="{{ $sale->file_ficha }}">Aguardando Assinatura</a>
-                                                                @break
-                                                            @default
-                                                                <a target="_blank" href="{{ $sale->file_ficha }}">Aguardando Assinatura</a>
-                                                                @break
-                                                        @endswitch
-                                                    </td>
                                                     <td class="text-center">
                                                         @switch($sale->tag)
                                                             @case(1)
                                                                 Aguardando Conclusão de Documentos
-                                                                @break
+                                                            @break
+
                                                             @case(2)
                                                                 Aguardando Conclusão de Honorários
-                                                                @break
+                                                            @break
+
                                                             @case(3)
                                                                 Processo em fila
-                                                                @break
+                                                            @break
+
                                                             @case(4)
                                                                 Processo iniciado
-                                                                @break
+                                                            @break
+
                                                             @case(5)
                                                                 Processo em andamento
-                                                                @break
+                                                            @break
+
                                                             @case(6)
                                                                 Processo concluído
-                                                                @break
+                                                            @break
+
+                                                            @case(7)
+                                                                Duplicado
+                                                            @break
+
+                                                            @case(8)
+                                                                Lixeira
+                                                            @break
+
                                                             @default
                                                                 Pendente de Dados
-                                                                @break
+                                                            @break
                                                         @endswitch
                                                     </td>
                                                     <td class="text-center">

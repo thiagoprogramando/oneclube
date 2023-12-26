@@ -21,5 +21,25 @@
         <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
         <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso!',
+                    text: `{{ session('success') }}`,
+                })
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Atenção',
+                    text: `{{ session('error') }}`,
+                })
+            </script>
+        @endif
     </body>
 </html>

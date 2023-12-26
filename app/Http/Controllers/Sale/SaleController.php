@@ -111,6 +111,11 @@ class SaleController extends Controller {
 
     public function sell(Request $request, $id) {
 
+        $verifySale = Sale::where('cpfcnpj', preg_replace('/[^0-9]/', '', $request->cpfcnpj))->first();
+        if ($verifySale) {
+            return redirect()->back()->with('error', 'Já registramos sua solicitação, te enviaremos por whatsapp!');
+        }
+
         $validator = Validator::make($request->all(), [
             'name'          => 'required|string|max:255',
             'cpfcnpj'       => 'required|string|max:255',
@@ -189,7 +194,7 @@ class SaleController extends Controller {
             $saleData['installmentCount'] = $request->installmentCount;
         }
 
-        $saleData['ato'] = $request->installmentCount > 1 ? 200 : $request->valor;
+        $saleData['ato'] = $request->installmentCount > 1 ? 300 : $request->valor;
 
         $venda = Sale::create($saleData);
         if (!$venda) {
