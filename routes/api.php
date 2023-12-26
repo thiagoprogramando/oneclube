@@ -11,4 +11,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('webhookInvoice', [AssasController::class, 'webhookInvoice'])->name('webhookInvoice');
+Route::post('webhookAccount', [AssasController::class, 'webhookAccount'])->name('webhookAccount');
 Route::post('webhookClicksing', [WebhookController::class, 'webhookClicksing'])->name('webhookClicksing');

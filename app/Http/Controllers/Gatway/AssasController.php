@@ -191,28 +191,28 @@ class AssasController extends Controller {
                 'province'      => $address->province,
                 'postalCode'    => $address->postalCode,
                 "accountStatusWebhook" => [
-                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookInvoice",
+                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
                     "email"         => "suporte@thiagoprogramando.com.br",
                     "interrupted"   => false,
                     "enabled"       =>  true,
                     "apiVersion"    =>  3,
                 ],
                 "transferWebhook"      => [
-                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookInvoice",
+                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
                     "email"         => "suporte@thiagoprogramando.com.br",
                     "interrupted"   => false,
                     "enabled"       =>  true,
                     "apiVersion"    =>  3,
                 ],
                 "paymentWebhook"       => [
-                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookInvoice",
+                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
                     "email"         => "suporte@thiagoprogramando.com.br",
                     "interrupted"   => false,
                     "enabled"       =>  true,
                     "apiVersion"    =>  3,
                 ],
                 "invoiceWebhook"        => [
-                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookInvoice",
+                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
                     "email"         => "suporte@thiagoprogramando.com.br",
                     "interrupted"   => false,
                     "enabled"       =>  true,
@@ -274,6 +274,10 @@ class AssasController extends Controller {
             return response()->json(['status' => 'success', 'message' => 'Requisição tratada!']);
         }
 
+        return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado!']);
+    }
+
+    public function webhookAccount(Request $request) {
         return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado!']);
     }
 
