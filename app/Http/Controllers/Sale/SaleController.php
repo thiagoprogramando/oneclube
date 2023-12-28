@@ -234,7 +234,7 @@ class SaleController extends Controller {
 
         $client = new Client();
 
-        $url = env('API_URL_CLICKSING') . 'api/v1/models/create-doc/';
+        $url = env('API_URL_ZAPSIGN') . 'api/v1/models/create-doc/';
 
         $currentDate = Carbon::now();
         $formattedDate = $currentDate->format('Y-m-d');
@@ -289,7 +289,7 @@ class SaleController extends Controller {
                 'headers' => [
                     'Content-Type'  => 'application/json',
                     'Accept'        => 'application/json',
-                    'Authorization' => 'Bearer'.env('TOKEN_ZAPSING'),
+                    'Authorization' => 'Bearer'.env('API_TOKEN_ZAPSIGN'),
                 ],
                 'json' => [
                     "template_id"       => '8c27c6ca-bda9-4ead-a5ce-55070066abda',
