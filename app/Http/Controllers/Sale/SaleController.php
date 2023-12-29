@@ -174,13 +174,9 @@ class SaleController extends Controller {
             $saleData['installmentCount'] = $request->installmentCount;
         }
 
-        $venda = Sale::create($saleData);
-        if (!$venda) {
-            return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
-        }
-
         $document = $this->criaDocumento($saleData);
         if ($document['signers'][0]['sign_url']) {
+            $venda = Sale::create($saleData);
             $venda->id_contrato = $document['token'];
             $venda->sign_url_contrato = $document['signers'][0]['sign_url'];
             $venda->save();
