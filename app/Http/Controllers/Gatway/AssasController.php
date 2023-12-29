@@ -20,6 +20,7 @@ class AssasController extends Controller {
 
         $sale = Sale::find($id);
         $customer = $this->createCustomer($sale->name, $sale->cpfcnpj, $sale->mobilePhone, $sale->email);
+        $comission = $sale->comission / $sale->installmentCount;
     
         if($customer) {
             $invoiceCount = 0;
@@ -28,19 +29,9 @@ class AssasController extends Controller {
     
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
-    
-            while ($invoiceCount < $installmentCount) {
-                if ($invoiceCount > 0) {
-                    $dueDate->addMonth();
-                }
-    
-                if ($installmentCount <= 1) {
-                    $chargeValue = $sale->value;
-                } else {
-                    $chargeValue = ($invoiceCount == 0) ? $initialPayment : (($sale->value - $initialPayment) / ($installmentCount - 1));
-                }
-    
-                $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $sale->comission);
+
+            if($sale->billingType == "CREDIT_CARD") {
+                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $comission, $sale->installmentCount);
     
                 if ($charge) {
                     $invoice = new Invoice();
@@ -49,19 +40,49 @@ class AssasController extends Controller {
                     $invoice->description = $description;
                     $invoice->token = $charge['id'];
                     $invoice->url = $charge['invoiceUrl'];
-                    $invoice->value = $chargeValue;
+                    $invoice->value = $sale->value;
                     $invoice->status = "PENDING_PAY";
                     $invoice->type = 3;
                     $invoice->dueDate = $dueDate;
                     $invoice->save();
-    
-                    $invoiceCount++;
                 }
+
+            } else {
+
+                while ($invoiceCount < $installmentCount) {
+                    if ($invoiceCount > 0) {
+                        $dueDate->addMonth();
+                    }
+        
+                    if ($installmentCount <= 1) {
+                        $chargeValue = $sale->value;
+                    } else {
+                        $chargeValue = ($invoiceCount == 0) ? $initialPayment : (($sale->value - $initialPayment) / ($installmentCount - 1));
+                    }
+        
+                    $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $comission);
+        
+                    if ($charge) {
+                        $invoice = new Invoice();
+                        $invoice->idUser = $sale->id;
+                        $invoice->name = "Parcela N° " . ($invoiceCount + 1);
+                        $invoice->description = $description;
+                        $invoice->token = $charge['id'];
+                        $invoice->url = $charge['invoiceUrl'];
+                        $invoice->value = $chargeValue;
+                        $invoice->status = "PENDING_PAY";
+                        $invoice->type = 3;
+                        $invoice->dueDate = $dueDate;
+                        $invoice->save();
+        
+                        $invoiceCount++;
+                    }
+                }
+        
+                return true;
             }
-    
-            return true;
         }
-    
+
         return false;
     }
     
@@ -123,7 +144,7 @@ class AssasController extends Controller {
         }
     }
 
-    private function createCharge($customer, $billingType, $value, $description, $dueDate = null, $walletId = null, $percentualValue = null) {
+    private function createCharge($customer, $billingType, $value, $description, $dueDate = null, $walletId = null, $percentualValue = null, $installmentCount = null) {
 
         $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
 
@@ -140,6 +161,8 @@ class AssasController extends Controller {
                 'value'             => $value,
                 'dueDate'           => $dueDate != null ? $dueDate : $tomorrow,
                 'description'       => 'G7 - '.$description,
+                'installmentCount'  => $installmentCount != null ? $installmentCount : 1,
+                'installmentValue'  => $installmentCount != null ? ($value / $installmentCount) : $value,
             ],
             'verify' => false
         ];
