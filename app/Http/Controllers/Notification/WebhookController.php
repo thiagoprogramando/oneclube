@@ -16,10 +16,9 @@ class WebhookController extends Controller {
         
         $jsonData = $request->getContent();
         $data = json_decode($jsonData, true);
-
         if (isset($data['token']) && isset($data['event_type'])) {
             
-            $token = $data['token'];
+            return $token = $data['token'];
             $eventType = $data['event_type'];
 
             $sale = Sale::where('id_contrato', $token)->first();
