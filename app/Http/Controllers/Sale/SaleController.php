@@ -179,7 +179,7 @@ class SaleController extends Controller {
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
 
-        return $document = $this->criaDocumento($saleData);
+        $document = $this->criaDocumento($saleData);
         if ($document['signers'][0]['sign_url']) {
             $venda->id_contrato = $document['token'];
             $venda->sign_url_contrato = $document['signers'][0]['sign_url'];
@@ -258,7 +258,7 @@ class SaleController extends Controller {
                     'Authorization' => 'Bearer '.env('API_TOKEN_ZAPSIGN'),
                 ],
                 'json' => [
-                    "template_id"       => '8c27c6ca-bda9-4ead-a5ce-55070066abda',
+                    "template_id"       => '31842406-05a1-4cdb-8480-e58dd84032e0',
                     "signer_name"       => $data['name'],
                     "signer_email"      => $data['email'],
                     "folder_path"       => 'Limpa Nome '.$day.'-'.$monthName,
@@ -288,7 +288,7 @@ class SaleController extends Controller {
                             "para"  => $data['value']
                         ],
                         [
-                            "de"    => "ATO",
+                            "de"    => "PRIMEIRAPARCELA",
                             "para"  => $data['ato']
                         ],
                         [
