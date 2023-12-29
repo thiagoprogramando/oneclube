@@ -132,31 +132,11 @@ class SaleController extends Controller {
         $saleData = [
             'id_vendedor' => $id,
             'id_produto'  => $request->produto,
-            'name_doc'    => "Contrato Consultoria Financeira"
+            'name_doc'    => "Contrato Consultoria Financeira",
+            'value'       => $request->valor,
+            'comission'   => 0,
+            'ato'         => $request->installmentCount > 1 ? 300 : $request->valor
         ];
-
-        switch ($request->valor) {
-            case 1997:
-                $saleData['value'] = $request->valor;
-                $saleData['comission'] = 50;
-                break;
-            case 1497:
-                $saleData['value'] = $request->valor;
-                $saleData['comission'] = 40;
-                break;
-            case 1197:
-                $saleData['value'] = $request->valor;
-                $saleData['comission'] = 30;
-                break;
-            case 997:
-                $saleData['value'] = $request->valor;
-                $saleData['comission'] = 20;
-                break;
-            default:
-                $saleData['value'] = $request->valor;
-                $saleData['comission'] = 0;
-                break;
-        }
 
         if (!empty($request->name)) {
             $saleData['name'] = $request->name;
@@ -193,8 +173,6 @@ class SaleController extends Controller {
         if (!empty($request->installmentCount)) {
             $saleData['installmentCount'] = $request->installmentCount;
         }
-
-        $saleData['ato'] = $request->installmentCount > 1 ? 300 : $request->valor;
 
         $venda = Sale::create($saleData);
         if (!$venda) {
