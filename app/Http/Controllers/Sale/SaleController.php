@@ -321,6 +321,10 @@ class SaleController extends Controller {
                             "para"  => $data['ato']
                         ],
                         [
+                            "de"    => "VALOR",
+                            "para"  => $data['value']
+                        ],
+                        [
                             "de"    => "DIA",
                             "para"  => $day
                         ],
