@@ -195,8 +195,6 @@ class SaleController extends Controller {
 
     private function criaDocumento($data) {
 
-        return $data['PRIMEIRAPARCELA'];
-
         $client = new Client();
 
         $url = env('API_URL_ZAPSIGN') . 'api/v1/models/create-doc/';
@@ -245,11 +243,11 @@ class SaleController extends Controller {
                 $monthName = 'Mês Desconhecido';
                 break;
         }
-
         $year = $currentDate->format('Y');
 
-        try {
-            $response = $client->post($url, [
+        // try {
+            // $client->post($url,
+            return $response = [
                 'headers' => [
                     'Content-Type'  => 'application/json',
                     'Authorization' => 'Bearer '.env('API_TOKEN_ZAPSIGN'),
@@ -303,16 +301,17 @@ class SaleController extends Controller {
                     ],
                 ],
                         
-            ]);
-
-            return json_decode($response->getBody(), true);
-        } catch (RequestException $e) {
-            return [
-                'error' => 'Erro ao criar o documento',
-                'message' => $e->getMessage(),
-                'response' => $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null,
             ];
-        }
+        // );
+
+            // return json_decode($response->getBody(), true);
+        // } catch (RequestException $e) {
+        //     return [
+        //         'error' => 'Erro ao criar o documento',
+        //         'message' => $e->getMessage(),
+        //         'response' => $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null,
+        //     ];
+        // }
     }
 
     private function notificarSignatario($contrato, $telefone, $message) {
