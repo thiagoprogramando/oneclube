@@ -174,7 +174,7 @@ class SaleController extends Controller {
             $saleData['installmentCount'] = $request->installmentCount;
         }
 
-        return $document = $this->criaDocumento($saleData);
+        $document = $this->criaDocumento($saleData);
         if ($document['signers'][0]['sign_url']) {
             $venda = Sale::create($saleData);
             $venda->id_contrato = $document['token'];
@@ -245,9 +245,8 @@ class SaleController extends Controller {
         }
         $year = $currentDate->format('Y');
 
-        // try {
-            // $client->post($url,
-            return $response = [
+        try {
+            $response = $client->post($url, [
                 'headers' => [
                     'Content-Type'  => 'application/json',
                     'Authorization' => 'Bearer '.env('API_TOKEN_ZAPSIGN'),
@@ -301,17 +300,16 @@ class SaleController extends Controller {
                     ],
                 ],
                         
-            ];
-        // );
+            ]);
 
-            // return json_decode($response->getBody(), true);
-        // } catch (RequestException $e) {
-        //     return [
-        //         'error' => 'Erro ao criar o documento',
-        //         'message' => $e->getMessage(),
-        //         'response' => $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null,
-        //     ];
-        // }
+            return json_decode($response->getBody(), true);
+        } catch (RequestException $e) {
+            return [
+                'error' => 'Erro ao criar o documento',
+                'message' => $e->getMessage(),
+                'response' => $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null,
+            ];
+        }
     }
 
     private function notificarSignatario($contrato, $telefone, $message) {
