@@ -39,9 +39,9 @@ class SaleController extends Controller {
             $dataInicio = Carbon::parse($dataInicio);
             $dataFim = Carbon::parse($dataFim);
 
-            $sales = Sale::where('id_produto', $request->input('id'))->where('id_vendedor', $user->id)->whereBetween('updated_at', [$dataInicio, $dataFim])->get();
+            $sales = Sale::where('id_produto', $request->input('id'))->where('id_vendedor', $user->id)->whereBetween('updated_at', [$dataInicio, $dataFim])->latest('created_at')->get();
         } else {
-            $sales = Sale::where('id_produto', $request->input('id'))->where('id_vendedor', $user->id)->get();
+            $sales = Sale::where('id_produto', $request->input('id'))->where('id_vendedor', $user->id)->latest('created_at')->get();
         }
 
         return view('dashboard.users.sales', [
