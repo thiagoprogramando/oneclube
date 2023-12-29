@@ -179,7 +179,7 @@ class SaleController extends Controller {
             return redirect()->route($request->franquia)->withErrors(['Falha no cadastro. Por favor, tente novamente.']);
         }
 
-        $document = $this->criaDocumento($saleData);
+        return $document = $this->criaDocumento($saleData);
         if ($document['signers'][0]['sign_url']) {
             $venda->id_contrato = $document['token'];
             $venda->sign_url_contrato = $document['signers'][0]['sign_url'];
@@ -199,12 +199,12 @@ class SaleController extends Controller {
 
     private function criaDocumento($data) {
 
+        return $data;
         $client = new Client();
 
         $url = env('API_URL_ZAPSIGN') . 'api/v1/models/create-doc/';
 
         $currentDate = Carbon::now();
-        $formattedDate = $currentDate->format('Y-m-d');
         $day = $currentDate->format('d');
         $month = $currentDate->format('m');
         switch ($month) {
@@ -284,12 +284,12 @@ class SaleController extends Controller {
                             "para"  => $data['address']
                         ],
                         [
-                            "de"    => "ATO",
-                            "para"  => $data['ato']
-                        ],
-                        [
                             "de"    => "VALOR",
                             "para"  => $data['value']
+                        ],
+                        [
+                            "de"    => "ATO",
+                            "para"  => $data['ato']
                         ],
                         [
                             "de"    => "DIA",
@@ -317,87 +317,6 @@ class SaleController extends Controller {
             ];
         }
     }
-
-    // private function criaSignatario($data) {
-    //     $client = new Client();
-
-    //     $url = env('API_URL_ZAPSING') . 'api/v1/docs/'.$data['token'].'/add-signer/';
-
-    //     try {
-    //         $response = $client->post($url, [
-    //             'headers' => [
-    //                 'Content-Type'  => 'application/json',
-    //                 'Accept'        => 'application/json',
-    //                 'Authorization' => 'Bearer '.env('TOKEN_ZAPSING'),
-    //             ],
-    //             'json' => [
-    //                 'signer' => [
-    //                     'name'                       => $data['name'],
-    //                     'email'                      => $data['email'],
-    //                     'phone_country'              => 55,
-    //                     'phone_number'               => $data['mobilePhone'],
-    //                     'auth_mode'                  => 'tokenEmail',
-    //                     'send_automatic_email'       => 'false',
-    //                     'send_automatic_whatsapp'    => 'false',
-    //                 ],
-    //             ],
-    //         ]);
-
-    //         $responseData = json_decode($response->getBody(), true);
-
-    //         if (isset($responseData['sign_url'])) {
-    //             return  $responseData['sign_url'];
-    //         } else {
-    //             return false;
-    //         }
-    //     } catch (RequestException $e) {
-    //         return [
-    //             'error' => 'Erro ao criar o signatário',
-    //             'message' => $e->getMessage(),
-    //             'response' => $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null,
-    //         ];
-    //     }
-    // }
-
-    // private function adiconaSignatario($keyDocumento, $keySignatario) {
-        
-    //     $client = new Client();
-
-    //     $url = env('API_URL_CLICKSING') . 'api/v1/lists?access_token=' . env('TOKEN_CLICKSING');
-
-    //     $response = $client->post($url, [
-    //         'headers' => [
-    //             'Content-Type' => 'application/json',
-    //             'Accept' => 'application/json',
-    //         ],
-    //         'json' => [
-    //             'list' => [
-    //                 'document_key'  => $keyDocumento,
-    //                 'signer_key'    => $keySignatario,
-    //                 'sign_as'       => 'contractor',
-    //                 'refusable'     => false,
-    //                 'message'       => 'Querido cliente, por favor, assine o contrato como confirmação de adesão ao nosso produto!'
-    //             ],
-    //         ],
-    //     ]);
-
-    //     $responseData = json_decode($response->getBody(), true);
-
-    //     if (isset($responseData['list']['key'])) {
-
-    //         $result = [
-    //             'type' => true,
-    //             'key'  => $responseData['list']['key'],
-    //             'url' => $responseData['list']['url']
-    //         ];
-    //         return $result;
-    //     } else {
-    //         $result = [
-    //             'type' => false,
-    //         ];
-    //         return $result;
-    //     }
-    // }
 
     private function notificarSignatario($contrato, $telefone, $message) {
 
