@@ -67,7 +67,7 @@ class SaleController extends Controller {
 
         return view('dashboard.manager.sales', [
             'users' => User::all(),
-            'sales' => Sale::all(),
+            'sales' => Sale::orderBy('created_at', 'desc')->get(),
         ]);
     }
 
@@ -101,7 +101,7 @@ class SaleController extends Controller {
             $sales->whereBetween('updated_at', [$dataInicio, $dataFim]);
         }
 
-        $sales = $sales->get();
+        $sales = $sales->latest('created_at')->get();
 
         return view('dashboard.manager.sales', [
             'sales' => $sales,
