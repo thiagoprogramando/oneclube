@@ -174,7 +174,7 @@ class SaleController extends Controller {
             $saleData['installmentCount'] = $request->installmentCount;
         }
 
-        $document = $this->criaDocumento($saleData);
+        return $document = $this->criaDocumento($saleData);
         if ($document['signers'][0]['sign_url']) {
             $venda = Sale::create($saleData);
             $venda->id_contrato = $document['token'];
@@ -194,6 +194,8 @@ class SaleController extends Controller {
     }
 
     private function criaDocumento($data) {
+
+        return $data['PRIMEIRAPARCELA'];
 
         $client = new Client();
 
