@@ -288,8 +288,7 @@ class SaleController extends Controller {
             $response = $client->post($url, [
                 'headers' => [
                     'Content-Type'  => 'application/json',
-                    'Accept'        => 'application/json',
-                    'Authorization' => 'Bearer'.env('API_TOKEN_ZAPSIGN'),
+                    'Authorization' => 'Bearer '.env('API_TOKEN_ZAPSIGN'),
                 ],
                 'json' => [
                     "template_id"       => '8c27c6ca-bda9-4ead-a5ce-55070066abda',
