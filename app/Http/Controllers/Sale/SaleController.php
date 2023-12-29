@@ -337,8 +337,7 @@ class SaleController extends Controller {
                         
             ]);
 
-            $responseData = json_decode($response->getBody(), true);
-            return $responseData['signers']['sign_url'];
+            return json_decode($response->getBody(), true);
         } catch (RequestException $e) {
             return [
                 'error' => 'Erro ao criar o documento',
