@@ -12,15 +12,19 @@ use Illuminate\Http\Request;
 
 class WebhookController extends Controller {
 
-    public function webhookClicksing(Request $request) {
+    public function webhookZapSin(Request $request) {
+        
+        $jsonData = $request->getContent();
+        $data = json_decode($jsonData, true);
 
-        $jsonData = $request->json()->all();
-        if ($jsonData['event']['name'] === 'sign') {
-            $key = $jsonData['document']['key'];
+        if (isset($data['token']) && isset($data['event_type'])) {
+            
+            $token = $data['token'];
+            $eventType = $data['event_type'];
 
-            $sale = Sale::where('id_contrato', $key)->first();
-            if($sale && $sale->status_produto != 'doc_signed') {
-                $sale->status_produto = 'doc_signed';
+            $sale = Sale::where('id_contrato', $token)->first();
+            if ($sale && $sale->status_produto !== null && $eventType == 'doc_signed') {
+                $sale->status_produto = $eventType;
                 $sale->save();
 
                 $createInvoices = new AssasController;
@@ -33,14 +37,17 @@ class WebhookController extends Controller {
                         $sendLink = new WhatsAppController();
                         $message = "Prezado Cliente G7, *estamos enviando o link para pagamento* referente ao serviço de Limpa Nome: \r\n \r\n";
                         $sendLink = $sendLink->sendLink($sale->mobilePhone, $invoice->url, $message);
-                        return response()->json(['message' => 'Ficha Finalizada Com Invoices Criadas e enviadas ao cliente!'], 200);
+                        return response()->json(['message' => 'Processo concluído!'], 200);
                     }
 
-                    return response()->json(['message' => 'Ficha Finalizada Com Invoices Criadas.'], 200);
+                    return response()->json(['message' => 'Faturas criadas!'], 200);
                 }
             }
 
             return response()->json(['message' => 'Nenhuma operação finalizada!'], 200);
+        } else {
+            
+            return response()->json(['error' => 'Token e Event Não Localizados'], 200);
         }
 
         return response()->json(['error' => 'Webhook não utilizado.'], 200);
