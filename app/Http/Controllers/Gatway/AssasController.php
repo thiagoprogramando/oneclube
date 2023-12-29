@@ -47,6 +47,7 @@ class AssasController extends Controller {
                     $invoice->save();
                 }
 
+                return true;
             } else {
 
                 while ($invoiceCount < $installmentCount) {
