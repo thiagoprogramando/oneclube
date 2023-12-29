@@ -14,8 +14,8 @@ class WebhookController extends Controller {
 
     public function webhookZapSin(Request $request) {
         
-        return $jsonData = $request->getContent();
-        $data = json_decode($jsonData, true);
+        $jsonData = $request->getContent();
+        return $data = json_decode($jsonData, true);
 
         if (isset($data['token']) && isset($data['event_type'])) {
             
