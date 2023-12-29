@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Gatway\AssasController;
 use App\Http\Controllers\Notification\WhatsAppController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 use Carbon\Carbon;
 
@@ -46,6 +48,16 @@ class ManagerController extends Controller {
     }
     
     public function createUser(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => [ 'required', 'email', 'max:255', 'unique:users'],
+            'cpfcnpj' => [ 'required', 'string', 'max:14', 'unique:users'],
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', 'Email/CpfCnpj já cadastrado!');
+        }
 
         $attributes = [
             'name'          => $request->name,

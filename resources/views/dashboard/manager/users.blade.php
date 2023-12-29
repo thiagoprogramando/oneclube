@@ -61,52 +61,57 @@
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
-                            <input type="text" class="form-control" name="name" placeholder="Nome">
+                            <input type="text" class="form-control" name="name" placeholder="Nome" required>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
-                                <input type="text" class="form-control" name="cpfcnpj" placeholder="CPF ou CNPJ" oninput="mascaraCpfCnpj(this)">
+                                <input type="text" class="form-control" name="cpfcnpj" placeholder="CPF ou CNPJ" oninput="mascaraCpfCnpj(this)" required>
                             </div>
                             <div class="col-6 form-group">
-                                <input type="text" class="form-control" name="birthDate" placeholder="Data de Nascimento" oninput="mascaraData(this)">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 form-group">
-                                <input type="email" class="form-control" name="email" placeholder="Email">
-                            </div>
-                            <div class="col-6 form-group">
-                                <input type="text" class="form-control" name="mobilePhone" placeholder="Celular (Whatsapp)" oninput="mascaraTelefone(this)">
+                                <input type="text" class="form-control" name="birthDate" placeholder="Data de Nascimento" oninput="mascaraData(this)" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
-                                <input type="number" class="form-control" name="postalCode" placeholder="CEP" onblur="consultaCEP()">
+                                <input type="email" class="form-control" name="email" placeholder="Email" required>
                             </div>
                             <div class="col-6 form-group">
-                                <input type="text" class="form-control" name="address" placeholder="Rua, Travessa, Logradouro...">
+                                <input type="text" class="form-control" name="mobilePhone" placeholder="Celular (Whatsapp)" oninput="mascaraTelefone(this)" required>
                             </div>
-                            <div class="col-6 form-group">
-                                <input type="number" class="form-control" name="addressNumber" placeholder="Número">
-                            </div>
-                            <div class="col-6 form-group">
-                                <input type="text" class="form-control" name="complement" placeholder="Complemento">
-                            </div>
-
-                            <input type="hidden" name="province">
-                            <input type="hidden" name="city">
-                            <input type="hidden" name="state">
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
-                                <select name="tipo" class="form-control">
+                                <input type="number" class="form-control" name="postalCode" placeholder="CEP" onblur="consultaCEP()" required>
+                            </div>
+                            <div class="col-6 form-group">
+                                <input type="text" class="form-control" name="address" placeholder="Rua, Travessa, Logradouro..." required>
+                            </div>
+                            <div class="col-6 form-group">
+                                <input type="number" class="form-control" name="addressNumber" placeholder="Número" required>
+                            </div>
+                            <div class="col-6 form-group">
+                                <input type="text" class="form-control" name="complement" placeholder="Complemento" required>
+                            </div>
+                            <div class="col-6 form-group">
+                                <input type="text" class="form-control" name="province" placeholder="Bairro" required>
+                            </div>
+                            <div class="col-6 form-group">
+                                <input type="text" class="form-control" name="city" placeholder="Cidate" required>
+                            </div>
+                            <div class="col-12 form-group">
+                                <input type="text" class="form-control" name="state" placeholder="Estado" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <select name="tipo" class="form-control" required>
                                     <option value="2" selected>Tipo</option>
                                     <option value="2">Assinante</option>
                                     <option value="2">Administrador</option>
                                 </select>
                             </div>
                             <div class="col-6 form-group">
-                                <select name="companyType" class="form-control">
+                                <select name="companyType" class="form-control" required>
                                     <option value="PF" selected>Porte</option>
                                     <option value="PF">PF</option>
                                     <option value="MEI">MEI</option>
