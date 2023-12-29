@@ -22,7 +22,7 @@ class AssasController extends Controller {
         $customer = $this->createCustomer($sale->name, $sale->cpfcnpj, $sale->mobilePhone, $sale->email);
     
         if($customer) {
-            $invoiceCount = 0;
+            $invoiceCount = 1;
             $installmentCount = $sale->installmentCount;
             $initialPayment = 300;
     
