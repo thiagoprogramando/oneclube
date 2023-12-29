@@ -294,7 +294,7 @@ class SaleController extends Controller {
                     "template_id"       => '8c27c6ca-bda9-4ead-a5ce-55070066abda',
                     "signer_name"       => $data['name'],
                     "signer_email"      => $data['email'],
-                    "folder_path"       => 'Limpa Nome '.$day.'/'.$monthName,
+                    "folder_path"       => 'Limpa Nome '.$day.'-'.$monthName,
                     "data"  => [
                         [
                             "de"    => "NOME",
