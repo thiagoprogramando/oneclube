@@ -130,12 +130,12 @@ class SaleController extends Controller {
         }
 
         $saleData = [
-            'id_vendedor' => $id,
-            'id_produto'  => $request->produto,
-            'name_doc'    => "Contrato Consultoria Financeira",
-            'value'       => $request->valor,
-            'comission'   => 0,
-            'ato'         => $request->installmentCount > 1 ? 300 : $request->valor
+            'id_vendedor'     => $id,
+            'id_produto'      => $request->produto,
+            'name_doc'        => "Contrato Consultoria Financeira",
+            'value'           => $request->valor,
+            'comission'       => 0,
+            'PRIMEIRAPARCELA' => $request->installmentCount > 1 ? 300 : $request->valor
         ];
 
         if (!empty($request->name)) {
@@ -284,7 +284,7 @@ class SaleController extends Controller {
                         ],
                         [
                             "de"    => "PRIMEIRAPARCELA",
-                            "para"  => $data['ato']
+                            "para"  => $data['PRIMEIRAPARCELA']
                         ],
                         [
                             "de"    => "DIA",
