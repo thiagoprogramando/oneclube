@@ -199,7 +199,6 @@ class SaleController extends Controller {
 
     private function criaDocumento($data) {
 
-        return $data;
         $client = new Client();
 
         $url = env('API_URL_ZAPSIGN') . 'api/v1/models/create-doc/';
