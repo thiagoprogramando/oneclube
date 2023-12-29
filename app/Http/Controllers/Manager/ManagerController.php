@@ -23,7 +23,7 @@ class ManagerController extends Controller {
 
         $user = auth()->user();
 
-        $sales = Sale::where('id_vendedor', $user->id)->limit(15)->get();
+        $sales = Sale::where('id_vendedor', $user->id)->orderBy('created_at', 'desc')->limit(20)->get();
 
         if($user->apiKey != null) {
             $assas = new AssasController();

@@ -20,7 +20,7 @@ class SaleController extends Controller {
     public function getSales($id) {
 
         $users = auth()->user();
-        $sales = Sale::where('id_produto', $id)->where('id_vendedor', $users->id)->latest()->limit(30)->get();
+        $sales = Sale::where('id_produto', $id)->where('id_vendedor', $users->id)->latest('created_at')->limit(30)->get();
 
         return view('dashboard.users.sales', [
             'sales' => $sales,
