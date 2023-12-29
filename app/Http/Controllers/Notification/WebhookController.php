@@ -17,8 +17,6 @@ class WebhookController extends Controller {
         $jsonData = $request->getContent();
         $data = json_decode($jsonData, true);
 
-        var_dump($data);
-
         if (isset($data['token']) && isset($data['event_type'])) {
             
             $token = $data['token'];
