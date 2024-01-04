@@ -23,8 +23,11 @@ class ManagerController extends Controller {
 
         $user = auth()->user();
 
-        $sales = Sale::where('id_vendedor', $user->id)->orderBy('created_at', 'desc')->limit(20)->get();
+        if($user->status == 2) {
+            return redirect()->route('profile')->with('error', 'Você tem documentos pendentes, envie-os para obter todas às funcionalidades!');
+        } 
 
+        $sales = Sale::where('id_vendedor', $user->id)->orderBy('created_at', 'desc')->limit(20)->get();
         if($user->apiKey != null) {
             $assas = new AssasController();
             $balance = $assas->balance();
@@ -96,12 +99,12 @@ class ManagerController extends Controller {
             $invoice->name = 'Liberação de Acesso';
             $invoice->description = 'Voucher para liberação e cadastro no Sistema';
             $invoice->type = 1;
-            $invoice->value = 59;
+            $invoice->value = 99;
             $invoice->status = 'PENDING_PAY';
             $invoice->save();
 
-            $link = "https://grupo7assessoria.com.br/";
-            $message = "Prezado Cliente, bem-vindo(a) G7 - Assessoria. Estamos enviando um link para acesso ao nosso Sistema de Parceiros! \r\n \r\n \r\n Para acessar, utilize seu Email: ".$user->email."\r\n E como senha: SEU CPF \r\n \r\n";
+            $link = "https://grupo7assessoria.com/";
+            $message = "✅✅ Prezado Parceiro, bem-vindo(a) G7 - Assessoria. \r\n Estamos enviando um link para acesso ao nosso Sistema de Parceiros! \r\n \r\n Para acessar, utilize seu Email: ".$user->email."\r\n E como senha: SEU CPF (sem pontos ou traços) \r\n 👇🏼👇🏼👇🏼👇🏼👇🏼";
             $notification = new WhatsAppController();
             $sendLink = $notification->sendLink($user->mobilePhone, $link, $message);
             if($sendLink) {

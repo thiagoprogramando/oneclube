@@ -42,6 +42,7 @@
                                                             <form action="{{ route('invoiceCreate') }}" method="POST">
                                                                 @csrf
                                                                 <input type="hidden" name="id" value="{{ $invoice->id }}">
+                                                                <input type="hidden" name="type" value="{{ $invoice->type }}">
                                                                 <input type="hidden" name="value" value="{{ $invoice->value }}">
                                                                 <input type="hidden" name="description" value="{{ $invoice->description }}">
                                                                 <input type="hidden" name="billingType" value="PIX">

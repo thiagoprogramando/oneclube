@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Controllers\Gatway\AssasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -34,7 +34,11 @@ class UserController extends Controller {
     public function profile() {
         
         $dados = Auth::User();
-        return view('dashboard.users.profile', ['dados'=> $dados]);
+
+        $myAccount = new AssasController();
+        $myDocuments = $myAccount->myAccount();
+
+        return view('dashboard.users.profile', ['dados'=> $dados, 'myDocuments' => $myDocuments]);
     }
 
     public function profileUpdate(Request $request) {

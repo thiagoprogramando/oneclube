@@ -25,7 +25,7 @@ class User extends Authenticatable
         'birthDate',
         'companyType',
         'type',
-        'status',
+        'status',  // 1 - Ativo 2 - Pendente de Aprovação 3 - Pendente de Pagamento
         'walletId',
         'apiKey'
     ];

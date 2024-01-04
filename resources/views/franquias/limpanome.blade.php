@@ -41,7 +41,7 @@
                                                     <input type="email" class="form-control form-control-user" name="email" value="{{ old('email') }}" placeholder="Email" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" class="form-control form-control-user" name="cpfcnpj" value="{{ old('cpfcnpj') }}" oninput="mascaraCpf(this)" maxlength="14" placeholder="CPF/CNPJ" required>
+                                                    <input type="text" class="form-control form-control-user" name="cpfcnpj" value="{{ old('cpfcnpj') }}" oninput="mascaraCpfCnpj(this)" maxlength="14" placeholder="CPF/CNPJ" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" class="form-control form-control-user" name="birthDate" value="{{ old('birthDate') }}" oninput="mascaraData(this)" maxlength="10" placeholder="Data de Nascimento" required>
@@ -79,7 +79,7 @@
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <select name="installmentCount" class="form-control" id="installmentCount">
                                                         <option value="1">Parcelas</option>
-                                                        <option value="1">1X (Valor fixo de R$ 300)</option>
+                                                        <option value="1">1X</option>
                                                         <option value="2">2X</option>
                                                         <option value="3">3X</option>
                                                         <option value="4">4X</option>
@@ -114,13 +114,22 @@
                 });
             });
             
-            function mascaraCpf(cpfInput) {
-                let cpf = cpfInput.value;
-                cpf = cpf.replace(/\D/g, '');
-                cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-                cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-                cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                cpfInput.value = cpf;
+            function mascaraCpfCnpj(input) {
+                let value = input.value;
+                value = value.replace(/\D/g, '');
+
+                if (value.length <= 11) {
+                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                } else {
+                    value = value.replace(/(\d{2})(\d)/, '$1.$2');
+                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                    value = value.replace(/(\d{3})(\d)/, '$1/$2');
+                    value = value.replace(/(\d{4})(\d)/, '$1-$2');
+                }
+
+                input.value = value;
             }
             
             function mascaraData(dataInput) {
@@ -162,12 +171,12 @@
                     var selectedBillingType = $(this).val();
                     $("#installmentCount").find('option').remove();
                     if (selectedBillingType === "CREDIT_CARD") {
-                        $("#installmentCount").append('<option value="1">1X (Valor fixo de R$ 300)</option>');
+                        $("#installmentCount").append('<option value="1">1X</option>');
                         for (var i = 2; i <= 12; i++) {
                             $("#installmentCount").append('<option value="' + i + '">' + i + 'X</option>');
                         }
                     } else if (selectedBillingType === "BOLETO") {
-                        $("#installmentCount").append('<option value="1">1X (Valor fixo de R$ 300)</option>');
+                        $("#installmentCount").append('<option value="1">1X (Entrada min de R$ 300)</option>');
                         for (var i = 2; i <= 3; i++) {
                             $("#installmentCount").append('<option value="' + i + '">' + i + 'X</option>');
                         }

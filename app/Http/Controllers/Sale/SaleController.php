@@ -134,8 +134,8 @@ class SaleController extends Controller {
             'id_produto'      => $request->produto,
             'name_doc'        => "Contrato Consultoria Financeira",
             'value'           => $request->valor,
-            'comission'       => ($request->valor - 450) - (($request->valor * 10) / 100),
-            'PRIMEIRAPARCELA' => $request->installmentCount > 1 ? 300 : $request->valor
+            'comission'       => $request->valor - 390,
+            'PRIMEIRAPARCELA' => $request->valor / $request->installmentCount < 300 ? 300 : $request->valor / $request->installmentCount,
         ];
 
         if (!empty($request->name)) {
@@ -181,7 +181,7 @@ class SaleController extends Controller {
             $venda->sign_url_contrato = $document['signers'][0]['sign_url'];
             $venda->save();
 
-            $message = "Prezado Cliente, segue seu *contrato de adesão* ao produto da G7 Assessoria: \r\n \r\n";
+            $message = "Prezado Cliente, segue seu *contrato de adesão* ao produto da G7 Assessoria: \r\n ASSINAR O CONTRATO CLICANDO NO LINK 👇🏼✍🏼";
             $notificar = $this->notificarSignatario($document['signers'][0]['sign_url'], $saleData['mobilePhone'], $message);
             if ($notificar != null) {
                 return redirect()->route('obrigado')->with('success', 'Obrigado! Enviaremos o contrato diretamente para o seu WhatsApp.');

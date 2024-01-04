@@ -20,18 +20,17 @@ class AssasController extends Controller {
 
         $sale = Sale::find($id);
         $customer = $this->createCustomer($sale->name, $sale->cpfcnpj, $sale->mobilePhone, $sale->email);
-        $comission = $sale->comission / $sale->installmentCount;
     
         if($customer) {
             $invoiceCount = 0;
             $installmentCount = $sale->installmentCount;
-            $initialPayment = 300;
+            $initialPayment = $sale->valor / $sale->installmentCount < 300 ? 300 : $sale->valor / $sale->installmentCount;
     
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
 
             if($sale->billingType == "CREDIT_CARD") {
-                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $comission, $sale->installmentCount);
+                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $sale->comission, $sale->installmentCount);
     
                 if ($charge) {
                     $invoice = new Invoice();
@@ -49,7 +48,7 @@ class AssasController extends Controller {
 
                 return true;
             } else {
-
+                $comission = $sale->comission / $sale->installmentCount;
                 while ($invoiceCount < $installmentCount) {
                     if ($invoiceCount > 0) {
                         $dueDate->addMonth();
@@ -60,7 +59,7 @@ class AssasController extends Controller {
                     } else {
                         $chargeValue = ($invoiceCount == 0) ? $initialPayment : (($sale->value - $initialPayment) / ($installmentCount - 1));
                     }
-        
+                    
                     $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $comission);
         
                     if ($charge) {
@@ -100,7 +99,15 @@ class AssasController extends Controller {
         }
 
         if($customer) {
-            $charge = $this->createCharge($customer, $request->billingType, $request->value, $request->description);
+            if($request->type  == 1 || $request->type  == 2) {
+                $walletId = "afd76f74-6dd8-487b-b251-28205161e1e6";
+                $percentualValue = "50";
+                $dueDate = now()->addDay();
+                $charge = $this->createCharge($customer, $request->billingType, $request->value, $request->description, $dueDate, $walletId, $percentualValue);
+            } else {
+                $charge = $this->createCharge($customer, $request->billingType, $request->value, $request->description);
+            }
+            
             if($charge) {
                 $invoice = Invoice::where('id', $request->id)->first();
                 $invoice->token = $charge['id'];
@@ -114,6 +121,35 @@ class AssasController extends Controller {
         }
 
         return redirect()->back()->with('error', 'Tivemos um pequeno problema, tente novamente mais tarde!');
+    }
+
+    public function myAccount() {
+
+        $user = auth()->user();
+
+        $client = new Client();
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'access_token' => $user->apiKey,
+            ],
+            'verify' => false
+        ];
+
+        $response = $client->get(env('API_URL_ASSAS') . 'v3/myAccount/documents', $options);
+        $body = (string) $response->getBody();
+        
+        if ($response->getStatusCode() === 200) {
+            $data = json_decode($body, true);
+    
+            if (isset($data['data'])) {
+                return $data['data'];
+            } else {
+                return [];
+            }
+        } else {
+            return false;
+        }
     }
 
     private function createCustomer($name, $cpfcnpj, $mobilePhone, $email) {
@@ -216,31 +252,31 @@ class AssasController extends Controller {
                 'postalCode'    => $address->postalCode,
                 "accountStatusWebhook" => [
                     "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
-                    "email"         => "suporte@thiagoprogramando.com.br",
+                    "email"         => "suporte@grupo7assessoria.com",
                     "interrupted"   => false,
-                    "enabled"       =>  true,
-                    "apiVersion"    =>  3,
+                    "enabled"       => true,
+                    "apiVersion"    => 3,
                 ],
                 "transferWebhook"      => [
                     "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
-                    "email"         => "suporte@thiagoprogramando.com.br",
+                    "email"         => "suporte@grupo7assessoria.com",
                     "interrupted"   => false,
-                    "enabled"       =>  true,
-                    "apiVersion"    =>  3,
+                    "enabled"       => true,
+                    "apiVersion"    => 3,
                 ],
                 "paymentWebhook"       => [
                     "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
-                    "email"         => "suporte@thiagoprogramando.com.br",
+                    "email"         => "suporte@grupo7assessoria.com",
                     "interrupted"   => false,
-                    "enabled"       =>  true,
-                    "apiVersion"    =>  3,
+                    "enabled"       => true,
+                    "apiVersion"    => 3,
                 ],
                 "invoiceWebhook"        => [
                     "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
-                    "email"         => "suporte@thiagoprogramando.com.br",
+                    "email"         => "suporte@grupo7assessoria.com",
                     "interrupted"   => false,
-                    "enabled"       =>  true,
-                    "apiVersion"    =>  3,
+                    "enabled"       => true,
+                    "apiVersion"    => 3,
                 ],
             ],
             'verify' => false
@@ -278,6 +314,7 @@ class AssasController extends Controller {
                     $user = User::where('id', $invoice->idUser)->first();
                     $user->walletId = $createApiKey['walletId'];
                     $user->apiKey   = $createApiKey['apiKey'];
+                    $user->status   = 2;
                     $user->save();
                 }
                 $invoice->status = 'PAYMENT_CONFIRMED';
@@ -289,7 +326,7 @@ class AssasController extends Controller {
                     $sale->save();
 
                     $link    = 'https://grupo7assessoria.com/cliente';
-                    $message = 'Olá, cliente G7. Recebemos o seu pagamento, *segue link para acessar Faturas, consultar processos* e demais informações sobre seus contratos';
+                    $message = "✅🥳 Olá, cliente G7. Recebemos o seu pagamento, *segue link para acessar Faturas, consultar processos* e demais informações sobre seus contratos. \r\n\r\n PRONTO AGORA SÓ ACOMPANHAR 👇🏼📲";
                     $whatsapp = new WhatsAppController();
                     $sendLink = $whatsapp->sendLink($sale->mobilePhone, $link, $message);
                 }
@@ -302,7 +339,21 @@ class AssasController extends Controller {
     }
 
     public function webhookAccount(Request $request) {
-        return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado!']);
+        
+        $jsonData = $request->json()->all();
+        $user = User::where('walletId', $jsonData['accountStatus']['id'])->first();
+
+        switch ($jsonData['event']) {
+            case 'ACCOUNT_STATUS_GENERAL_APPROVAL_APPROVED':
+                $user->status = 1;
+                $user->save();
+                break;
+            case 'ACCOUNT_STATUS_GENERAL_APPROVAL_PENDING':
+                $user->status = 2;
+                $user->save();
+                break;
+        }        
+        return response()->json(['status' => 'success', 'message' => 'Tratamento realizado para status da Conta!']);
     }
 
     public function balance() {
