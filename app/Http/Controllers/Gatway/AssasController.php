@@ -22,50 +22,69 @@ class AssasController extends Controller {
         $customer = $this->createCustomer($sale->name, $sale->cpfcnpj, $sale->mobilePhone, $sale->email);
         
         if ($customer) {
+            $invoiceCount = 0;
             $installmentCount = $sale->installmentCount;
-            $initialPayment = min(390, $sale->valor / $installmentCount);
-        
+            $initialPayment = max(390, $sale->valor / $sale->installmentCount);
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
-        
+    
             if ($sale->billingType == "CREDIT_CARD") {
                 $comission = $sale->comission - 0.49 - ($sale->comission * 3.99 / 100);
-                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $comission, $installmentCount);
-        
+                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $comission, $sale->installmentCount);
+    
                 if ($charge) {
-                    $this->createInvoice($sale, $charge, $description, $dueDate, $sale->value, 1);
-                    return true;
+                    $invoice = new Invoice();
+                    $invoice->idUser = $sale->id;
+                    $invoice->name = "Parcela N° " . ($invoiceCount + 1);
+                    $invoice->description = $description;
+                    $invoice->token = $charge['id'];
+                    $invoice->url = $charge['invoiceUrl'];
+                    $invoice->value = $sale->value;
+                    $invoice->status = "PENDING_PAY";
+                    $invoice->type = 3;
+                    $invoice->dueDate = $dueDate;
+                    $invoice->save();
                 }
+    
+                return true;
             } else {
-                $remainingValue = $sale->value;
-        
-                for ($invoiceCount = 1; $invoiceCount <= $installmentCount; $invoiceCount++) {
-                    if ($invoiceCount > 1) {
+                while ($invoiceCount < $installmentCount) {
+                    if ($invoiceCount >= 1) {
                         $dueDate->addMonth();
                     }
                     
-                    if ($invoiceCount === 1) {
-                        $chargeValue = min(390, $remainingValue);
-                        $comission = 0;
+                    if ($installmentCount > 1) {
+                        $chargeValue = ($sale->value / $sale->installmentCount) <= 390 ? 390 : ($sale->value / $sale->installmentCount);
                     } else {
-                        $chargeValue = max(0, ($remainingValue - $initialPayment) / ($installmentCount - 1));
-                        $comission = $remainingValue - $initialPayment;
+                        $chargeValue = $sale->value;
                     }
-        
+    
+                    $comission = $chargeValue > 390 ? ($chargeValue - 390) : 0;
+    
                     $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $comission);
-        
                     if ($charge) {
-                        $this->createInvoice($sale, $charge, $description, $dueDate, $chargeValue, $invoiceCount);
-                        $remainingValue -= $chargeValue;
+                        $invoice = new Invoice();
+                        $invoice->idUser = $sale->id;
+                        $invoice->name = "Parcela N° " . ($invoiceCount + 1);
+                        $invoice->description = $description;
+                        $invoice->token = $charge['id'];
+                        $invoice->url = $charge['invoiceUrl'];
+                        $invoice->value = $chargeValue;
+                        $invoice->status = "PENDING_PAY";
+                        $invoice->type = 3;
+                        $invoice->dueDate = $dueDate;
+                        $invoice->save();
+    
+                        $invoiceCount++;
                     }
                 }
-        
+    
                 return true;
             }
         }
-        
+    
         return false;
-    }
+    }    
     
     private function createInvoice($sale, $charge, $description, $dueDate, $value, $invoiceCount) {
         $invoice = new Invoice();
