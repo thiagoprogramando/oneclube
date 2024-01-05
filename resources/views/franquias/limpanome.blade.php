@@ -176,7 +176,7 @@
                             $("#installmentCount").append('<option value="' + i + '">' + i + 'X</option>');
                         }
                     } else if (selectedBillingType === "BOLETO") {
-                        $("#installmentCount").append('<option value="1">1X (Entrada min de R$ 300)</option>');
+                        $("#installmentCount").append('<option value="1">1X (Entrada min de R$ 390)</option>');
                         for (var i = 2; i <= 3; i++) {
                             $("#installmentCount").append('<option value="' + i + '">' + i + 'X</option>');
                         }
