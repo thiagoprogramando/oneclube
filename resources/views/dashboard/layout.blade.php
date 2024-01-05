@@ -46,7 +46,7 @@
                 </a>
                 <div id="collapsePositive" class="collapse" aria-labelledby="headingPositive" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item dinamic-sale" href="" data-produto="1" data-trava="390">Limpa Nome</a>
+                        <!--<a class="collapse-item dinamic-sale" href="" data-produto="1" data-trava="390">Limpa Nome</a>-->
                         <a class="collapse-item" href="{{ route('sales', ['produto' => 1]) }}">Minhas Vendas</a>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                     </a>
                     <div id="collapseVenda" class="collapse" aria-labelledby="headingGestao" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item dinamic-open" href="" data-produto="1">Limpa Nome</a>
+                            <!--<a class="collapse-item dinamic-open" href="" data-produto="1">Limpa Nome</a>-->
                         </div>
                     </div>
                 </li>
