@@ -24,7 +24,7 @@ class AssasController extends Controller {
         if($customer) {
             $invoiceCount = 0;
             $installmentCount = $sale->installmentCount;
-            $initialPayment = $sale->valor / $sale->installmentCount < 300 ? 300 : $sale->valor / $sale->installmentCount;
+            $initialPayment = $sale->valor / $sale->installmentCount < 390 ? 390 : $sale->valor / $sale->installmentCount;
     
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
@@ -251,28 +251,28 @@ class AssasController extends Controller {
                 'province'      => $address->province,
                 'postalCode'    => $address->postalCode,
                 "accountStatusWebhook" => [
-                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
+                    "url"           => "https://grupo7assessoria.com/api/webhookAccount",
                     "email"         => "suporte@grupo7assessoria.com",
                     "interrupted"   => false,
                     "enabled"       => true,
                     "apiVersion"    => 3,
                 ],
                 "transferWebhook"      => [
-                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
+                    "url"           => "https://grupo7assessoria.com/api/webhookAccount",
                     "email"         => "suporte@grupo7assessoria.com",
                     "interrupted"   => false,
                     "enabled"       => true,
                     "apiVersion"    => 3,
                 ],
                 "paymentWebhook"       => [
-                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
+                    "url"           => "https://grupo7assessoria.com/api/webhookAccount",
                     "email"         => "suporte@grupo7assessoria.com",
                     "interrupted"   => false,
                     "enabled"       => true,
                     "apiVersion"    => 3,
                 ],
                 "invoiceWebhook"        => [
-                    "url"           => "https://g7.thiagoprogramando.com.br/api/webhookAccount",
+                    "url"           => "https://grupo7assessoria.com/api/webhookAccount",
                     "email"         => "suporte@grupo7assessoria.com",
                     "interrupted"   => false,
                     "enabled"       => true,
