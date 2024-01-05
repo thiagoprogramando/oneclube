@@ -18,6 +18,7 @@ use Carbon\Carbon;
 class AssasController extends Controller {
 
     public function invoiceSale($id) {
+        
         return $sale = Sale::find($id);
         // $customer = $this->createCustomer($sale->name, $sale->cpfcnpj, $sale->mobilePhone, $sale->email);
         
