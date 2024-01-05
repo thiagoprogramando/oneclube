@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Gatway;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Notification\WhatsAppController;
-use App\Models\Address;
+
 use Illuminate\Http\Request;
 
 use App\Models\Invoice;
 use App\Models\Sale;
 use App\Models\User;
+use App\Models\Address;
 
 use GuzzleHttp\Client;
 use Carbon\Carbon;
@@ -19,87 +20,62 @@ class AssasController extends Controller {
     public function invoiceSale($id) {
 
         $sale = Sale::find($id);
+
         $customer = $this->createCustomer($sale->name, $sale->cpfcnpj, $sale->mobilePhone, $sale->email);
-    
-        if($customer) {
-            $invoiceCount = 0;
+        if ($customer) {
+
             $installmentCount = $sale->installmentCount;
-            $initialPayment = min(390, $sale->valor / $sale->installmentCount);
+            $initialPayment = max(390, $sale->valor / $installmentCount);
     
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
     
-            if($sale->billingType == "CREDIT_CARD") {
+            if ($sale->billingType == "CREDIT_CARD") {
+
                 $comission = $sale->comission - 0.49 - ($sale->comission * 3.99 / 100);
-                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $comission, $sale->installmentCount);
+                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $comission, $installmentCount);
     
                 if ($charge) {
-                    $invoice = new Invoice();
-                    $invoice->idUser = $sale->id;
-                    $invoice->name = "Parcela N° " . ($invoiceCount + 1);
-                    $invoice->description = $description;
-                    $invoice->token = $charge['id'];
-                    $invoice->url = $charge['invoiceUrl'];
-                    $invoice->value = $sale->value;
-                    $invoice->status = "PENDING_PAY";
-                    $invoice->type = 3;
-                    $invoice->dueDate = $dueDate;
-                    $invoice->save();
+                    $this->createInvoice($sale, $charge, $description, $dueDate, $sale->value, 1);
+                    return true;
                 }
-    
-                return true;
             } else {
-                while ($invoiceCount < $installmentCount) {
-                    if ($invoiceCount >= 1) {
+                
+                for ($invoiceCount = 0; $invoiceCount < $installmentCount; $invoiceCount++) {
+                    if ($invoiceCount > 0) {
                         $dueDate->addMonth();
                     }
-                    
-                    if($installmentCount > 1) {
-                        $chargeValue = ($sale->value / $sale->installmentCount) <= 390 ? 390 : ($sale->value / $sale->installmentCount);
-                    } else {
-                        $chargeValue = $sale->value;
-                    }
-
-                    if($chargeValue <= 390) {
-                        $comission = ($sale->value - 390) / ($sale->installmentCount - 1);
-                    } else {
-                        $comission = ($sale->value - 390);
-                    }
-                    
+    
+                    $chargeValue = ($installmentCount > 1) ? max(390, ($sale->value - $initialPayment) / ($installmentCount - 1)) : $sale->value;
+                    $comission = ($invoiceCount === 0 || $initialPayment <= 390) ? 0 : ($sale->value - 390) / ($installmentCount - 1);
+    
                     $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $comission);
+    
                     if ($charge) {
-                        $invoice = new Invoice();
-                        $invoice->idUser = $sale->id;
-                        $invoice->name = "Parcela N° " . ($invoiceCount + 1);
-                        $invoice->description = $description;
-                        $invoice->token = $charge['id'];
-                        $invoice->url = $charge['invoiceUrl'];
-                        $invoice->value = $chargeValue;
-                        $invoice->status = "PENDING_PAY";
-                        $invoice->type = 3;
-                        $invoice->dueDate = $dueDate;
-
-                        // Adicionando tratamento para a primeira parcela
-                        if ($invoiceCount === 0) {
-                            $invoice->value = $initialPayment;
-                            $invoice->comission = 0; // Não há comissão na primeira parcela
-                        } else {
-                            $invoice->comission = $comission;
-                        }
-
-                        $invoice->save();
-
-                        $invoiceCount++;
+                        $this->createInvoice($sale, $charge, $description, $dueDate, $chargeValue, $invoiceCount + 1);
                     }
-
                 }
-        
+    
                 return true;
             }
         }
     
         return false;
-    }    
+    }
+    
+    private function createInvoice($sale, $charge, $description, $dueDate, $value, $invoiceCount) {
+        $invoice = new Invoice();
+        $invoice->idUser = $sale->id;
+        $invoice->name = "Parcela N° " . $invoiceCount;
+        $invoice->description = $description;
+        $invoice->token = $charge['id'];
+        $invoice->url = $charge['invoiceUrl'];
+        $invoice->value = $value;
+        $invoice->status = "PENDING_PAY";
+        $invoice->type = 3;
+        $invoice->dueDate = $dueDate;
+        $invoice->save();
+    }
     
     public function invoiceCreate(Request $request) {
 
