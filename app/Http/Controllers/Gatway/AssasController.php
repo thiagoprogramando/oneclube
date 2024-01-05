@@ -24,13 +24,14 @@ class AssasController extends Controller {
         if($customer) {
             $invoiceCount = 0;
             $installmentCount = $sale->installmentCount;
-            $initialPayment = max(390, $sale->valor / $sale->installmentCount);
+            $initialPayment = min(390, $sale->valor / $sale->installmentCount);
     
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
     
             if($sale->billingType == "CREDIT_CARD") {
-                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $sale->commission, $sale->installmentCount);
+                $comission = $sale->comission - 0.49 - ($sale->comission * 3.99 / 100);
+                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $comission, $sale->installmentCount);
     
                 if ($charge) {
                     $invoice = new Invoice();
@@ -49,28 +50,23 @@ class AssasController extends Controller {
                 return true;
             } else {
                 while ($invoiceCount < $installmentCount) {
-                    if ($invoiceCount > 0) {
+                    if ($invoiceCount >= 1) {
                         $dueDate->addMonth();
                     }
                     
-                    if ($installmentCount > 1) {
-                        $remainingValue = $sale->valor - $initialPayment; // Valor restante após a primeira parcela
-                        $remainingInstallments = $installmentCount - 1; // Número de parcelas restantes
-    
-                        if ($initialPayment <= 390) {
-                            $commission = 0; // Não há comissão na primeira parcela
-                            $chargeValue = $remainingValue / $remainingInstallments; // Valor para as demais parcelas
-                        } else {
-                            $commission = $remainingValue - 390; // Comissão para as demais parcelas
-                            $chargeValue = ($remainingValue + $commission) / $remainingInstallments; // Valor para as demais parcelas
-                        }
-    
+                    if($installmentCount > 1) {
+                        $chargeValue = ($sale->value / $sale->installmentCount) <= 390 ? 390 : ($sale->value / $sale->installmentCount);
                     } else {
-                        $chargeValue = $sale->valor;
-                        $commission = 0;
+                        $chargeValue = $sale->value;
+                    }
+
+                    if($chargeValue <= 390) {
+                        $comission = ($sale->value - 390) / ($sale->installmentCount - 1);
+                    } else {
+                        $comission = ($sale->value - 390);
                     }
                     
-                    $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $commission);
+                    $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $comission);
                     if ($charge) {
                         $invoice = new Invoice();
                         $invoice->idUser = $sale->id;
@@ -82,10 +78,20 @@ class AssasController extends Controller {
                         $invoice->status = "PENDING_PAY";
                         $invoice->type = 3;
                         $invoice->dueDate = $dueDate;
+
+                        // Adicionando tratamento para a primeira parcela
+                        if ($invoiceCount === 0) {
+                            $invoice->value = $initialPayment;
+                            $invoice->comission = 0; // Não há comissão na primeira parcela
+                        } else {
+                            $invoice->comission = $comission;
+                        }
+
                         $invoice->save();
-        
+
                         $invoiceCount++;
                     }
+
                 }
         
                 return true;
