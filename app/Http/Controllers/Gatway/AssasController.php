@@ -24,7 +24,6 @@ class AssasController extends Controller {
         if ($customer) {
             $invoiceCount = 0;
             $installmentCount = $sale->installmentCount;
-            $initialPayment = max(390, $sale->valor / $sale->installmentCount);
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
     
@@ -84,7 +83,7 @@ class AssasController extends Controller {
         }
     
         return false;
-    }    
+    }      
     
     private function createInvoice($sale, $charge, $description, $dueDate, $value, $invoiceCount) {
         $invoice = new Invoice();
