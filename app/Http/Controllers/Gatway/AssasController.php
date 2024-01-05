@@ -18,48 +18,52 @@ use Carbon\Carbon;
 class AssasController extends Controller {
 
     public function invoiceSale($id) {
-
         $sale = Sale::find($id);
-
         $customer = $this->createCustomer($sale->name, $sale->cpfcnpj, $sale->mobilePhone, $sale->email);
+        
         if ($customer) {
-
             $installmentCount = $sale->installmentCount;
-            $initialPayment = max(390, $sale->valor / $installmentCount);
-    
+            $initialPayment = min(390, $sale->valor / $installmentCount);
+        
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
-    
+        
             if ($sale->billingType == "CREDIT_CARD") {
-
                 $comission = $sale->comission - 0.49 - ($sale->comission * 3.99 / 100);
                 $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $comission, $installmentCount);
-    
+        
                 if ($charge) {
                     $this->createInvoice($sale, $charge, $description, $dueDate, $sale->value, 1);
                     return true;
                 }
             } else {
-                
-                for ($invoiceCount = 0; $invoiceCount < $installmentCount; $invoiceCount++) {
-                    if ($invoiceCount > 0) {
+                $remainingValue = $sale->value;
+        
+                for ($invoiceCount = 1; $invoiceCount <= $installmentCount; $invoiceCount++) {
+                    if ($invoiceCount > 1) {
                         $dueDate->addMonth();
                     }
-    
-                    $chargeValue = ($installmentCount > 1) ? max(390, ($sale->value - $initialPayment) / ($installmentCount - 1)) : $sale->value;
-                    $comission = ($invoiceCount === 0 || $initialPayment <= 390) ? 0 : ($sale->value - 390) / ($installmentCount - 1);
-    
+                    
+                    if ($invoiceCount === 1) {
+                        $chargeValue = min(390, $remainingValue);
+                        $comission = 0;
+                    } else {
+                        $chargeValue = max(0, ($remainingValue - $initialPayment) / ($installmentCount - 1));
+                        $comission = $remainingValue - $initialPayment;
+                    }
+        
                     $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $comission);
-    
+        
                     if ($charge) {
-                        $this->createInvoice($sale, $charge, $description, $dueDate, $chargeValue, $invoiceCount + 1);
+                        $this->createInvoice($sale, $charge, $description, $dueDate, $chargeValue, $invoiceCount);
+                        $remainingValue -= $chargeValue;
                     }
                 }
-    
+        
                 return true;
             }
         }
-    
+        
         return false;
     }
     
@@ -75,7 +79,7 @@ class AssasController extends Controller {
         $invoice->type = 3;
         $invoice->dueDate = $dueDate;
         $invoice->save();
-    }
+    }    
     
     public function invoiceCreate(Request $request) {
 
