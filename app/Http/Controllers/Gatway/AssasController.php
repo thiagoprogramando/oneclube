@@ -242,7 +242,7 @@ class AssasController extends Controller {
             ],
             'json' => [
                 'name'          => $user->name,
-                'email'         => $user->name.$user->cpfcnpj.'@grupo7assessoria.com',
+                'email'         => $user->cpfcnpj.'@grupo7assessoria.com',
                 'cpfCnpj'       => $user->cpfcnpj,
                 'birthDate'     => $user->birthDate,
                 'mobilePhone'   => $user->mobilePhone,
