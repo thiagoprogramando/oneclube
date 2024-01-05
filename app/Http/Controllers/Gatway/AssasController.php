@@ -211,7 +211,7 @@ class AssasController extends Controller {
         
             $options['json']['split'][] = [
                 'walletId'          => $walletId,
-                'percentualValue'   => number_format($percentualValue, 2, '.', ''),
+                'totalFixedValue'   => number_format($percentualValue, 2, '.', ''),
             ];
         }        
 
