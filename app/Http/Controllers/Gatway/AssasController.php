@@ -28,7 +28,7 @@ class AssasController extends Controller {
     
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
-
+    
             if($sale->billingType == "CREDIT_CARD") {
                 $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $sale->commission, $sale->installmentCount);
     
@@ -45,7 +45,7 @@ class AssasController extends Controller {
                     $invoice->dueDate = $dueDate;
                     $invoice->save();
                 }
-
+    
                 return true;
             } else {
                 while ($invoiceCount < $installmentCount) {
@@ -53,18 +53,18 @@ class AssasController extends Controller {
                         $dueDate->addMonth();
                     }
                     
-                    if ($sale->installmentCount > 1) {
-                        $remainingValue             = $sale->valor - $initialPayment; // Valor restante após a primeira parcela
-                        $remainingInstallments      = $sale->installmentCount - 1; // Número de parcelas restantes
-                        
+                    if ($installmentCount > 1) {
+                        $remainingValue = $sale->valor - $initialPayment; // Valor restante após a primeira parcela
+                        $remainingInstallments = $installmentCount - 1; // Número de parcelas restantes
+    
                         if ($initialPayment <= 390) {
                             $commission = 0; // Não há comissão na primeira parcela
-                            $chargeValue = ($remainingValue - 390) / $remainingInstallments; // Valor para as demais parcelas
+                            $chargeValue = $remainingValue / $remainingInstallments; // Valor para as demais parcelas
                         } else {
-                            $commission = $remainingValue / $remainingInstallments; // Comissão para as demais parcelas
+                            $commission = $remainingValue - 390; // Comissão para as demais parcelas
+                            $chargeValue = ($remainingValue + $commission) / $remainingInstallments; // Valor para as demais parcelas
                         }
-
-                        $chargeValue  = $remainingValue / $remainingInstallments; // Valor para as demais parcelas
+    
                     } else {
                         $chargeValue = $sale->valor;
                         $commission = 0;
@@ -91,9 +91,9 @@ class AssasController extends Controller {
                 return true;
             }
         }
-
+    
         return false;
-    }
+    }    
     
     public function invoiceCreate(Request $request) {
 
