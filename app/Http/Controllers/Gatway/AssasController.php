@@ -32,23 +32,23 @@ class AssasController extends Controller {
     
             if ($sale->billingType == "CREDIT_CARD") {
                 return $comission = ($sale->comission - 0.49) - ($sale->comission * 3.99 / 100);
-                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $comission, $sale->installmentCount);
+                // $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $comission, $sale->installmentCount);
     
-                if ($charge) {
-                    $invoice = new Invoice();
-                    $invoice->idUser = $sale->id;
-                    $invoice->name = "Parcela N° 1";
-                    $invoice->description = $description;
-                    $invoice->token = $charge['id'];
-                    $invoice->url = $charge['invoiceUrl'];
-                    $invoice->value = $sale->value;
-                    $invoice->status = "PENDING_PAY";
-                    $invoice->type = 3;
-                    $invoice->dueDate = $dueDate;
-                    $invoice->save();
-                }
+                // if ($charge) {
+                //     $invoice = new Invoice();
+                //     $invoice->idUser = $sale->id;
+                //     $invoice->name = "Parcela N° 1";
+                //     $invoice->description = $description;
+                //     $invoice->token = $charge['id'];
+                //     $invoice->url = $charge['invoiceUrl'];
+                //     $invoice->value = $sale->value;
+                //     $invoice->status = "PENDING_PAY";
+                //     $invoice->type = 3;
+                //     $invoice->dueDate = $dueDate;
+                //     $invoice->save();
+                // }
     
-                return true;
+                // return true;
             }
             // else {
             //     $comission = $sale->comission;
