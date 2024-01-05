@@ -24,13 +24,13 @@ class AssasController extends Controller {
         if($customer) {
             $invoiceCount = 0;
             $installmentCount = $sale->installmentCount;
-            $initialPayment = $sale->valor / $sale->installmentCount < 390 ? 390 : $sale->valor / $sale->installmentCount;
+            $initialPayment = max(390, $sale->valor / $sale->installmentCount);
     
             $dueDate = now()->addDay();
             $description = "Serviços & Consultoria G7";
 
             if($sale->billingType == "CREDIT_CARD") {
-                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $sale->comission, $sale->installmentCount);
+                $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $sale->commission, $sale->installmentCount);
     
                 if ($charge) {
                     $invoice = new Invoice();
@@ -48,20 +48,29 @@ class AssasController extends Controller {
 
                 return true;
             } else {
-                $comission = $sale->comission / $sale->installmentCount;
                 while ($invoiceCount < $installmentCount) {
                     if ($invoiceCount > 0) {
                         $dueDate->addMonth();
                     }
-        
-                    if ($installmentCount <= 1) {
-                        $chargeValue = $sale->value;
+                    
+                    if ($sale->installmentCount > 1) {
+                        $remainingValue             = $sale->valor - $initialPayment; // Valor restante após a primeira parcela
+                        $remainingInstallments      = $sale->installmentCount - 1; // Número de parcelas restantes
+                        
+                        if ($initialPayment <= 390) {
+                            $commission = 0; // Não há comissão na primeira parcela
+                            $chargeValue = ($remainingValue - 390) / $remainingInstallments; // Valor para as demais parcelas
+                        } else {
+                            $commission = $remainingValue / $remainingInstallments; // Comissão para as demais parcelas
+                        }
+
+                        $chargeValue  = $remainingValue / $remainingInstallments; // Valor para as demais parcelas
                     } else {
-                        $chargeValue = ($invoiceCount == 0) ? $initialPayment : (($sale->value - $initialPayment) / ($installmentCount - 1));
+                        $chargeValue = $sale->valor;
+                        $commission = 0;
                     }
                     
-                    $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $comission);
-        
+                    $charge = $this->createCharge($customer, $sale->billingType, $chargeValue, $description, $dueDate, $sale->wallet, $commission);
                     if ($charge) {
                         $invoice = new Invoice();
                         $invoice->idUser = $sale->id;
