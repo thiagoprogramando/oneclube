@@ -101,7 +101,7 @@ class AssasController extends Controller {
         if($customer) {
             if($request->type  == 1 || $request->type  == 2) {
                 $walletId = "afd76f74-6dd8-487b-b251-28205161e1e6";
-                $percentualValue = "50";
+                $percentualValue = "20";
                 $dueDate = now()->addDay();
                 $charge = $this->createCharge($customer, $request->billingType, $request->value, $request->description, $dueDate, $walletId, $percentualValue);
             } else {
