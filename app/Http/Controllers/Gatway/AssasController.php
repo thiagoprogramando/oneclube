@@ -388,7 +388,7 @@ class AssasController extends Controller {
         $client = new Client();
         $user = auth()->user();
 
-        $response = $client->request('GET',  'https://api.asaas.com/v3/finance/balance', [
+        $response = $client->request('GET',  env('API_URL_ASSAS') . 'v3/finance/balance', [
             'headers' => [
                 'accept' => 'application/json',
                 'access_token' => $user->apiKey,
