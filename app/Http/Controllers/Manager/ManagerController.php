@@ -29,13 +29,11 @@ class ManagerController extends Controller {
 
         $sales = Sale::where('id_vendedor', $user->id)->orderBy('created_at', 'desc')->limit(20)->get();
         if($user->apiKey != null) {
-            // $assas = new AssasController();
-            // $balance = $assas->balance();
-            // if($balance == 0 || $balance > 0) {
-            //     $statistics = $assas->statistics();
-            // }
-            $balance = 0;
-            $statistics = 0;
+            $assas = new AssasController();
+            $balance = $assas->balance();
+            if($balance == 0 || $balance > 0) {
+                $statistics = $assas->statistics();
+            }
         } else {
             $balance = 0;
             $statistics = 0;
