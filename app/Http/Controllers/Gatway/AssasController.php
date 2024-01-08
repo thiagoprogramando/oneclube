@@ -58,12 +58,12 @@ class AssasController extends Controller {
                         $dueDate->addMonth();
                     }
 
-                    $value = $sale->value / $sale->installmentCount;
+                    $value = ($sale->value / $sale->installmentCount) - 3;
                     if ($invoiceCount == 0) {
                         $value = max($value, 390);
                     
                         if ($value > 390) {
-                            $primeiraComissao = $value - 390;
+                            $primeiraComissao = $value - 393;
                             $primeiraParcela = $value;
                             $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $primeiraComissao);
                         } else {
@@ -72,8 +72,8 @@ class AssasController extends Controller {
                             $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate);
                         }
                     } else {
-                        $value = ($sale->value - $primeiraParcela) / ($sale->installmentCount - 1);
-                        $commission = (($sale->value - 390) - $primeiraComissao) / ($sale->installmentCount - 1);
+                        $value = ($sale->value - $primeiraParcela) / ($sale->installmentCount - 1) - 3;
+                        $commission = (($sale->value - 393) - $primeiraComissao) / ($sale->installmentCount - 1);
                         $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $commission);
                     }  
                     
@@ -115,13 +115,13 @@ class AssasController extends Controller {
         }
 
         if($customer) {
+            $dueDate = now()->addDay();
             if($request->type  == 1 || $request->type  == 2) {
                 $walletId = "afd76f74-6dd8-487b-b251-28205161e1e6";
                 $percentualValue = "20";
-                $dueDate = now()->addDay();
                 $charge = $this->createCharge($customer, $request->billingType, $request->value, $request->description, $dueDate, $walletId, $percentualValue);
             } else {
-                $charge = $this->createCharge($customer, $request->billingType, $request->value, $request->description);
+                $charge = $this->createCharge($customer, $request->billingType, $request->value, $request->description, $dueDate);
             }
             
             if($charge) {
@@ -197,9 +197,7 @@ class AssasController extends Controller {
         }
     }
 
-    private function createCharge($customer, $billingType, $value, $description, $dueDate = null, $walletId = null, $percentualValue = null, $installmentCount = null) {
-
-        $tomorrow = Carbon::now()->addDay()->format('Y-m-d');
+    private function createCharge($customer, $billingType, $value, $description, $dueDate, $walletId = null, $percentualValue = null, $installmentCount = null) {
 
         $client = new Client();
 
@@ -212,7 +210,7 @@ class AssasController extends Controller {
                 'customer'          => $customer,
                 'billingType'       => $billingType,
                 'value'             => $value > 80 ? $value - 1 : $value,
-                'dueDate'           => $dueDate != null ? $dueDate : $tomorrow,
+                'dueDate'           => $dueDate,
                 'description'       => 'G7 - '.$description,
                 'installmentCount'  => $installmentCount != null ? $installmentCount : 1,
                 'installmentValue'  => $installmentCount != null ? ($value / $installmentCount) : $value,
