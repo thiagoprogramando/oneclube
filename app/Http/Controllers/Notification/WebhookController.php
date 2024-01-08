@@ -22,25 +22,24 @@ class WebhookController extends Controller {
             $eventType = $data['event_type'];
 
             $sale = Sale::where('id_contrato', $token)->first();
-            if ($sale &&  $eventType == 'doc_signed') {
-                //$sale->status_produto == null &&
+            if ($sale && $sale->status_produto == null && $eventType == 'doc_signed') {
                 $sale->status_produto = $eventType;
                 $sale->save();
 
                 $createInvoices = new AssasController;
                 return $createInvoices = $createInvoices->invoiceSale($sale->id);
-                // if($createInvoices) {
-                //     $invoice = Invoice::where('idUser', $sale->id)->where('status', 'PENDING_PAY')->where('type', 3)->first();
-                //     if($invoice) {
+                if($createInvoices) {
+                    $invoice = Invoice::where('idUser', $sale->id)->where('status', 'PENDING_PAY')->where('type', 3)->first();
+                    if($invoice) {
 
-                //         $sendLink = new WhatsAppController();
-                //         $message = "Prezado Cliente G7, *estamos enviando o link para pagamento* referente ao serviço de Limpa Nome: \r\n \r\n FAZER O PAGAMENTO CLICANDO NO LINK 👇🏼💳";
-                //         $sendLink = $sendLink->sendLink($sale->mobilePhone, $invoice->url, $message);
-                //         return response()->json(['message' => 'Processo concluído!'], 200);
-                //     }
+                        $sendLink = new WhatsAppController();
+                        $message = "Prezado Cliente G7, *estamos enviando o link para pagamento* referente ao serviço de Limpa Nome: \r\n \r\n FAZER O PAGAMENTO CLICANDO NO LINK 👇🏼💳";
+                        $sendLink = $sendLink->sendLink($sale->mobilePhone, $invoice->url, $message);
+                        return response()->json(['message' => 'Processo concluído!'], 200);
+                    }
 
-                //     return response()->json(['message' => 'Faturas criadas!'], 200);
-                // }
+                    return response()->json(['message' => 'Faturas criadas!'], 200);
+                }
             }
 
             return response()->json(['message' => 'Nenhuma operação finalizada!'], 200);

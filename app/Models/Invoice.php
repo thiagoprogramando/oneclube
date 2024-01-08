@@ -16,6 +16,7 @@ class Invoice extends Model {
         'name',
         'description',
         'value',
+        'commission',
         'url',
         'qrcode',
         'type', // 1 - Entrada 2 - Mensalidade 3 - Serviços Extras
