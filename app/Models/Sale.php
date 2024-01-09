@@ -39,7 +39,6 @@ class Sale extends Model {
         'id_vendedor',
 
         'value',
-        'comission',
         'wallet',
         'billingType',
         'installmentCount',
