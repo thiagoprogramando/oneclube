@@ -59,13 +59,13 @@ class ManagerController extends Controller {
     public function createUser(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => [ 'required', 'email', 'max:255', 'unique:users'],
-            'cpfcnpj' => [ 'required', 'string', 'max:14', 'unique:users'],
+            'name'      => [ 'required', 'string', 'max:255'],
+            'email'     => [ 'required', 'email',  'max:255', 'unique:users'],
+            'cpfcnpj'   => [ 'required', 'string', 'max:14', 'unique:users'],
         ]);
         
         if ($validator->fails()) {
-            return redirect()->back()->with('error', 'Email/CpfCnpj já cadastrado!');
+            return redirect()->back()->with('error', 'Email ou CpfCnpj já cadastrado!');
         }
 
         $attributes = [
@@ -100,6 +100,7 @@ class ManagerController extends Controller {
             $invoice->description = 'Voucher para liberação e cadastro no Sistema';
             $invoice->type = 1;
             $invoice->value = 99;
+            $invoice->commission = 20;
             $invoice->status = 'PENDING_PAY';
             $invoice->save();
 
