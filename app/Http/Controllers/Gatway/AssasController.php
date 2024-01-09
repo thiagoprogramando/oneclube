@@ -63,7 +63,7 @@ class AssasController extends Controller {
                         $value = max($value, 390);
                     
                         if ($value > 390) {
-                            $primeiraComissao = $value - 393;
+                            $primeiraComissao = max(0, $value - 395);
                             $primeiraParcela = $value;
                             $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $primeiraComissao);
                         } else {
@@ -73,7 +73,7 @@ class AssasController extends Controller {
                         }
                     } else {
                         $value = ($sale->value - $primeiraParcela) / ($sale->installmentCount - 1) - 3;
-                        $commission = (($sale->value - 393) - $primeiraComissao) / ($sale->installmentCount - 1);
+                        $commission = (($sale->value - 395) - $primeiraComissao) / ($sale->installmentCount - 1);
                         $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $commission);
                     }  
                     
