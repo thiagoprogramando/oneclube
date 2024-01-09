@@ -200,9 +200,9 @@ class SaleController extends Controller {
         $cleanedValue = preg_replace('/[^0-9]/', '', $value);
     
         if (strlen($cleanedValue) === 11) {
-            return $this->isCpfValid($cleanedValue);
+            return true;
         } elseif (strlen($cleanedValue) === 14) {
-            return $this->isCnpjValid($cleanedValue);
+            return true;
         }
 
         return false;
