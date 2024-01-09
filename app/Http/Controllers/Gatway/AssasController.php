@@ -364,7 +364,9 @@ class AssasController extends Controller {
     }
 
     public function webhookAccount(Request $request) {
-        
+
+        $this->logRequest($request);
+
         $jsonData = $request->json()->all();
         $user = User::where('walletId', $jsonData['accountStatus']['id'])->first();
 
@@ -379,6 +381,19 @@ class AssasController extends Controller {
                 break;
         }        
         return response()->json(['status' => 'success', 'message' => 'Tratamento realizado para status da Conta!']);
+    }
+
+    private function logRequest(Request $request) {
+        $logPath = public_path('request_log.txt');
+    
+        $requestData = [
+            'headers' => $request->header(),
+            'body' => $request->json()->all(),
+        ];
+    
+        $logMessage = "Request Log:\n" . json_encode($requestData, JSON_PRETTY_PRINT) . "\n\n";
+
+        file_put_contents($logPath, $logMessage, FILE_APPEND);
     }
 
     public function balance() {
