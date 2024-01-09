@@ -84,7 +84,7 @@
                                 <input type="number" class="form-control" name="postalCode" placeholder="CEP" onblur="consultaCEP()" required>
                             </div>
                             <div class="col-6 form-group">
-                                <input type="text" class="form-control" name="address" placeholder="Rua, Travessa, Logradouro..." required>
+                                <input type="text" class="form-control" name="address" placeholder="Rua, Travessa, Logradouro..." readonly>
                             </div>
                             <div class="col-6 form-group">
                                 <input type="number" class="form-control" name="addressNumber" placeholder="Número" required>
@@ -93,13 +93,13 @@
                                 <input type="text" class="form-control" name="complement" placeholder="Complemento" required>
                             </div>
                             <div class="col-6 form-group">
-                                <input type="text" class="form-control" name="province" placeholder="Bairro" required>
+                                <input type="text" class="form-control" name="province" placeholder="Bairro" readonly>
                             </div>
                             <div class="col-6 form-group">
-                                <input type="text" class="form-control" name="city" placeholder="Cidate" required>
+                                <input type="text" class="form-control" name="city" placeholder="Cidate" readonly>
                             </div>
                             <div class="col-12 form-group">
-                                <input type="text" class="form-control" name="state" placeholder="Estado" required>
+                                <input type="text" class="form-control" name="state" placeholder="Estado" readonly>
                             </div>
                         </div>
                         <div class="row">

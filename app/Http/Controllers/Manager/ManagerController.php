@@ -32,19 +32,20 @@ class ManagerController extends Controller {
             $assas = new AssasController();
             $balance = $assas->balance();
             if($balance == 0 || $balance > 0) {
-                $statistics = $assas->statistics();
+                $statistics  = $assas->statistics();
+                $accumulated = $assas->accumulated();
             }
         } else {
             $balance = 0;
             $statistics = 0;
         }
         
-
         return view('dashboard.index', [
             'user'          => $user,
             'sales'         => $sales,
             'balance'       => $balance,
-            'statistics'    => $statistics
+            'statistics'    => $statistics,
+            'accumulated'   => $accumulated
         ]);
     }
 
@@ -59,13 +60,20 @@ class ManagerController extends Controller {
     public function createUser(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'name'      => [ 'required', 'string', 'max:255'],
-            'email'     => [ 'required', 'email',  'max:255', 'unique:users'],
-            'cpfcnpj'   => [ 'required', 'string', 'max:14', 'unique:users'],
+            'name'            => [ 'required', 'string', 'max:255'],
+            'email'           => [ 'required', 'email',  'max:255', 'unique:users'],
+            'cpfcnpj'         => [ 'required', 'string', 'max:14', 'unique:users'],
+            'postalCode'      => [ 'required'],
+            'address'         => [ 'required'],
+            'addressNumber'   => [ 'required'],
+            'complement'      => [ 'required'],
+            'province'        => [ 'required'],
+            'city'            => [ 'required'],
+            'state'           => [ 'required'],
         ]);
         
         if ($validator->fails()) {
-            return redirect()->back()->with('error', 'Email ou CpfCnpj já cadastrado!');
+            return redirect()->back()->with('error', 'Analise às informações, foi encontrado um erro!');
         }
 
         $attributes = [

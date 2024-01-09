@@ -142,6 +142,9 @@ class SaleController extends Controller {
         }
 
         if (!empty($request->cpfcnpj)) {
+            if($this->isCpfCnpjValid($request->cpfcnpj) == false) {
+                return redirect()->back()->withErrors($validator)->with('error', 'CPF ou CNPJ inválido!');
+            }
             $saleData['cpfcnpj'] = preg_replace('/[^0-9]/', '', $request->cpfcnpj);
         }
 
@@ -190,6 +193,19 @@ class SaleController extends Controller {
         } else {
             return redirect()->route('obrigado')->with('error', 'Erro ao gerar assinatura!');
         }
+    }
+
+    private function isCpfCnpjValid($value) {
+
+        $cleanedValue = preg_replace('/[^0-9]/', '', $value);
+    
+        if (strlen($cleanedValue) === 11) {
+            return $this->isCpfValid($cleanedValue);
+        } elseif (strlen($cleanedValue) === 14) {
+            return $this->isCnpjValid($cleanedValue);
+        }
+
+        return false;
     }
 
     private function criaDocumento($data) {
