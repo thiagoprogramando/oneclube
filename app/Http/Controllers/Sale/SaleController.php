@@ -134,7 +134,6 @@ class SaleController extends Controller {
             'id_produto'      => $request->produto,
             'name_doc'        => "Contrato Consultoria Financeira",
             'value'           => $request->valor,
-            'comission'       => $request->valor - 390,
             'PRIMEIRAPARCELA' => $request->valor / $request->installmentCount < 390 ? 390 : $request->valor / $request->installmentCount,
         ];
 
