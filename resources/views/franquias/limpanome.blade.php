@@ -56,16 +56,16 @@
                                                     <input type="number" value="{{ old('numero') }}" class="form-control form-control-user" name="numero" placeholder="Número" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" value="{{ old('endereco') }}" class="form-control form-control-user" name="endereco" placeholder="Rua" required readonly>
+                                                    <input type="text" value="{{ old('endereco') }}" class="form-control form-control-user" name="endereco" placeholder="Rua" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" value="{{ old('bairro') }}" class="form-control form-control-user" name="bairro" placeholder="Bairro" required readonly>
+                                                    <input type="text" value="{{ old('bairro') }}" class="form-control form-control-user" name="bairro" placeholder="Bairro" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" value="{{ old('cidade') }}" class="form-control form-control-user" name="cidade" placeholder="Cidade" required readonly>
+                                                    <input type="text" value="{{ old('cidade') }}" class="form-control form-control-user" name="cidade" placeholder="Cidade" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" value="{{ old('estado') }}" class="form-control form-control-user" name="estado" placeholder="Estado" required readonly>
+                                                    <input type="text" value="{{ old('estado') }}" class="form-control form-control-user" name="estado" placeholder="Estado" required>
                                                 </div>
 
                                                 <div class="form-group col-sm-12 col-lg-6">
