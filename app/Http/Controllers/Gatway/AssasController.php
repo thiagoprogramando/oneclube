@@ -73,7 +73,7 @@ class AssasController extends Controller {
                         }
                     } else {
                         $value = ($sale->value - $primeiraParcela) / ($sale->installmentCount - 1);
-                        $commission = (($sale->value - $primeiraParcela) / ($sale->installmentCount - 1)) - 5;
+                        $commission = (($sale->value - $primeiraParcela) / ($sale->installmentCount - 1)) * (1 - 0.05);
                         $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $commission);
                     }  
                     

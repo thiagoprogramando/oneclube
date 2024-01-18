@@ -29,6 +29,11 @@
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="form-group">
+                                                                    <input type="text" class="form-control" name="cliente" placeholder="Cliente:">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
                                                                     <select class="form-control" name="produto">
                                                                         <option value="ALL">Todos os Produtos</option>
                                                                         <option value="1">Limpa Nome</option>
@@ -51,21 +56,19 @@
                                                                         <option value="ALL">Todos os Usuários</option>
                                                                         @foreach ($users as $key => $user)
                                                                             <option value="{{ $user->id }}">
-                                                                                {{ $user->nome }}</option>
+                                                                                {{ $user->name }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="form-group">
-                                                                    <input type="date" class="form-control"
-                                                                        name="data_inicio" placeholder="Data inicial">
+                                                                    <input type="date" class="form-control" name="data_inicio" placeholder="Data inicial">
                                                                 </div>
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="form-group">
-                                                                    <input type="date" class="form-control"
-                                                                        name="data_fim" placeholder="Data Final">
+                                                                    <input type="date" class="form-control" name="data_fim" placeholder="Data Final">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -88,6 +91,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Cliente</th>
+                                                <th>Vendedor</th>
                                                 <th>Produto</th>
                                                 <th>Status</th>
                                                 <th>Situação (Tag)</th>
@@ -100,6 +104,7 @@
                                                 <tr>
                                                     <td>{{ $sale->id }}</td>
                                                     <td>{{ $sale->name }}</td>
+                                                    <td>{{ $sale->vendedor->name }}</td>
                                                     <td>
                                                         @switch($sale->id_produto)
                                                             @case(1)

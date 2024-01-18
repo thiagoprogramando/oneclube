@@ -93,7 +93,7 @@
                     </a>
                     <div id="collapseVenda" class="collapse" aria-labelledby="headingGestao" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item dinamic-open" href="" data-produto="1">Limpa Nome</a>
+                            <a class="collapse-item dinamic-open" href="" data-produto="1" data-trava-mae="300">Limpa Nome</a>
                         </div>
                     </div>
                 </li>
@@ -255,6 +255,8 @@
             vendaLivre.addEventListener('click', function(e) {
                 e.preventDefault();
 
+                var dataTrava = parseFloat(vendaLink.getAttribute('data-trava-mae'));
+
                 Swal.fire({
                     title: 'Informe o valor',
                     input: 'text',
@@ -265,7 +267,7 @@
                     if (result.isConfirmed) {
                         var valorInserido = parseFloat(result.value);
 
-                        if (!isNaN(valorInserido)) {
+                        if (!isNaN(valorInserido) && (!dataTrava || valorInserido >= dataTrava)) {
                             var novaURL = '{{ url("/limpanome/") }}/{{ auth()->id() }}/' + valorInserido;
 
                             Swal.fire({

@@ -29,14 +29,19 @@
                                                         @csrf
                                                         <input type="hidden" value="{{ $produto }}" name="id">
                                                         <div class="row">
-                                                            <div class="col-6">
+                                                            <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <input type="date" class="form-control" name="data_inicio" placeholder="Data inicial">
+                                                                    <input type="text" class="form-control" name="cliente" placeholder="Cliente:">
                                                                 </div>
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="form-group">
-                                                                    <input type="date" class="form-control" name="data_fim" placeholder="Data Final">
+                                                                    <input type="date" class="form-control" name="data_inicio" placeholder="Data inicial:">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="form-group">
+                                                                    <input type="date" class="form-control" name="data_fim" placeholder="Data Final:">
                                                                 </div>
                                                             </div>
                                                         </div>

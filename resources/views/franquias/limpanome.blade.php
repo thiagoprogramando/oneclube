@@ -41,7 +41,7 @@
                                                     <input type="email" class="form-control form-control-user" name="email" value="{{ old('email') }}" placeholder="Email" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
-                                                    <input type="text" class="form-control form-control-user" name="cpfcnpj" value="{{ old('cpfcnpj') }}" oninput="mascaraCpfCnpj(this)" maxlength="14" placeholder="CPF/CNPJ" required>
+                                                    <input type="text" class="form-control form-control-user" name="cpfcnpj" value="{{ old('cpfcnpj') }}" oninput="mascaraCpfCnpj(this)" placeholder="CPF/CNPJ" required>
                                                 </div>
                                                 <div class="form-group col-sm-12 col-lg-6">
                                                     <input type="text" class="form-control form-control-user" name="birthDate" value="{{ old('birthDate') }}" oninput="mascaraData(this)" maxlength="10" placeholder="Data de Nascimento" required>
@@ -131,6 +131,7 @@
 
                 input.value = value;
             }
+
             
             function mascaraData(dataInput) {
                 let data = dataInput.value;

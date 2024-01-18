@@ -34,14 +34,21 @@ class SaleController extends Controller {
 
         $dataInicio = $request->input('data_inicio');
         $dataFim = $request->input('data_fim');
+        $cliente = $request->input('cliente');
+
+        $sales = Sale::query();
+
+        if (!empty($cliente)) {
+            $sales = $sales->where('name', 'LIKE', '%' . $cliente . '%');
+        }
 
         if ($dataInicio && $dataFim) {
             $dataInicio = Carbon::parse($dataInicio);
             $dataFim = Carbon::parse($dataFim);
 
-            $sales = Sale::where('id_produto', $request->input('id'))->where('id_vendedor', $user->id)->whereBetween('updated_at', [$dataInicio, $dataFim])->latest('created_at')->get();
+            $sales = $sales->where('id_produto', $request->input('id'))->where('id_vendedor', $user->id)->whereBetween('updated_at', [$dataInicio, $dataFim])->latest('created_at')->get();
         } else {
-            $sales = Sale::where('id_produto', $request->input('id'))->where('id_vendedor', $user->id)->latest('created_at')->get();
+            $sales = $sales->where('id_produto', $request->input('id'))->where('id_vendedor', $user->id)->latest('created_at')->get();
         }
 
         return view('dashboard.users.sales', [
@@ -76,6 +83,7 @@ class SaleController extends Controller {
         $produto = $request->input('produto');
         $usuario = $request->input('usuario');
         $status = $request->input('status');
+        $cliente = $request->input('cliente');
 
         $sales = Sale::query();
 
@@ -89,6 +97,10 @@ class SaleController extends Controller {
 
         if ($status != 'ALL') {
             $sales = $sales->where('status_pay', $status);
+        }
+
+        if (!empty($cliente)) {
+            $sales = $sales->where('name', 'LIKE', '%' . $cliente . '%');
         }
 
         $dataInicio = $request->input('data_inicio');
@@ -135,6 +147,7 @@ class SaleController extends Controller {
             'name_doc'        => "Contrato Consultoria Financeira",
             'value'           => $request->valor,
             'PRIMEIRAPARCELA' => $request->valor / $request->installmentCount < 390 ? 390 : $request->valor / $request->installmentCount,
+            'status'          => 'PENDING_PAY'
         ];
 
         if (!empty($request->name)) {
