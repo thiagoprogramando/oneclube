@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\SalesImport;
+
 use App\Models\Sale;
 use App\Models\User;
 use Carbon\Carbon;
@@ -61,7 +64,13 @@ class SaleController extends Controller {
 
         $sale = Sale::where('id',  $request->id)->first();
         if($sale) {
-            $sale->tag = $request->tag;
+            if(!empty($request->tag)) {
+                $sale->tag = $request->tag;
+            }
+
+            if(!empty($request->status)) {
+                $sale->status_pay = $request->status;
+            }
             $sale->save();
 
             return redirect()->back()->with('success', 'Venda atualizada com sucesso!');
@@ -96,7 +105,7 @@ class SaleController extends Controller {
         }
 
         if ($status != 'ALL') {
-            $sales = $sales->where('status_pay', $status);
+            $sales = $sales->where('status_pay', $status)->orWhereNull('status_pay');
         }
 
         if (!empty($cliente)) {
@@ -119,6 +128,18 @@ class SaleController extends Controller {
             'sales' => $sales,
             'users'  => User::all(),
         ]);
+    }
+
+    public function updateSaleManager(Request $request) {
+
+        $file = $request->file('file');
+        $status = $request->input('status');
+        $tag = $request->input('tag');
+
+        $import = new SalesImport($status, $tag);
+        Excel::import($import, $file);
+
+        return redirect()->route('saleManager')->with('success', 'Dados atualizados com sucesso!');
     }
 
     public function sell(Request $request, $id) {

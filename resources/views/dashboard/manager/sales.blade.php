@@ -14,7 +14,8 @@
                             <div class="col-12">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     <button class="btn btn-outline-success w-25" type="button" data-toggle="modal" data-target="#exampleModal">Filtros</button>
-                                    <button class="btn btn-outline-primary w-25" type="button" id="exportar">Excel</button>
+                                    <button class="btn btn-outline-success w-25" type="button" data-toggle="modal" data-target="#updateModal">Opções em Lote</button>
+                                    <button class="btn btn-outline-primary w-25" type="button" id="gerarExcel">Excel</button>
 
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
@@ -82,6 +83,53 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <form method="POST" action="{{ route('updateSaleManager') }}" enctype="multipart/form-data">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="updateModalLabel">Filtros:</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        @csrf
+                                                        <div class="row">
+                                                            <div class="form-group col-sm-12 col-lg-12">
+                                                                <label for="file">Excel com os registros</label>
+                                                                <input type="file" id="file" class="form-control" name="file">
+                                                            </div>
+                                                            <div class="form-group col-sm-12 col-lg-12">
+                                                                <select class="form-control" name="status">
+                                                                    <option value="">Status</option>
+                                                                    <option value="PAYMENT_CONFIRMED">Aprovados</option>
+                                                                     <option value="PENDING_PAY">Pendentes de Pagamento</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-sm-12 col-lg-12">
+                                                                <select name="tag" class="form-control">
+                                                                    <option value="1">Tags</option>
+                                                                    <option value="1">Aguardando Conclusão de Documentos</option>
+                                                                    <option value="2">Aguardando Conclusão de Honorários</option>
+                                                                    <option value="3">Processo em fila </option>
+                                                                    <option value="4">Processo iniciado </option>
+                                                                    <option value="5">Processo em andamento</option>
+                                                                    <option value="6">Processo concluído </option>
+                                                                    <option value="7">Duplicado </option>
+                                                                    <option value="8">Lixeira </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-dismiss="modal">Fechar</button>
+                                                        <button type="submit" class="btn btn-success">Filtrar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 mt-3">
@@ -92,7 +140,6 @@
                                                 <th>ID</th>
                                                 <th>Cliente</th>
                                                 <th>Vendedor</th>
-                                                <th>Produto</th>
                                                 <th>Status</th>
                                                 <th>Situação (Tag)</th>
                                                 <th>Data</th>
@@ -105,16 +152,6 @@
                                                     <td>{{ $sale->id }}</td>
                                                     <td>{{ $sale->name }}</td>
                                                     <td>{{ $sale->vendedor->name }}</td>
-                                                    <td>
-                                                        @switch($sale->id_produto)
-                                                            @case(1)
-                                                                Limpa Nome
-                                                            @break
-
-                                                            @default
-                                                                Produto Desconhecido
-                                                        @endswitch
-                                                    </td>
                                                     <td>
                                                         @switch($sale->status_pay)
                                                             @case('PAYMENT_CONFIRMED')
@@ -189,8 +226,15 @@
                                                                     <div class="row">
                                                                         <input type="hidden" name="id" value="{{ $sale->id }}">
                                                                         <div class="form-group col-sm-12 col-lg-12">
+                                                                            <select class="form-control" name="status">
+                                                                                <option value="">Status</option>
+                                                                                <option value="PAYMENT_CONFIRMED">Aprovados</option>
+                                                                                 <option value="PENDING_PAY">Pendentes de Pagamento</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group col-sm-12 col-lg-12">
                                                                             <select name="tag" class="form-control">
-                                                                                <option value="1">Tags</option>
+                                                                                <option value="">Tags</option>
                                                                                 <option value="1">Aguardando Conclusão de Documentos</option>
                                                                                 <option value="2">Aguardando Conclusão de Honorários</option>
                                                                                 <option value="3">Processo em fila </option>

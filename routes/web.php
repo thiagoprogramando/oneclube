@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/saleManager', [SaleController::class, 'saleManager'])->name('saleManager');
     Route::post('filterSaleManager', [SaleController::class, 'filterSaleManager'])->name('filterSaleManager');
+    Route::post('updateSaleManager', [SaleController::class, 'updateSaleManager'])->name('updateSaleManager');
 
     Route::get('/listUsers', [ManagerController::class, 'listUsers'])->name('listUsers');
 
