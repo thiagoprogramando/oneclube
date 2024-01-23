@@ -73,10 +73,10 @@ class SaleController extends Controller {
             }
             $sale->save();
 
-            return redirect()->back()->with('success', 'Venda atualizada com sucesso!');
+            return redirect()->route('saleManager')->with('success', 'Dados atualizados com sucesso!');
         }
 
-        return redirect()->back()->with('error', 'Venda não encontrada!');
+        return redirect()->route('saleManager')->with('error', 'Venda não encontrada!');
     }
 
     public function saleManager() {
