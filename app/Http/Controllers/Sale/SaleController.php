@@ -168,7 +168,7 @@ class SaleController extends Controller {
             'name_doc'        => "Contrato Consultoria Financeira",
             'value'           => $request->valor,
             'PRIMEIRAPARCELA' => $request->valor / $request->installmentCount < 390 ? 390 : $request->valor / $request->installmentCount,
-            'status'          => 'PENDING_PAY'
+            'status_pay'          => 'PENDING_PAY'
         ];
 
         if (!empty($request->name)) {
