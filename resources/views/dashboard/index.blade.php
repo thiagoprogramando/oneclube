@@ -7,7 +7,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xl-4 col-md-4 mb-4">
+            <div class="col-xl-3 col-md-3 mb-4">
                 <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-4 col-md-4 mb-4">
+            <div class="col-xl-3 col-md-3 mb-4">
                 <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-4 col-md-4 mb-4">
+            <div class="col-xl-3 col-md-3 mb-4">
                 <div class="card border-left-dark shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -52,6 +52,25 @@
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-3 mb-4">
+                <div class="card border-left-dark shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                   Próxima Lista @if(isset($lista)) ({{ \Carbon\Carbon::parse($lista->dateEnd)->format('d/m/Y') }}) @endif</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="contador">
+
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-stopwatch fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -139,4 +158,35 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    @if(isset($lista))
+    <script>
+        // Data final da contagem regressiva
+        var dataFinal = moment("{{ $lista->dateEnd }}");
+    
+        function atualizarContador() {
+            // Data atual
+            var dataAtual = moment();
+    
+            // Calcula a diferença entre as datas
+            var diferenca = moment.duration(dataFinal.diff(dataAtual));
+    
+            // Atualiza a exibição com dias e horas
+            var dias = diferenca.days();
+            var horas = diferenca.hours();
+    
+            // Atualiza a exibição
+            document.getElementById('contador').innerHTML = dias + 'D & ' + horas + 'H';
+        }
+    
+        // Atualiza o contador a cada segundo
+        setInterval(atualizarContador, 1000);
+    
+        // Chama a função inicialmente para exibir o valor imediatamente
+        atualizarContador();
+    </script>
+    @endif
+    
+
 @endsection

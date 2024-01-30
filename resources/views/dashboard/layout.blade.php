@@ -48,6 +48,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item dinamic-sale" href="" data-produto="1" data-trava="390">Limpa Nome</a>
                         <a class="collapse-item" href="{{ route('sales', ['produto' => 1]) }}">Minhas Vendas</a>
+                        <a class="collapse-item" href="{{ route('listMkt') }}">Material e MKT</a>
                     </div>
                 </div>
             </li>
@@ -76,12 +77,14 @@
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGestao" aria-expanded="true" aria-controls="collapseGestao">
                         <i class="fa fa-clipboard-list"></i>
-                        <span>Relatórios</span>
+                        <span>Módulos</span>
                     </a>
                     <div id="collapseGestao" class="collapse" aria-labelledby="headingGestao" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="{{ route('saleManager') }}">Vendas</a>
                             <a class="collapse-item" href="{{ route('listUsers') }}">Usuários</a>
+                            <a class="collapse-item" href="{{ route('mkt') }}">Material e MKT</a>
+                            <a class="collapse-item" href="{{ route('lista') }}">Lista</a>
                         </div>
                     </div>
                 </li>

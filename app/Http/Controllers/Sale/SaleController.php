@@ -92,6 +92,7 @@ class SaleController extends Controller {
         $produto = $request->input('produto');
         $usuario = $request->input('usuario');
         $status = $request->input('status');
+        $tag = $request->input('tag');
         $cliente = $request->input('cliente');
 
         $sales = Sale::query();
@@ -106,6 +107,10 @@ class SaleController extends Controller {
 
         if ($status != 'ALL') {
             $sales = $sales->where('status_pay', $status)->orWhereNull('status_pay');
+        }
+
+        if ($tag != 'ALL') {
+            $sales = $sales->where('tag', $tag);
         }
 
         if (!empty($cliente)) {
@@ -217,7 +222,7 @@ class SaleController extends Controller {
             $venda->sign_url_contrato = $document['signers'][0]['sign_url'];
             $venda->save();
 
-            $message = "Prezado Cliente, segue seu *contrato de adesão* ao produto da G7 Assessoria: \r\n ASSINAR O CONTRATO CLICANDO NO LINK 👇🏼✍🏼";
+            $message = "Prezado Cliente, segue seu *contrato de adesão* ao produto da G7 Assessoria: \r\n ASSINAR O CONTRATO CLICANDO NO LINK 👇🏼✍🏼 \r \n ⚠ Salva o contato se não tiver aparecendo o link";
             $notificar = $this->notificarSignatario($document['signers'][0]['sign_url'], $saleData['mobilePhone'], $message);
             if ($notificar != null) {
                 return redirect()->route('obrigado')->with('success', 'Obrigado! Enviaremos o contrato diretamente para o seu WhatsApp.');

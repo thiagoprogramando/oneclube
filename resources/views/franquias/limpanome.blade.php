@@ -173,7 +173,7 @@
                     $("#installmentCount").find('option').remove();
                     if (selectedBillingType === "CREDIT_CARD") {
                         $("#installmentCount").append('<option value="1">1X</option>');
-                        for (var i = 2; i <= 12; i++) {
+                        for (var i = 2; i <= 6; i++) {
                             $("#installmentCount").append('<option value="' + i + '">' + i + 'X</option>');
                         }
                     } else if (selectedBillingType === "BOLETO") {

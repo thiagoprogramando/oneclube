@@ -45,6 +45,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/listUsers', [ManagerController::class, 'listUsers'])->name('listUsers');
 
+    Route::get('/mkt', [ManagerController::class, 'mkt'])->name('mkt');
+    Route::get('/listMkt', [ManagerController::class, 'listMkt'])->name('listMkt');
+    Route::post('/createMkt', [ManagerController::class, 'createMkt'])->name('createMkt');
+    Route::post('/deleteMkt', [ManagerController::class, 'deleteMkt'])->name('deleteMkt');
+
+    Route::get('/lista', [ManagerController::class, 'lista'])->name('lista');
+    Route::post('/createLista', [ManagerController::class, 'createLista'])->name('createLista');
+    Route::post('/deleteLista', [ManagerController::class, 'deleteLista'])->name('deleteLista');
+
     //Users
     Route::get('/profile',[UsersUserController::class, 'profile'])->name('profile');
     Route::post('profileUpdate', [UsersUserController::class, 'profileUpdate'])->name('profileUpdate');

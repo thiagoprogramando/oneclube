@@ -16,6 +16,8 @@ use App\Models\User;
 use App\Models\Sale;
 use App\Models\Address;
 use App\Models\Invoice;
+use App\Models\Lista;
+use App\Models\Mkt;
 
 class ManagerController extends Controller {
 
@@ -39,13 +41,16 @@ class ManagerController extends Controller {
             $balance = 0;
             $statistics = 0;
         }
+
+        $lista = Lista::where('dateEnd', '>', Carbon::now())->orderBy('dateEnd', 'asc')->first();
         
         return view('dashboard.index', [
             'user'          => $user,
             'sales'         => $sales,
             'balance'       => $balance,
             'statistics'    => $statistics,
-            'accumulated'   => $accumulated
+            'accumulated'   => $accumulated,
+            'lista'         => $lista
         ]);
     }
 
@@ -140,5 +145,74 @@ class ManagerController extends Controller {
         
         $invoices = Invoice::where('idUser', Auth::id())->where('status', 'PENDING_PAY')->get();
         return view('dashboard.payments.invoice', ['invoices' => $invoices]);
+    }
+
+    public function listMkt() {
+        
+        $mtks = Mkt::all();
+        return view('dashboard.mkt.list', ['mkts' => $mtks]);
+    }
+
+    public function mkt() {
+        
+        $mtks = Mkt::all();
+        return view('dashboard.mkt.mkt', ['mkts' => $mtks]);
+    }
+
+    public function createMkt(Request $request) {
+
+        $arquivo = $request->file('arquivo');
+        $mkt = new Mkt();
+        $mkt->id_product    = 1;
+        $mkt->title         = $request->title;
+        $mkt->description   = $request->description;
+        $mkt->file          = $arquivo->store('mkt');
+        if($mkt->save()) {
+            return redirect()->back()->with('success', 'Material cadastro com Sucesso!');
+        }
+
+        return redirect()->back()->with('error', 'Houve um problema, tente novamente mais tarde!');
+    }
+
+    public function deleteMkt(Request $request) {
+
+        $lista = Lista::find($request->id);
+        if($lista) {
+
+            $lista->delete();
+            return redirect()->back()->with('success', 'Lista excluída com Sucesso!');
+        }
+
+        return redirect()->back()->with('error', 'Houve um problema, tente novamente mais tarde!');
+    }
+
+    public function lista() {
+
+        $listas = Lista::all();
+        return view('dashboard.lista.lista', ['listas' => $listas]);
+    }
+
+    public function createLista(Request $request) {
+
+        $lista = new Lista();
+        $lista->name      = $request->name;
+        $lista->dateEnd   = $request->dateEnd;
+        if($lista->save()) {
+            return redirect()->back()->with('success', 'Lista cadastrada com Sucesso!');
+        }
+
+        return redirect()->back()->with('error', 'Houve um problema, tente novamente mais tarde!');
+    }
+
+    public function deleteLista(Request $request) {
+
+        $lista = Lista::find($request->id);
+        if($lista) {
+
+            $lista->delete();
+            return redirect()->back()->with('success', 'Lista excluída com Sucesso!');
+        }
+
+        return redirect()->back()->with('error', 'Houve um problema, tente novamente mais tarde!');
     }
 }

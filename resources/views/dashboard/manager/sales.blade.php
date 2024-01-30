@@ -53,6 +53,21 @@
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="form-group">
+                                                                    <select class="form-control" name="tag">
+                                                                        <option value="ALL">Tags</option>
+                                                                        <option value="1">Aguardando Conclusão de Documentos</option>
+                                                                        <option value="2">Aguardando Conclusão de Honorários</option>
+                                                                        <option value="3">Processo em fila </option>
+                                                                        <option value="4">Processo iniciado </option>
+                                                                        <option value="5">Processo em andamento</option>
+                                                                        <option value="6">Processo concluído </option>
+                                                                        <option value="7">Duplicado </option>
+                                                                        <option value="8">Lixeira </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
                                                                     <select class="form-control" name="usuario">
                                                                         <option value="ALL">Todos os Usuários</option>
                                                                         @foreach ($users as $key => $user)
