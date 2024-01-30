@@ -69,7 +69,7 @@
                                                     <td>{{ $mkt->title }}</td>
                                                     <td>{{ $mkt->description }}</td>
                                                     <td class="text-center">
-                                                        <form action="{{ route('delteMkt') }}" method="POST">
+                                                        <form action="{{ route('deleteMkt') }}" method="POST">
                                                             @csrf
                                                             <input type="hidden" name="id" value="{{ $mkt->id }}">
                                                             <a href="{{ url("storage/{$mkt->file}") }}" download class="btn btn-outline-success"><i class="fas fa-file-download"></i></a>
