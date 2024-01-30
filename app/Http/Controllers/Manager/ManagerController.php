@@ -180,7 +180,7 @@ class ManagerController extends Controller {
         if($mkt) {
 
             $mkt->delete();
-            return redirect()->back()->with('success', 'Lista excluída com Sucesso!');
+            return redirect()->back()->with('success', 'Material excluída com Sucesso!');
         }
 
         return redirect()->back()->with('error', 'Houve um problema, tente novamente mais tarde!');
