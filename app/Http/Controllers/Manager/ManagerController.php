@@ -176,10 +176,10 @@ class ManagerController extends Controller {
 
     public function deleteMkt(Request $request) {
 
-        $lista = Lista::find($request->id);
-        if($lista) {
+        $mkt = Mkt::find($request->id);
+        if($mkt) {
 
-            $lista->delete();
+            $mkt->delete();
             return redirect()->back()->with('success', 'Lista excluída com Sucesso!');
         }
 
