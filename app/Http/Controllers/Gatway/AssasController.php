@@ -340,33 +340,37 @@ class AssasController extends Controller {
             
             $token = $jsonData['payment']['id'];
             $invoices = Invoice::where('token', $token)->get();
-            foreach ($invoices as $invoice) {
+            if($invoices->count() >= 1){
+                foreach ($invoices as $invoice) {
 
-                if($invoice->type == 1) {
-                    $createApiKey = $this->createApiKey($invoice->idUser);
-                    $user = User::where('id', $invoice->idUser)->first();
-                    $user->walletId = $createApiKey['walletId'];
-                    $user->apiKey   = $createApiKey['apiKey'];
-                    $user->status   = 2;
-                    $user->save();
+                    if($invoice->type == 1) {
+                        $createApiKey = $this->createApiKey($invoice->idUser);
+                        $user = User::where('id', $invoice->idUser)->first();
+                        $user->walletId = $createApiKey['walletId'];
+                        $user->apiKey   = $createApiKey['apiKey'];
+                        $user->status   = 2;
+                        $user->save();
+                    }
+                    $invoice->status = 'PAYMENT_CONFIRMED';
+                    $invoice->save();
+
+                    $sale = Sale::where('id', $invoice->idUser)->first();
+                    if($sale) {
+                        $sale->status_pay = "PAYMENT_CONFIRMED";
+                        $sale->tag = "3";
+                        $sale->save();
+
+                        $link    = 'https://grupo7assessoria.com/cliente';
+                        $message = "✅🥳 Olá, cliente G7. Recebemos o seu pagamento, *segue link para acessar Faturas, consultar processos* e demais informações sobre seus contratos. \r\n\r\n PRONTO AGORA SÓ ACOMPANHAR 👇🏼📲";
+                        $whatsapp = new WhatsAppController();
+                        $sendLink = $whatsapp->sendLink($sale->mobilePhone, $link, $message);
+                    }
                 }
-                $invoice->status = 'PAYMENT_CONFIRMED';
-                $invoice->save();
 
-                $sale = Sale::where('id', $invoice->idUser)->first();
-                if($sale) {
-                    $sale->status_pay = "PAYMENT_CONFIRMED";
-                    $sale->tag = "3";
-                    $sale->save();
-
-                    $link    = 'https://grupo7assessoria.com/cliente';
-                    $message = "✅🥳 Olá, cliente G7. Recebemos o seu pagamento, *segue link para acessar Faturas, consultar processos* e demais informações sobre seus contratos. \r\n\r\n PRONTO AGORA SÓ ACOMPANHAR 👇🏼📲";
-                    $whatsapp = new WhatsAppController();
-                    $sendLink = $whatsapp->sendLink($sale->mobilePhone, $link, $message);
-                }
+                return response()->json(['status' => 'success', 'message' => 'Requisição tratada!']);
             }
 
-            return response()->json(['status' => 'success', 'message' => 'Requisição tratada!']);
+            return response()->json(['status' => 'success', 'message' => 'Nenhum invoice encontrado!']);
         }
 
         return response()->json(['status' => 'success', 'message' => 'Webhook não utilizado!']);
