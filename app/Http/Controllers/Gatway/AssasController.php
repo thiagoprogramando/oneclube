@@ -142,6 +142,8 @@ class AssasController extends Controller {
                         if ($invoiceCount == 0 && $valueInit < 300) {
                             $value = min($valueInit, 300);
                             $valueInit = (($sale->value - 300) / ($sale->installmentCount - 1));
+                        } else {
+                            $value = $valueInit;
                         }
                         
                         $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate);
