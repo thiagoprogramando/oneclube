@@ -79,13 +79,13 @@
         </div>
 
         <div class="row">
-            <div class="col-xl-12 col-md-12 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
+            <div class="col-xl-8 col-md-8 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Últimas Vendas</h6>
+                    </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1"> Últimas Vendas </div>
-                            </div>
                             <div class="col-12">
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="tabela" width="100%" cellspacing="0">
@@ -93,9 +93,8 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Cliente</th>
-                                                <th>Produto</th>
                                                 <th class="text-center">Situação Contrato</th>
-                                                <th class="text-center">1° Parcela Paga</th>
+                                                <th class="text-center">Status</th>
                                                 <th class="text-center">Data</th>
                                                 <th class="text-center">Opções</th>
                                             </tr>
@@ -104,17 +103,7 @@
                                             @foreach ($sales as $key => $sale)
                                                 <tr>
                                                     <td>{{ $sale->id }}</td>
-                                                    <td>{{ $sale->name }}</td>
-                                                    <td>
-                                                        @switch($sale->id_produto)
-                                                            @case(1)
-                                                                Limpa Nome
-                                                                @break
-                                                            @default
-                                                                Produto Desconhecido
-                                                                @break
-                                                        @endswitch
-                                                    </td>
+                                                    <td title="{{ $sale->name }}">{{ strlen($sale->name) > 15 ? substr($sale->name, 0, 15) . '...' : $sale->name }}</td>
                                                     <td class="text-center">
                                                         @switch($sale->status_produto)
                                                             @case('doc_signed')
@@ -152,6 +141,44 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-4 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-primary">RANKING</h6>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="small font-weight-bold">R$ 0 - R$ 11.000,00 <span class="float-right">{{ number_format($ranking['eleventhousand'], 2, ',', '.') }}%</span></h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: {{$ranking['eleventhousand']}}%" aria-valuenow="{{$ranking['eleventhousand']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <h4 class="small font-weight-bold">R$ 11.000,00 - R$ 30.000,00 <span class="float-right">{{ number_format($ranking['thirtythousand'], 2, ',', '.') }}%</span></h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: {{$ranking['thirtythousand']}}%" aria-valuenow="{{$ranking['thirtythousand']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <h4 class="small font-weight-bold">R$ 31.000,00 - R$ 50.000,00 <span class="float-right">{{ number_format($ranking['fiftythousand'], 2, ',', '.') }}%</span></h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{$ranking['fiftythousand']}}%" aria-valuenow="{{$ranking['fiftythousand']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <h4 class="small font-weight-bold">R$ 51.000,00 - R$ 100.000,00 <span class="float-right">{{ number_format($ranking['hundredthousand'], 2, ',', '.') }}%</span></h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{$ranking['hundredthousand']}}%" aria-valuenow="{{$ranking['hundredthousand']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <h4 class="small font-weight-bold">R$ 101.000,00 - R$ 300.000,00 <span class="float-right">{{ number_format($ranking['threehundredthousand'], 2, ',', '.') }}%</span></h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: {{$ranking['threehundredthousand']}}%" aria-valuenow="{{$ranking['threehundredthousand']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <h4 class="small font-weight-bold">R$ 301.000,00 - R$ 500.000,00 <span class="float-right">{{ number_format($ranking['fivehundredthousand'], 2, ',', '.') }}%</span></h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{$ranking['fivehundredthousand']}}%" aria-valuenow="{{$ranking['fivehundredthousand']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <h4 class="small font-weight-bold">R$ 500.000,00 - R$ 1000.000,00 <span class="float-right">{{ number_format($ranking['amillion'], 2, ',', '.') }}%</span></h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{$ranking['amillion']}}%" aria-valuenow="{{$ranking['amillion']}}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
