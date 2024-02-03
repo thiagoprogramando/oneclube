@@ -54,7 +54,7 @@ class AssasController extends Controller {
                     $primeiraComissao = 0;
                     $primeiraParcela  = 0;
                     $invoiceCount     = 0;
-                    $valueInit = ($sale->value / $sale->installmentCount) - 3;
+                    $valueInit = ($sale->value / $sale->installmentCount) - 5;
 
                     while ($invoiceCount < $sale->installmentCount) {
                         
@@ -78,8 +78,7 @@ class AssasController extends Controller {
                         } else {
 
                             $value = ($sale->value - $primeiraParcela) / ($sale->installmentCount - 1);
-                            $value -= ($value * 0.05);
-                            $commission = $value;
+                            $commission = $value - ($value * 0.05);
                             $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $commission);
                         } 
                         
