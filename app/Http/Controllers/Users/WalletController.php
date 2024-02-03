@@ -37,7 +37,7 @@ class WalletController extends Controller {
             
             $assas = new AssasController();
             $key_pix = $request->key_pix != 'EMAIL' ? str_replace(['.', '-', '_', ','], '', $request->key_pix) : $request->key_pix;
-            $realizaSaque = $assas->withdraw($key_pix, $request->value, $request->type);
+            $realizaSaque = $assas->withdraw($key_pix, $this->formatarValor($request->value), $request->type);
             
             if ($realizaSaque['success']) {
                 return redirect()->back()->with('success', $realizaSaque['message']);
@@ -47,6 +47,14 @@ class WalletController extends Controller {
         } else {
             return redirect()->back()->with('error', 'Verifique sua senha!');
         }
+    }
+
+    private function formatarValor($valor) {
+        
+        $valor = preg_replace('/[^0-9,.]/', '', $valor);
+        $valor = str_replace(['.', ','], '', $valor);
+
+        return number_format(floatval($valor) / 100, 2, '.', '');
     }
 
 }

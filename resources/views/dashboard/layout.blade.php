@@ -67,6 +67,10 @@
                 </div>
             </li>
 
+            <li class="nav-item active">
+                <a class="nav-link" href="https://consultas.grupo7assessoria.com" target="_blank"><i class="fas fa-fw fa-clipboard-list"></i> <span>Consultas</span></a>
+            </li>
+
             @if (Auth::user()->type == 1)
                 <hr class="sidebar-divider">
 
@@ -114,7 +118,10 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"> <i class="fa fa-bars"></i> </button>
 
                     <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <p>Olá, {{ Auth::user()->name }}. Bem-vindo(a)!</p>
+                        <h4 class="small font-weight-bold mt-2"><i class="fas fa-gem text-primary"></i> R$ 0 - R$ {{ number_format($ranking['alvo'], 2, ',', '.') }} <span class="float-right">{{ number_format($ranking['porcentagem'], 2, ',', '.') }}%</span></h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $ranking['porcentagem'] }}%" aria-valuenow="{{ $ranking['porcentagem'] }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>  
                     </div>
 
                     <ul class="navbar-nav ml-auto">

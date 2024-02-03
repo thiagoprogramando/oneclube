@@ -24,21 +24,9 @@ class ManagerController extends Controller {
     public function dashboard () {
 
         $user = auth()->user();
-
         if($user->status == 2) {
             return redirect()->route('profile')->with('error', 'Você tem documentos pendentes, envie-os para obter todas às funcionalidades!');
         }
-
-        $sumSale = Sale::where('id_vendedor', $user->id)->where('status_pay', 'PAYMENT_CONFIRMED')->sum('value');
-        $ranking = [
-            'eleventhousand'         => max(0, (1 - (11000 - $sumSale) / 11000) * 100),
-            'thirtythousand'         => max(0, (1 - (30000 - $sumSale) / 30000) * 100),
-            'fiftythousand'          => max(0, (1 - (50000 - $sumSale) / 50000) * 100),
-            'hundredthousand'        => max(0, (1 - (100000 - $sumSale) / 100000) * 100),
-            'threehundredthousand'   => max(0, (1 - (300000 - $sumSale) / 300000) * 100),
-            'fivehundredthousand'    => max(0, (1 - (500000 - $sumSale) / 500000) * 100),
-            'amillion'               => max(0, (1 - (1000000 - $sumSale) / 1000000) * 100),
-        ];
 
         $sales = Sale::where('id_vendedor', $user->id)->orderBy('created_at', 'desc')->limit(20)->get();
         if($user->apiKey != null) {
@@ -62,7 +50,6 @@ class ManagerController extends Controller {
             'statistics'    => $statistics,
             'accumulated'   => $accumulated,
             'lista'         => $lista,
-            'ranking'        => $ranking
         ]);
     }
 

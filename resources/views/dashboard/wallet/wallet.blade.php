@@ -115,7 +115,7 @@
                             <input type="text" class="form-control" name="key_pix" placeholder="Chave Pix:" autofocus required/>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="value" placeholder="Valor:" required/>
+                            <input type="text" class="form-control" name="value" placeholder="Valor:" oninput="mascaraReal(this)" required/>
                         </div>
                         <div class="mb-3">
                             <input type="password" class="form-control" name="password" placeholder="Confirme sua senha:" required/>
