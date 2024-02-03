@@ -54,38 +54,34 @@ class AssasController extends Controller {
                     $primeiraComissao = 0;
                     $primeiraParcela  = 0;
                     $invoiceCount     = 0;
+                    $valueInit = ($sale->value / $sale->installmentCount) - 3;
+
                     while ($invoiceCount < $sale->installmentCount) {
                         
                         if ($invoiceCount >= 1) {
                             $dueDate->addMonth();
                         }
 
-                        if($user->type == 1) {
-                            $value = ($sale->value / $sale->installmentCount);
-                            if ($invoiceCount == 0 && $value < 300) {
-                                $value = min($value, 300);
-                            }
-                            $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate);
-                        } else {
-                            $value = ($sale->value / $sale->installmentCount) - 3;
-                            if ($invoiceCount == 0) {
-                                $value = max($value, 390);
-                            
-                                if ($value > 390) {
-                                    $primeiraComissao = max(0, $value - 395);
-                                    $primeiraParcela = $value;
-                                    $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $primeiraComissao);
-                                } else {
-                                    $value = 390;
-                                    $primeiraParcela = 390;
-                                    $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate);
-                                }
+                        
+                        
+                        if ($invoiceCount == 0) {
+                            if ($valueInit > 390) {
+
+                                $primeiraComissao = max(0, $valueInit - 395);
+                                $primeiraParcela = $valueInit;
+                                $charge = $this->createCharge($customer, $sale->billingType, $primeiraParcela, $description, $dueDate, $sale->wallet, $primeiraComissao);
                             } else {
-                                $value = ($sale->value - $primeiraParcela) / ($sale->installmentCount - 1);
-                                $commission = (($sale->value - $primeiraParcela) / ($sale->installmentCount - 1)) * (1 - 0.05);
-                                $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $commission);
-                            } 
-                        }
+
+                                $primeiraParcela = 390;
+                                $charge = $this->createCharge($customer, $sale->billingType, $primeiraParcela, $description, $dueDate);
+                            }
+                        } else {
+
+                            $value = ($sale->value - $primeiraParcela) / ($sale->installmentCount - 1);
+                            $value -= ($value * 0.05);
+                            $commission = $value;
+                            $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $commission);
+                        } 
                         
                         if ($charge) {
                             $invoice              = new Invoice();
@@ -107,6 +103,7 @@ class AssasController extends Controller {
         
                     return true;
                 }
+
             } else {
                 
                 if ($sale->billingType == "CREDIT_CARD") {
