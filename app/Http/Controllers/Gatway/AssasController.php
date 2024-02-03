@@ -54,7 +54,7 @@ class AssasController extends Controller {
                     $primeiraComissao = 0;
                     $primeiraParcela  = 0;
                     $invoiceCount     = 0;
-                    $valueInit = ($sale->value / $sale->installmentCount) - 5;
+                    $valueInit = ($sale->value / $sale->installmentCount);
 
                     while ($invoiceCount < $sale->installmentCount) {
                         
