@@ -62,8 +62,6 @@ class AssasController extends Controller {
                             $dueDate->addMonth();
                         }
 
-                        
-                        
                         if ($invoiceCount == 0) {
                             if ($valueInit > 390) {
 
