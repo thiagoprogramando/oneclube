@@ -67,10 +67,12 @@ class AssasController extends Controller {
 
                                 $primeiraComissao = max(0, $valueInit - 395);
                                 $primeiraParcela = $valueInit;
+                                $value = $primeiraParcela;
                                 $charge = $this->createCharge($customer, $sale->billingType, $primeiraParcela, $description, $dueDate, $sale->wallet, $primeiraComissao);
                             } else {
 
                                 $primeiraParcela = 390;
+                                $value = $primeiraParcela;
                                 $charge = $this->createCharge($customer, $sale->billingType, $primeiraParcela, $description, $dueDate);
                             }
                         } else {
