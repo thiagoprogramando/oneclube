@@ -54,6 +54,7 @@ class CursoController extends Controller {
                 $invoice->name          = $curso->title;
                 $invoice->description   = $curso->description;
                 $invoice->value         = $curso->value;
+                $invoice->commission    = ($curso->value * 0.20);
                 $invoice->type          = 5;
                 $invoice->status        = 'PENDING_PAY';
                 $invoice->token         = $charge['id'];
