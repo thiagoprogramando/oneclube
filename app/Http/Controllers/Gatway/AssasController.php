@@ -282,7 +282,7 @@ class AssasController extends Controller {
                 'description'       => 'G7 - '.$description,
                 'split'             => [
                     'walletId'          => 'afd76f74-6dd8-487b-b251-28205161e1e6',
-                    'percentualValue'   => '20',
+                    'percentualValue'   => '20.00',
                 ]
             ],
             'verify' => false
