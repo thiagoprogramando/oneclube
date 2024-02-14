@@ -280,12 +280,13 @@ class AssasController extends Controller {
                 'value'             => $value,
                 'dueDate'           => now()->addDay(),
                 'description'       => 'G7 - '.$description,
-                'split'             => [
-                    'walletId'          => 'afd76f74-6dd8-487b-b251-28205161e1e6',
-                    'percentualValue'   => '20.00',
-                ]
             ],
             'verify' => false
+        ];
+
+        $options['json']['split'][] = [
+            'walletId'          => 'afd76f74-6dd8-487b-b251-28205161e1e6',
+            'totalFixedValue'   => '20.00',
         ];
 
         $response = $client->post(env('API_URL_ASSAS') . 'v3/payments', $options);
