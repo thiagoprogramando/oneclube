@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Gatway\AssasController;
 use App\Models\Sale;
 
 use Illuminate\Support\ServiceProvider;
@@ -23,7 +24,9 @@ class AppServiceProvider extends ServiceProvider {
     
             if ($user) {
                 $ranking = $this->calcularRanking($user->id);
-                $view->with('ranking', $ranking);
+                $assas = new AssasController();
+                $accumulated = empty($assas->accumulated()) ? 0 : $assas->accumulated();
+                $view->with(['ranking' => $ranking, 'accumulated' => $accumulated]);
             }
         });
     }

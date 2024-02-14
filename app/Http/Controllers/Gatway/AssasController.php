@@ -65,7 +65,7 @@ class AssasController extends Controller {
                         if ($invoiceCount == 0) {
                             if ($valueInit > 390) {
 
-                                $primeiraComissao = max(0, $valueInit - 395);
+                                $primeiraComissao = max(0, $valueInit - 400);
                                 $primeiraParcela = $valueInit;
                                 $value = $primeiraParcela;
                                 $charge = $this->createCharge($customer, $sale->billingType, $primeiraParcela, $description, $dueDate, $sale->wallet, $primeiraComissao);
@@ -77,7 +77,7 @@ class AssasController extends Controller {
                             }
                         } else {
 
-                            $value = ($sale->value - $primeiraParcela) / ($sale->installmentCount - 1);
+                            $value = (($sale->value - $primeiraParcela) - 3) / ($sale->installmentCount - 1);
                             $commission = $value - ($value * 0.05);
                             $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $commission);
                         } 
@@ -260,6 +260,43 @@ class AssasController extends Controller {
         if ($response->getStatusCode() === 200) {
             $data = json_decode($body, true);
             return $data['id'];
+        } else {
+            return false;
+        }
+    }
+
+    public function createChargeCurso($customer, $value, $description) {
+
+        $client = new Client();
+
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'access_token' => env('API_TOKEN_ASSAS'),
+            ],
+            'json' => [
+                'customer'          => $customer,
+                'billingType'       => 'UNDEFINED',
+                'value'             => $value,
+                'dueDate'           => now()->addDay(),
+                'description'       => 'G7 - '.$description,
+                'split'             => [
+                    'walletId'          => 'afd76f74-6dd8-487b-b251-28205161e1e6',
+                    'percentualValue'   => '20',
+                ]
+            ],
+            'verify' => false
+        ];
+
+        $response = $client->post(env('API_URL_ASSAS') . 'v3/payments', $options);
+        $body = (string) $response->getBody();
+
+        if ($response->getStatusCode() === 200) {
+            $data = json_decode($body, true);
+            return $dados['json'] = [
+                'id'            => $data['id'],
+                'invoiceUrl'    => $data['invoiceUrl'],
+            ];
         } else {
             return false;
         }
@@ -534,7 +571,6 @@ class AssasController extends Controller {
 
         $body = (string) $response->getBody();
         if ($response->getStatusCode() === 200) {
-
             $data = json_decode($body, true);
             return $data['data'];
         } else {

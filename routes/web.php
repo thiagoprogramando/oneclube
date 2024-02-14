@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Curso\CursoController;
 use App\Http\Controllers\Gatway\AssasController;
 use App\Http\Controllers\Manager\ManagerController;
 use App\Http\Controllers\ProdutoController;
@@ -67,6 +68,12 @@ Route::middleware(['auth'])->group(function () {
     //Invoices
     Route::get('/invoices/{id?}', [ManagerController::class, 'invoices'])->name('invoices');
     Route::post('invoiceCreate', [AssasController::class, 'invoiceCreate'])->name('invoiceCreate');
+
+    //Cursos
+    Route::get('/cursos', [CursoController::class, 'list'])->name('cursos');
+    Route::post('createCurso', [CursoController::class, 'createCurso'])->name('createCurso');
+    Route::get('/viewCurso/{id}', [CursoController::class, 'viewCurso'])->name('viewCurso');
+    Route::post('createMaterial', [CursoController::class, 'createMaterial'])->name('createMaterial');
 
     //Actions
     Route::get('/logout', [UsersUserController::class, 'logout'])->name('logout');

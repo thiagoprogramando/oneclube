@@ -23,7 +23,9 @@
 
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
-                <div class="sidebar-brand-icon rotate-n-15"> <i class="fas fa-user-tie"></i> </div>
+                <div class="sidebar-brand-icon d-md-none d-lg-none d-xl-none">
+                    <img class="img-responsive w-100" src="{{ asset('admin/assets/logo_menu.png') }}">
+                </div>
                 <div class="sidebar-brand-text mx-3">
                     <img class="img-responsive w-100" src="{{ asset('admin/assets/logo_menu.png') }}">
                 </div>
@@ -65,6 +67,10 @@
                         <a class="collapse-item" href="{{ route('wallet') }}">Carteira Digital</a>
                     </div>
                 </div>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('cursos') }}"><i class="fas fa-fw fa-user-graduate"></i> <span>Cursos</span></a>
             </li>
 
             <li class="nav-item active">
@@ -117,8 +123,13 @@
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"> <i class="fa fa-bars"></i> </button>
 
-                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <h4 class="small font-weight-bold mt-2"><i class="fas fa-gem text-primary"></i> R$ 0 - R$ {{ number_format($ranking['alvo'], 2, ',', '.') }} <span class="float-right">{{ number_format($ranking['porcentagem'], 2, ',', '.') }}%</span></h4>
+                    <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <h4 class="small font-weight-bold mt-2">
+                            <i class="fas fa-gem text-primary"></i>
+                            R$ @if(isset($accumulated)) {{ number_format($accumulated, 2, ',', '.') }} @else 0 @endif -> 
+                            R$ {{ number_format($ranking['alvo'], 2, ',', '.') }} 
+                            <span class="float-right d-none">{{ number_format($ranking['porcentagem'], 2, ',', '.') }}%</span>
+                        </h4>
                         <div class="progress mb-4">
                             <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $ranking['porcentagem'] }}%" aria-valuenow="{{ $ranking['porcentagem'] }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>  

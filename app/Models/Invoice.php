@@ -12,7 +12,7 @@ class Invoice extends Model {
     protected $table = 'invoice';
 
     protected $fillable = [
-        'iidUser',
+        'idUser',
         'name',
         'description',
         'value',

@@ -60,6 +60,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Tipo</th>
+                                                <th>Data</th>
                                                 <th>Descrição</th>
                                                 <th class="text-justify">Valor</th>
                                             </tr>
@@ -68,6 +69,7 @@
                                             @foreach ($extracts as $extract)
                                                 <tr>
                                                     <td>{{ $extract['id'] }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($extract['date'])->format('d/m/Y') }}</td>
                                                     <td>
                                                         @if($extract['value'] < 0)
                                                             Saída
