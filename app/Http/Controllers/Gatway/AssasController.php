@@ -580,33 +580,35 @@ class AssasController extends Controller {
     }
 
     public function accumulated() {
-
-        $client = new Client();
-        $user = auth()->user();
-        $startDate = $user->created_at->toDateString();
-        $finishDate = now()->toDateString();
-
-        $response = $client->request('GET',  env('API_URL_ASSAS') . "v3/financialTransactions?startDate={$startDate}&finishDate={$finishDate}&order=desc", [
-            'headers' => [
-                'accept' => 'application/json',
-                'access_token' => $user->apiKey,
-            ],
-            'verify' => false,
-        ]);
-
-        $body = (string) $response->getBody();
-        if ($response->getStatusCode() === 200) {
-
-            $data = json_decode($body, true);
-            $filteredData = array_filter($data['data'], function ($item) {
-                return $item['type'] === 'TRANSFER';
-            });
+        try {
+            $client = new Client();
+            $user = auth()->user();
+            $startDate = $user->created_at->toDateString();
+            $finishDate = now()->toDateString();
     
-            $totalValue = array_sum(array_column($filteredData, 'value'));
+            $response = $client->request('GET',  env('API_URL_ASSAS') . "v3/financialTransactions?startDate={$startDate}&finishDate={$finishDate}&order=desc", [
+                'headers' => [
+                    'accept' => 'application/json',
+                    'access_token' => $user->apiKey,
+                ],
+                'verify' => false,
+            ]);
     
-            return abs($totalValue);
-        } else {
-            return [];
+            if ($response->getStatusCode() === 200) {
+                $body = (string) $response->getBody();
+                $data = json_decode($body, true);
+                $filteredData = array_filter($data['data'], function ($item) {
+                    return $item['type'] === 'TRANSFER';
+                });
+    
+                $totalValue = array_sum(array_column($filteredData, 'value'));
+    
+                return abs($totalValue);
+            } else {
+                return 0;
+            }
+        } catch (\Exception $e) {
+            return 0;
         }
     }
 
