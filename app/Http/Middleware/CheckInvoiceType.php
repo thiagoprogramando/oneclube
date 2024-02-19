@@ -22,6 +22,10 @@ class CheckInvoiceType {
                 return redirect()->route('invoices');
             }
 
+            if($user->term != 1) {
+                return redirect()->route('perfil');
+            }
+
             // if($user->status == 2) {
             //     return redirect()->route('validation');
             // }
