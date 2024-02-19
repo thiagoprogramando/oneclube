@@ -19,7 +19,7 @@
                             @foreach ($cursos as $curso)
                                 <div class="col-xl-4 col-md-4 mb-4">
                                     <a href="{{ route('viewCurso', ['id' => $curso->id]) }}">
-                                    <div class="card border-left-dark shadow py-2">
+                                    <div class="card border-left-dark shadow py-2" style="min-height: 300px;">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
@@ -34,6 +34,13 @@
                                                     <i class="fas fa-user-graduate fa-2x text-gray-300"></i>
                                                 </div>
                                             </div>
+                                            @if (Auth::user()->type == 1)
+                                            <div class="row mt-5">
+                                                <div class="col-12 mt-5">
+                                                    <a href="{{ route('deleteCurso', ["id" => $curso->id]) }}" class="btn btn-google btn-block">Excluir</a>
+                                                </div>
+                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                     </a>

@@ -28,7 +28,19 @@ class CursoController extends Controller {
         $curso->value           = $this->formatarValor($request->value);
 
         if($curso->save()) {
-            return redirect()->back()->with('success', 'Material cadastro com Sucesso!');
+            return redirect()->back()->with('success', 'Curso cadastro com Sucesso!');
+        }
+
+        return redirect()->back()->with('error', 'Houve um problema, tente novamente mais tarde!');
+    }
+
+    public function deleteCurso($id) {
+
+        $curso = Curso::find($id);
+        if($curso) {
+
+            $curso->delete();
+            return redirect()->back()->with('success', 'Curso excluído com Sucesso!');
         }
 
         return redirect()->back()->with('error', 'Houve um problema, tente novamente mais tarde!');
@@ -39,8 +51,10 @@ class CursoController extends Controller {
         $curso = Curso::find($id);
         if($curso) {
 
+            $user = auth()->user();
+
             $invoice = Invoice::where('idUser', auth()->id())->where('name', $curso->title)->count();
-            if($invoice < 1) {
+            if($invoice < 1 & $user->type != 1) {
 
                 $assas = new AssasController();
                 $charge = $assas->createChargeCurso(auth()->user()->customer, $curso->value, $curso->description);
@@ -88,6 +102,18 @@ class CursoController extends Controller {
         $material->file         = $arquivo->store('curso');
         if($material->save()) {
             return redirect()->back()->with('success', 'Material cadastro com Sucesso!');
+        }
+
+        return redirect()->back()->with('error', 'Houve um problema, tente novamente mais tarde!');
+    }
+
+    public function deleteMaterial($id) {
+
+        $material = Material::find($id);
+        if($material) {
+
+            $material->delete();
+            return redirect()->back()->with('success', 'Material excluído com Sucesso!');
         }
 
         return redirect()->back()->with('error', 'Houve um problema, tente novamente mais tarde!');

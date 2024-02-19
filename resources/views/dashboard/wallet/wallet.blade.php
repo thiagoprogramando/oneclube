@@ -69,7 +69,6 @@
                                             @foreach ($extracts as $extract)
                                                 <tr>
                                                     <td>{{ $extract['id'] }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($extract['date'])->format('d/m/Y') }}</td>
                                                     <td>
                                                         @if($extract['value'] < 0)
                                                             Saída
@@ -77,6 +76,7 @@
                                                             Entrada
                                                         @endif
                                                     </td>
+                                                    <td>{{ \Carbon\Carbon::parse($extract['date'])->format('d/m/Y') }}</td>
                                                     <td>{{ $extract['description'] }}</td>
                                                     <td class="text-justify">R$ {{ number_format($extract['value'], 2, ',', '.') }}</td>
                                                 </tr>

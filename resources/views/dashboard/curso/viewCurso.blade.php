@@ -40,13 +40,22 @@
                                                             <a download href="{{ url("storage/{$material->file}") }}" class="btn btn-primary">Baixar Arquivo</a>
                                                             @break
                                                         @case(3)
-                                                            <img width="100%" height="100%" src="{{ url("storage/{$material->file}") }}">
+                                                            <a style="text-decoration: none !important;" download href="{{ url("storage/{$material->file}") }}">
+                                                                <img style="max-height: 200px; widht: 100%;" class="img-fluid" src="{{ url("storage/{$material->file}") }}">
+                                                            </a>
                                                             @break
                                                         @default
                                                     @endswitch
 
                                                 </div>
                                             </div>
+                                            @if (Auth::user()->type == 1)
+                                            <div class="row mt-5">
+                                                <div class="col-12 mt-5">
+                                                    <a href="{{ route('deleteMaterial', ["id" => $material->id]) }}" class="btn btn-google btn-block">Excluir</a>
+                                                </div>
+                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

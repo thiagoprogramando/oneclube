@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     //Users
     Route::get('/profile',[UsersUserController::class, 'profile'])->name('profile');
     Route::post('profileUpdate', [UsersUserController::class, 'profileUpdate'])->name('profileUpdate');
+    Route::post('termos', [UsersUserController::class, 'termos'])->name('termos');
 
     //Wallet
     Route::get('/wallet', [WalletController::class, 'wallet'])->name('wallet');
@@ -72,8 +73,10 @@ Route::middleware(['auth'])->group(function () {
     //Cursos
     Route::get('/cursos', [CursoController::class, 'list'])->name('cursos');
     Route::post('createCurso', [CursoController::class, 'createCurso'])->name('createCurso');
+    Route::get('deleteCurso/{id}', [CursoController::class, 'deleteCurso'])->name('deleteCurso');
     Route::get('/viewCurso/{id}', [CursoController::class, 'viewCurso'])->name('viewCurso');
     Route::post('createMaterial', [CursoController::class, 'createMaterial'])->name('createMaterial');
+    Route::get('deleteMaterial/{id}', [CursoController::class, 'deleteMaterial'])->name('deleteMaterial');
 
     //Actions
     Route::get('/logout', [UsersUserController::class, 'logout'])->name('logout');

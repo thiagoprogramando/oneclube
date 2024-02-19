@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('material', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_curso');
+            $table->foreign('id_curso')->references('id')->on('curso')->onDelete('cascade');
             $table->string('title');
             $table->longText('description');
             $table->string('file');

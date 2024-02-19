@@ -67,6 +67,15 @@ class UserController extends Controller {
         return redirect()->back()->with('success', 'Perfil atualizado com sucesso.');
     }
 
+    public function termos(Request $request) {
+
+        $user = User::find($request->id);
+        $user->term = 1;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Termos aceitos com sucesso!');
+    }
+
     public function logout() {
 
         Auth::logout();

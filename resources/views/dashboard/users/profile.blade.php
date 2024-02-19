@@ -65,6 +65,20 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    @if (Auth::user()->term != 1)
+                                    <tr>
+                                        <td><span class="badge badge-dark">Pendente</span></td>
+                                        <td>Termo de Responsabilidade</td>
+                                        <td>Termos de uso para utilização do sistema! <a target="_blank" href="{{ asset('admin/assets/termos.docx') }}">Analisar os termos.</a> Para confirmar aperte o botão ao lado.</td>
+                                        <td class="text-center">
+                                            <form action="{{ route('termos') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ Auth::user()->id }}">
+                                                <button type="submit" class="btn btn-outline-primary"><i class="far fa-paper-plane"></i></a>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
