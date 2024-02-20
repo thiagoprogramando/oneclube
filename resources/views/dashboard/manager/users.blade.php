@@ -20,11 +20,12 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Nome</th>
-                                                <th>CPF/CNPJ</th>
                                                 <th>Tipo</th>
                                                 <th>Situação</th>
-                                                <th class="text-center">Wallet</th>
-                                                <th class="text-center">ApiKey</th>
+                                                @if (Auth::user()->type == 1)
+                                                    <th class="text-center">Wallet</th>
+                                                    <th class="text-center">ApiKey</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -32,11 +33,12 @@
                                                 <tr>
                                                     <td>{{ $user->id }}</td>
                                                     <td>{{ $user->name }}</td>
-                                                    <td>{{ $user->cpfcnpj }}</td>
                                                     <td><span class="badge badge-dark">{{ $user->type_user}}</span></td>
                                                     <td><span class="badge badge-success">{{ $user->status_user}}</span></td>
-                                                    <td class="text-center"><button class="btn btn-outline-success" data-copia="{{ $user->walletId }}"><i class="fas fa-wallet"></i></button></td>
-                                                    <td class="text-center"><button class="btn btn-outline-success" data-copia="{{ $user->apiKey }}"><i class="fas fa-key"></i></button></td>
+                                                    @if (Auth::user()->type == 1)
+                                                        <td class="text-center"><button class="btn btn-outline-success" data-copia="{{ $user->walletId }}"><i class="fas fa-wallet"></i></button></td>
+                                                        <td class="text-center"><button class="btn btn-outline-success" data-copia="{{ $user->apiKey }}"><i class="fas fa-key"></i></button></td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -107,7 +109,7 @@
                                 <select name="tipo" class="form-control" required>
                                     <option value="2" selected>Tipo</option>
                                     <option value="2">Assinante</option>
-                                    <option value="2">Administrador</option>
+                                    @if (Auth::user()->type == 1) <option value="1">Administrador</option> @endif
                                 </select>
                             </div>
                             <div class="col-6 form-group">

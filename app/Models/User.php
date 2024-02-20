@@ -28,7 +28,8 @@ class User extends Authenticatable
         'status',  // 1 - Ativo 2 - Pendente de Aprovação 3 - Pendente de Pagamento
         'walletId',
         'apiKey',
-        'term'
+        'term',
+        'lider'
     ];
 
     protected $hidden = [

@@ -13,7 +13,6 @@ use App\Models\User;
 use App\Models\Address;
 
 use GuzzleHttp\Client;
-use Carbon\Carbon;
 
 class AssasController extends Controller {
 
@@ -33,7 +32,12 @@ class AssasController extends Controller {
                 if ($sale->billingType == "CREDIT_CARD") {
 
                     $commission = ($sale->value - 490);
-                    $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $commission, $sale->installmentCount);
+                    if(!empty($user->lider)) {
+                        $lider = User::find($user->lider);
+                        $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $commission, $sale->installmentCount, $lider->walletId);
+                    } else {
+                        $charge = $this->createCharge($customer, $sale->billingType, $sale->value, $description, $dueDate, $sale->wallet, $commission, $sale->installmentCount);
+                    }
                     if ($charge) {
                         $invoice = new Invoice();
                         $invoice->idUser = $sale->id;
@@ -68,7 +72,13 @@ class AssasController extends Controller {
                                 $primeiraComissao = max(0, $valueInit - 400);
                                 $primeiraParcela = $valueInit;
                                 $value = $primeiraParcela;
-                                $charge = $this->createCharge($customer, $sale->billingType, $primeiraParcela, $description, $dueDate, $sale->wallet, $primeiraComissao);
+                                if(!empty($user->lider)) {
+                                    $lider = User::find($user->lider);
+                                    $charge = $this->createCharge($customer, $sale->billingType, $primeiraParcela, $description, $dueDate, $sale->wallet, $primeiraComissao, $lider->walletId);
+                                } else {
+                                    $charge = $this->createCharge($customer, $sale->billingType, $primeiraParcela, $description, $dueDate, $sale->wallet, $primeiraComissao);
+                                }
+
                             } else {
 
                                 $primeiraParcela = 390;
@@ -79,7 +89,12 @@ class AssasController extends Controller {
 
                             $value = (($sale->value - $primeiraParcela) - 3) / ($sale->installmentCount - 1);
                             $commission = $value - ($value * 0.05);
-                            $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $commission);
+                            if(!empty($user->lider)) {
+                                $lider = User::find($user->lider);
+                                $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $commission, $lider->walletId);
+                            } else {
+                                $charge = $this->createCharge($customer, $sale->billingType, $value, $description, $dueDate, $sale->wallet, $commission);
+                            }
                         } 
                         
                         if ($charge) {
@@ -303,7 +318,7 @@ class AssasController extends Controller {
         }
     }
 
-    private function createCharge($customer, $billingType, $value, $description, $dueDate, $walletId = null, $percentualValue = null, $installmentCount = null) {
+    private function createCharge($customer, $billingType, $value, $description, $dueDate, $walletId = null, $percentualValue = null, $installmentCount = null, $lider = null) {
 
         $client = new Client();
 
@@ -323,6 +338,19 @@ class AssasController extends Controller {
             ],
             'verify' => false
         ];
+
+        if ($lider !== null && $percentualValue != 0) {
+            if (!isset($options['json']['split'])) {
+                $options['json']['split'] = [];
+            }
+        
+            $options['json']['split'][] = [
+                'walletId'          => $lider,
+                'totalFixedValue' => number_format($percentualValue * 0.20, 2, '.', '')
+            ];
+
+            $percentualValue *= (1 - 0.20);
+        }
 
         if ($walletId !== null && $percentualValue != 0) {
             if (!isset($options['json']['split'])) {

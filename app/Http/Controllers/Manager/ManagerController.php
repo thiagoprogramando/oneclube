@@ -71,6 +71,8 @@ class ManagerController extends Controller {
     
     public function createUser(Request $request) {
 
+        $user = auth()->user();
+        
         $validator = Validator::make($request->all(), [
             'name'            => [ 'required', 'string', 'max:255'],
             'email'           => [ 'required', 'email',  'max:255', 'unique:users'],
@@ -99,6 +101,7 @@ class ManagerController extends Controller {
             'companyType'   => $request->companyType,
             'type'          => 2,
             'status'        => 3,
+            'lider'         => $user->id,
         ];
 
         $user = User::create($attributes);
