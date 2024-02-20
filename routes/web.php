@@ -33,7 +33,7 @@ Route::get('/logoutClient', [ClientController::class, 'logoutClient'])->name('lo
 Route::middleware(['auth'])->group(function () {
 
     if(Auth::user()->term != 1) {
-        return redirect()->route('profile')->with('error', 'Termo difere');
+        return Auth::user()->term;//redirect()->route('profile')->with('error', 'Termo difere');
     }
     
     //Sales
