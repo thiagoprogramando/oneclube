@@ -15,9 +15,9 @@ class CheckInvoiceType {
         if (Auth::check()) {
             $user = Auth::user();
 
-            // if($user->term != 1) {
-            //     return redirect()->route('profile');
-            // }
+            if($user->term != 1) {
+                return "Termo difere";
+            }
 
             $hasInvoiceTypeOne = Invoice::where('idUser', $user->id)->where('type', 1)->where('status', 'PENDING_PAY')->exists();
             $allowedRoutes = ['logout', 'invoiceCreate', 'profile'];
