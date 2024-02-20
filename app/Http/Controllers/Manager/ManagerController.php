@@ -24,6 +24,11 @@ class ManagerController extends Controller {
     public function dashboard () {
 
         $user = auth()->user();
+
+        if($user->term != 1) {
+            return redirect()->route('profile')->with('error', 'Assine o termo de Responsabilidade!');
+        }
+
         if($user->status == 2) {
             return redirect()->route('profile')->with('error', 'Você tem documentos pendentes, envie-os para obter todas às funcionalidades!');
         }
@@ -56,6 +61,9 @@ class ManagerController extends Controller {
     public function validation () {
 
         $user = auth()->user();
+        if($user->term != 1) {
+            return redirect()->route('profile')->with('error', 'Assine o termo de Responsabilidade!');
+        }
         return view('dashboard.users.validation', [
             'user' => $user,
         ]);
