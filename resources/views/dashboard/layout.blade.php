@@ -69,13 +69,13 @@
                 </div>
             </li>
 
-            <li class="nav-item">
+            <!--<li class="nav-item">
                 <a class="nav-link" href="{{ route('cursos') }}"><i class="fas fa-fw fa-user-graduate"></i> <span>Cursos</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('listUsers') }}"><i class="fas fa-fw fa-user"></i> <span>Indicações</span></a>
-            </li>
+            </li>-->
 
             <li class="nav-item">
                 <a class="nav-link" href="https://consultas.grupo7assessoria.com" target="_blank"><i class="fas fa-fw fa-clipboard-list"></i> <span>Consultas</span></a>
