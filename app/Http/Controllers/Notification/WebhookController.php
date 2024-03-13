@@ -27,7 +27,7 @@ class WebhookController extends Controller {
                 $sale->save();
 
                 $createInvoices = new AssasController;
-                return $createInvoices = $createInvoices->invoiceSale($sale->id);
+                $createInvoices = $createInvoices->invoiceSale($sale->id);
                 if($createInvoices) {
                     $invoice = Invoice::where('idUser', $sale->id)->where('status', 'PENDING_PAY')->where('type', 3)->first();
                     if($invoice) {
