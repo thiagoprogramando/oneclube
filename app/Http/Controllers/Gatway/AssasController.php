@@ -334,7 +334,7 @@ class AssasController extends Controller {
                 'dueDate'           => $dueDate,
                 'description'       => 'G7 - '.$description,
                 'installmentCount'  => $installmentCount != null ? $installmentCount : 1,
-                'installmentValue'  => $installmentCount != null ? ($value / $installmentCount) : $value,
+                'installmentValue'  => $installmentCount != null ? ($value / intval($installmentCount)) : $value,
             ],
             'verify' => false
         ];
@@ -508,18 +508,21 @@ class AssasController extends Controller {
 
         $jsonData = $request->json()->all();
         $user = User::where('walletId', $jsonData['accountStatus']['id'])->first();
+        if($user) {
+            switch ($jsonData['event']) {
+                case 'ACCOUNT_STATUS_GENERAL_APPROVAL_APPROVED':
+                    $user->status = 1;
+                    $user->save();
+                    break;
+                case 'ACCOUNT_STATUS_GENERAL_APPROVAL_PENDING':
+                    $user->status = 2;
+                    $user->save();
+                    break;
+            }        
+            return response()->json(['status' => 'success', 'message' => 'Tratamento realizado para status da Conta!']);
+        }
 
-        switch ($jsonData['event']) {
-            case 'ACCOUNT_STATUS_GENERAL_APPROVAL_APPROVED':
-                $user->status = 1;
-                $user->save();
-                break;
-            case 'ACCOUNT_STATUS_GENERAL_APPROVAL_PENDING':
-                $user->status = 2;
-                $user->save();
-                break;
-        }        
-        return response()->json(['status' => 'success', 'message' => 'Tratamento realizado para status da Conta!']);
+        return response()->json(['status' => 'success', 'message' => 'Não há nenhuma conta associada ao conteúdo da requisição!']);
     }
 
     private function logRequest(Request $request) {
